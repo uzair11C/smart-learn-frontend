@@ -1,25 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+// import React, { useState } from "react";
+import { Route, Routes } from "react-router-dom";
+import { CssBaseline } from "@mui/material";
+import NavBar from "./components/NavBar/NavBar";
+import Home from "./pages/Home";
+import Campaign from "./pages/Campaign";
+// import Login from "./pages/Login";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    // const [user, setUser] = useState({});
+    return (
+        <>
+            <CssBaseline />
+            <NavBar />
+            <Routes>
+                {/* <Route path="/" element={user.id ? <Home /> : <Login />} /> */}
+                <Route path="/" element={<Home />} />
+                <Route path="/campaign/:campaign_id" element={<Campaign />} />
+            </Routes>
+        </>
+    );
 }
 
 export default App;
