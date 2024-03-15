@@ -105,7 +105,17 @@ const DesktopNav = ({ handleCloseNavMenu }) => {
                             Profile
                         </Link>
                     </Typography>
-                    <Button variant="contained">Logout</Button>
+                    <Button
+                        variant="contained"
+                        sx={{
+                            textTransform: "none",
+                            background:
+                                "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                            borderRadius: "5px",
+                        }}
+                    >
+                        Logout
+                    </Button>
                 </Box>
             </Box>
         </Box>
