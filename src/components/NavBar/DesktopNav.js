@@ -7,7 +7,7 @@ const DesktopNav = ({ handleCloseNavMenu }) => {
         <Box
             sx={{
                 width: "100%",
-                display: "flex",
+                display: { xs: "none", md: "flex" },
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
@@ -100,7 +100,7 @@ const DesktopNav = ({ handleCloseNavMenu }) => {
                                 textDecoration: "none",
                                 color: "inherit",
                             }}
-                            to="/"
+                            to="/profile"
                         >
                             Profile
                         </Link>
@@ -111,7 +111,10 @@ const DesktopNav = ({ handleCloseNavMenu }) => {
                             textTransform: "none",
                             background:
                                 "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
-                            borderRadius: "5px",
+                            borderRadius: "8px",
+                            fontSize: "20px",
+                            pl: "30px",
+                            pr: "30px",
                         }}
                     >
                         Logout

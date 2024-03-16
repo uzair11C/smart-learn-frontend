@@ -16,24 +16,16 @@ const MobileNav = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu }) => {
             >
                 <MenuIcon fontSize="large" />
             </IconButton>
-            <Typography
-                variant="h5"
-                component="div"
-                noWrap
-                sx={{
+            <img
+                src="/images/SmartLearn_Logo.png"
+                alt="logo"
+                style={{
+                    marginLeft: "10px",
                     display: { xs: "flex", md: "none" },
-                    fontFamily: "monospace",
-                    fontWeight: 700,
-                    letterSpacing: ".3rem",
-                    color: "black",
-                    textDecoration: "none",
-                    pl: "20px",
                 }}
-                fontWeight="600"
-                fontFamily="monospace"
-            >
-                DonationPal
-            </Typography>
+                width="170"
+                height="50"
+            />
             <Menu
                 id="menu-appbar"
                 anchorEl={anchorElNav}
@@ -50,6 +42,13 @@ const MobileNav = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu }) => {
                 onClose={handleCloseNavMenu}
                 sx={{
                     display: { xs: "block", md: "none" },
+                    ".MuiPaper-root": {
+                        background:
+                            "url(frosted-glass-texture-as-background-frosted-glass-texture-as-background-interior-design-decoration-111091129.jpg), linear-gradient(253.09deg, rgba(217, 217, 217, 0.15) -7.53%, rgba(217, 217, 217, 0) 97.04%)",
+                        backdropFilter: "blur(25px)",
+                        borderRadius: "8px",
+                        width: "45vw",
+                    },
                 }}
             >
                 <MenuItem onClick={handleCloseNavMenu}>
@@ -65,11 +64,53 @@ const MobileNav = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu }) => {
                         <Link
                             style={{
                                 textDecoration: "none",
-                                color: "black",
+                                color: "#FFFFFF",
                             }}
                             to="/"
                         >
                             Home
+                        </Link>
+                    </Typography>
+                </MenuItem>
+                <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography
+                        variant="body1"
+                        textAlign="center"
+                        sx={{
+                            display: "block",
+                            margin: "10px",
+                            textDecoration: "none",
+                        }}
+                    >
+                        <Link
+                            style={{
+                                textDecoration: "none",
+                                color: "#FFFFFF",
+                            }}
+                            to="/"
+                        >
+                            Services
+                        </Link>
+                    </Typography>
+                </MenuItem>
+                <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography
+                        variant="body1"
+                        textAlign="center"
+                        sx={{
+                            display: "block",
+                            margin: "10px",
+                            textDecoration: "none",
+                        }}
+                    >
+                        <Link
+                            style={{
+                                textDecoration: "none",
+                                color: "#FFFFFF",
+                            }}
+                            to="/profile"
+                        >
+                            Profile
                         </Link>
                     </Typography>
                 </MenuItem>
