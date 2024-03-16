@@ -13,6 +13,8 @@ function App() {
             style={{
                 backgroundColor: "#19192F",
                 color: "#FFFFFF",
+                width: "100vw",
+                maxWidth: "100%",
             }}
         >
             <CssBaseline />
