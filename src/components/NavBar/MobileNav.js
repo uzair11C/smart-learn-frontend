@@ -1,5 +1,12 @@
 import React from "react";
-import { Box, IconButton, Typography, Menu, MenuItem } from "@mui/material";
+import {
+    Box,
+    IconButton,
+    Typography,
+    Menu,
+    MenuItem,
+    Button,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
 
@@ -113,6 +120,24 @@ const MobileNav = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu }) => {
                             Profile
                         </Link>
                     </Typography>
+                </MenuItem>
+                <MenuItem>
+                    <Button
+                        variant="contained"
+                        sx={{
+                            textTransform: "none",
+                            background:
+                                "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                            borderRadius: "7px",
+                            fontSize: "17px",
+                            pl: "30px",
+                            pr: "30px",
+                            width: "100%",
+                        }}
+                        onClick={handleCloseNavMenu}
+                    >
+                        Logout
+                    </Button>
                 </MenuItem>
             </Menu>
         </Box>

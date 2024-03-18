@@ -20,7 +20,7 @@ const DesktopNav = ({ handleCloseNavMenu }) => {
                     mr: 2,
                     display: { xs: "none", md: "flex" },
                 }}
-                width="200"
+                width="250"
             />
 
             <Box
