@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 
-const Banner = () => {
+const Banner = ({ title, catchprase }) => {
     return (
         // <Container
         //     maxWidth="xl"
@@ -34,7 +34,7 @@ const Banner = () => {
                     textShadow: "8px 12px 4px rgba(0, 0, 0, 0.4)",
                 }}
             >
-                SMART LEARN
+                {title}
             </Typography>
             <Typography
                 variant="h4"
@@ -42,7 +42,7 @@ const Banner = () => {
                 textAlign="center"
                 sx={{ mt: "15px" }}
             >
-                <i>Made by students for students</i>
+                <i>{catchprase && catchprase}</i>
             </Typography>
         </Box>
         // </Container>

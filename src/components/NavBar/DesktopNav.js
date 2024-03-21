@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Typography, Button } from "@mui/material";
 import { Link } from "react-router-dom";
+import ServicesDropDown from "./ServicesDropDown";
 
 const DesktopNav = ({ handleCloseNavMenu }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+    };
+
+    const handleMouseLeave = () => {
+        setIsHovered(false);
+    };
+
     return (
         <Box
             sx={{
@@ -22,7 +33,6 @@ const DesktopNav = ({ handleCloseNavMenu }) => {
                 }}
                 width="250"
             />
-
             <Box
                 sx={{
                     width: "70%",
@@ -68,22 +78,19 @@ const DesktopNav = ({ handleCloseNavMenu }) => {
                         component="h6"
                         onClick={handleCloseNavMenu}
                         sx={{
+                            position: "relative",
                             my: 2,
                             display: "block",
                             margin: "10px",
                             textDecoration: "none",
+                            cursor: "pointer",
                         }}
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
                     >
-                        <Link
-                            style={{
-                                textDecoration: "none",
-                                color: "inherit",
-                            }}
-                            to="/"
-                        >
-                            Services
-                        </Link>
+                        Services
                     </Typography>
+
                     <Typography
                         variant="h6"
                         component="h6"
@@ -119,6 +126,11 @@ const DesktopNav = ({ handleCloseNavMenu }) => {
                     >
                         Logout
                     </Button>
+                    <ServicesDropDown
+                        isHovered={isHovered}
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                    />
                 </Box>
             </Box>
         </Box>
