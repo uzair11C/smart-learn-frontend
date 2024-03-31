@@ -3,13 +3,6 @@ import { Box, Typography } from "@mui/material";
 
 const Banner = ({ title, catchprase }) => {
     return (
-        // <Container
-        //     maxWidth="xl"
-        //     sx={{
-        //         width: "100vw",
-        //         height: "100vh",
-        //     }}
-        // >
         <Box
             sx={{
                 width: "100%",
@@ -26,11 +19,11 @@ const Banner = ({ title, catchprase }) => {
                 variant="h2"
                 component="h2"
                 fontWeight="bold"
-                fontSize="20vmin"
+                fontSize="15vmin"
                 textAlign="center"
                 fontFamily="Raleway"
                 sx={{
-                    lineHeight: "115px",
+                    lineHeight: "5rem",
                     textShadow: "8px 12px 4px rgba(0, 0, 0, 0.4)",
                 }}
             >
@@ -40,12 +33,11 @@ const Banner = ({ title, catchprase }) => {
                 variant="h4"
                 component="h4"
                 textAlign="center"
-                sx={{ mt: "15px" }}
+                sx={{ mt: "25px" }}
             >
                 <i>{catchprase && catchprase}</i>
             </Typography>
         </Box>
-        // </Container>
     );
 };
 

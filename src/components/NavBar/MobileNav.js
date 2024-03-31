@@ -8,9 +8,21 @@ import {
     Button,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+// import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Link } from "react-router-dom";
 
 const MobileNav = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu }) => {
+    // const [expand, setExpand] = useState(false);
+
+    // const handleExpand = () => {
+    //     setExpand(true);
+    // };
+
+    // const handleClose = () => {
+    //     setExpand(false);
+    //     handleCloseNavMenu();
+    // };
+
     return (
         <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -54,7 +66,7 @@ const MobileNav = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu }) => {
                             "url(frosted-glass-texture-as-background-frosted-glass-texture-as-background-interior-design-decoration-111091129.jpg), linear-gradient(253.09deg, rgba(217, 217, 217, 0.15) -7.53%, rgba(217, 217, 217, 0) 97.04%)",
                         backdropFilter: "blur(25px)",
                         borderRadius: "8px",
-                        width: "45vw",
+                        width: "50vw",
                     },
                 }}
             >
@@ -79,6 +91,25 @@ const MobileNav = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu }) => {
                         </Link>
                     </Typography>
                 </MenuItem>
+                {/* <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography
+                        variant="body1"
+                        textAlign="center"
+                        sx={{
+                            // display: "block",
+                            margin: "10px",
+                            textDecoration: "none",
+                            color: "#FFFFFF",
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                    >
+                        Services <ArrowDropDownIcon />
+                    </Typography>
+                </MenuItem> */}
+
                 <MenuItem onClick={handleCloseNavMenu}>
                     <Typography
                         variant="body1"
@@ -94,9 +125,51 @@ const MobileNav = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu }) => {
                                 textDecoration: "none",
                                 color: "#FFFFFF",
                             }}
-                            to="/"
+                            to="/consultation"
                         >
-                            Services
+                            Consultation
+                        </Link>
+                    </Typography>
+                </MenuItem>
+                <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography
+                        variant="body1"
+                        textAlign="center"
+                        sx={{
+                            display: "block",
+                            margin: "10px",
+                            textDecoration: "none",
+                        }}
+                    >
+                        <Link
+                            style={{
+                                textDecoration: "none",
+                                color: "#FFFFFF",
+                            }}
+                            to="/role-prediction"
+                        >
+                            Role Prediction
+                        </Link>
+                    </Typography>
+                </MenuItem>
+                <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography
+                        variant="body1"
+                        textAlign="center"
+                        sx={{
+                            display: "block",
+                            margin: "10px",
+                            textDecoration: "none",
+                        }}
+                    >
+                        <Link
+                            style={{
+                                textDecoration: "none",
+                                color: "#FFFFFF",
+                            }}
+                            to="/roadmaps"
+                        >
+                            Roadmaps
                         </Link>
                     </Typography>
                 </MenuItem>

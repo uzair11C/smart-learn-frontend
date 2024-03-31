@@ -1,7 +1,8 @@
 import React from "react";
+import Banner from "../components/Banner";
 
 const Consultation = () => {
-    return <div>Consultation</div>;
+    return <Banner title="Consultation" />;
 };
 
 export default Consultation;

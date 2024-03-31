@@ -25,7 +25,7 @@ const Services = () => {
             {/* consultation */}
             <Box
                 sx={{
-                    width: { xs: " 100% ", md: "85%" },
+                    width: { xs: " 100% ", md: "70%" },
                     display: "flex",
                     flexDirection: { xs: "column", md: "row" },
                     justifyContent: "center",
@@ -84,7 +84,7 @@ const Services = () => {
             {/* Prediction */}
             <Box
                 sx={{
-                    width: { xs: " 100% ", md: "85%" },
+                    width: { xs: " 100% ", md: "70%" },
                     display: "flex",
                     flexDirection: { xs: "column", md: "row-reverse" },
                     justifyContent: "center",
@@ -142,7 +142,7 @@ const Services = () => {
             {/* Roadmaps */}
             <Box
                 sx={{
-                    width: { xs: " 100% ", md: "85%" },
+                    width: { xs: " 100% ", md: "70%" },
                     display: "flex",
                     flexDirection: { xs: "column", md: "row" },
                     justifyContent: "center",
