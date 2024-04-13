@@ -1,7 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Button } from "@mui/material";
 
 const UploadCV = () => {
+    const [files, setFiles] = useState([]);
+
+    const handleDrop = (event) => {
+        event.preventDefault();
+        const droppedFiles = event.dataTransfer.files;
+        if (droppedFiles.length > 0) {
+            const newFiles = Array.from(droppedFiles);
+            setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+        }
+    };
+
+    const handleFileChange = (event) => {
+        const selectedFiles = event.target.files;
+        if (selectedFiles && selectedFiles.length > 0) {
+            const newFiles = Array.from(selectedFiles);
+            setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+        }
+    };
+
+    // const handleRemoveFile = () => {
+    //     setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    // };
+
+    //   useEffect(() => {
+    //     onFilesSelected(files);
+    //   }, [files]);
+
     return (
         <Box
             sx={{
@@ -42,6 +69,7 @@ const UploadCV = () => {
                     <Typography variant="h4" component="h4">
                         Select or drop your resume here
                     </Typography>
+                    <img src="/images/Upload.png" alt="drag-here" />
                     <Box
                         sx={{
                             display: "flex",
@@ -49,25 +77,36 @@ const UploadCV = () => {
                             justifyContent: "center",
                             alignItems: "center",
                             gap: "30px",
-                            width: "35%",
+                            width: "40%",
+                        }}
+                        onDrag={handleDrop}
+                        onDragOver={(event) => {
+                            event.preventDefault();
                         }}
                     >
-                        <Button
-                            variant="contained"
-                            sx={{
+                        <label
+                            for="browse"
+                            style={{
                                 textTransform: "none",
                                 background:
                                     "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
                                 borderRadius: "8px",
                                 fontSize: "20px",
-                                pl: "30px",
-                                pr: "30px",
-                                width: "60%",
+                                padding: "10px 35px",
+                                cursor: "pointer",
                             }}
                         >
+                            <input
+                                type="file"
+                                hidden
+                                id="browse"
+                                onChange={handleFileChange}
+                                accept=".pdf,.docx,.txt"
+                                // multiple
+                            />
                             Choose File
-                        </Button>
-                        <Button
+                        </label>
+                        {/* <Button
                             variant="contained"
                             sx={{
                                 textTransform: "none",
@@ -77,11 +116,32 @@ const UploadCV = () => {
                                 fontSize: "20px",
                                 pl: "30px",
                                 pr: "30px",
-                                width: "60%",
+                                // width: "60%",
                             }}
                         >
-                            Upload
-                        </Button>
+                            <input
+                                type="file"
+                                hidden
+                                id="browse"
+                                onChange={handleFileChange}
+                                accept=".pdf,.docx,.txt"
+                                // multiple
+                                style={{
+                                    textTransform: "none",
+                                    background:
+                                        "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                    borderRadius: "8px",
+                                    fontSize: "20px",
+                                    padding: "10px 30px",
+                                    // pr: "30px",
+                                    // width: "60%",
+                                }}
+                            />
+                            Choose File
+                        </Button> */}
+                        <Typography variant="p" component="p">
+                            No File Chosen
+                        </Typography>
                     </Box>
                 </Box>
             </Box>
