@@ -13,8 +13,8 @@ const useRoutes = () => {
   const routes = useMemo(
     () => [
       {
-        label: "Home",
-        href: "/",
+        label: "Dashboard",
+        href: "/dashboard",
         icon: Home,
       },
       {
