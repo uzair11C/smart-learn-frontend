@@ -1,33 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { Box, Typography, Button } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Typography } from "@mui/material";
 
 const UploadCV = () => {
-    const [files, setFiles] = useState([]);
+    const [file, setFile] = useState([]);
+
+    const handleFileSelect = (event) => {
+        const selectedFile = event.target.files[0];
+        setFile(selectedFile);
+        console.log("File info: ", event.target.files);
+        console.log("Uploaded File: ", selectedFile);
+    };
+
+    const handleDragOver = (event) => {
+        event.preventDefault();
+    };
 
     const handleDrop = (event) => {
         event.preventDefault();
-        const droppedFiles = event.dataTransfer.files;
-        if (droppedFiles.length > 0) {
-            const newFiles = Array.from(droppedFiles);
-            setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-        }
+        const droppedFile = event.dataTransfer.files[0];
+        setFile(droppedFile);
     };
-
-    const handleFileChange = (event) => {
-        const selectedFiles = event.target.files;
-        if (selectedFiles && selectedFiles.length > 0) {
-            const newFiles = Array.from(selectedFiles);
-            setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-        }
-    };
-
-    // const handleRemoveFile = () => {
-    //     setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
-    // };
-
-    //   useEffect(() => {
-    //     onFilesSelected(files);
-    //   }, [files]);
 
     return (
         <Box
@@ -65,6 +57,8 @@ const UploadCV = () => {
                         alignItems: "center",
                         gap: "20px",
                     }}
+                    onDragOver={handleDragOver}
+                    onDrop={handleDrop}
                 >
                     <Typography variant="h4" component="h4">
                         Select or drop your resume here
@@ -79,13 +73,9 @@ const UploadCV = () => {
                             gap: "30px",
                             width: "40%",
                         }}
-                        onDrag={handleDrop}
-                        onDragOver={(event) => {
-                            event.preventDefault();
-                        }}
                     >
                         <label
-                            for="browse"
+                            htmlFor="browse"
                             style={{
                                 textTransform: "none",
                                 background:
@@ -100,8 +90,8 @@ const UploadCV = () => {
                                 type="file"
                                 hidden
                                 id="browse"
-                                onChange={handleFileChange}
                                 accept=".pdf,.docx,.txt"
+                                onChange={handleFileSelect}
                                 // multiple
                             />
                             Choose File
@@ -139,9 +129,10 @@ const UploadCV = () => {
                             />
                             Choose File
                         </Button> */}
-                        <Typography variant="p" component="p">
-                            No File Chosen
-                        </Typography>
+                        {/* <Typography variant="p" component="p">
+                            {file ? file.name : `No File Chosen`}
+                        </Typography> */}
+                        <p>{file ? file.name : "No File Chosen"}</p>
                     </Box>
                 </Box>
             </Box>
