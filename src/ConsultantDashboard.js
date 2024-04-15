@@ -1,10 +1,6 @@
-// import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { CssBaseline } from "@mui/material";
-// import NavBar from "./components/NavBar/NavBar";
 import Dashboard from "./pages/Dashboard";
-// import Campaign from "./pages/Campaign";
-// import Login from "./pages/Login";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Conversations from "./pages/Conversations";
 import Schedule from "./pages/Schedule";
