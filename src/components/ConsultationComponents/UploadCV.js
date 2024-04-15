@@ -129,10 +129,10 @@ const UploadCV = () => {
                             />
                             Choose File
                         </Button> */}
-                        {/* <Typography variant="p" component="p">
-                            {file ? file.name : `No File Chosen`}
-                        </Typography> */}
-                        <p>{file ? file.name : "No File Chosen"}</p>
+                        <Typography variant="p" component="p">
+                            {file.name ? file.name : `No File Chosen`}
+                        </Typography>
+                        {/* <p>{file ? file.name : "No File Chosen"}</p> */}
                     </Box>
                 </Box>
             </Box>
