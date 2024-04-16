@@ -5,8 +5,13 @@ import ConsultantDashboard from "./ConsultantDashboard";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import App from "./App";
 
 const router = createBrowserRouter([
+    {
+        path: "*",
+        element: <App />,
+    },
     {
         path: "/dashboard",
         element: <ConsultantDashboard />,
