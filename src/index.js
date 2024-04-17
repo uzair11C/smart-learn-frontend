@@ -6,6 +6,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import App from "./App";
+import Dashboard from "./pages/Dashboard";
+import Conversations from "./pages/Conversations";
+import Chat from "./pages/Chat";
+import Schedule from "./pages/Schedule";
+// import SmartLearn from "./SmartLearn";
 
 const router = createBrowserRouter([
     {
@@ -14,7 +19,19 @@ const router = createBrowserRouter([
     },
     {
         path: "/dashboard",
-        element: <ConsultantDashboard />,
+        element: <Dashboard />,
+    },
+    {
+        path: "/conversations",
+        element: <Conversations />,
+    },
+    {
+        path: "/conversations/chat",
+        element: <Chat />,
+    },
+    {
+        path: "/schedule",
+        element: <Schedule />,
     },
     {
         path: "/login",
@@ -29,6 +46,6 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <RouterProvider router={router}>
-        <ConsultantDashboard />
+        <App />
     </RouterProvider>
 );

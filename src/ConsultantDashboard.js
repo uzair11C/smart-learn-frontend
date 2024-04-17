@@ -39,7 +39,6 @@ function ConsultantDashboard() {
         },
     });
 
-    // const [user, setUser] = useState({});
     return (
         <ThemeProvider theme={theme}>
             <div
@@ -49,9 +48,8 @@ function ConsultantDashboard() {
                 }}
             >
                 <CssBaseline />
-                {/* <NavBar /> */}
                 <Routes>
-                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/dashboard/" element={<Dashboard />} />
                     <Route path="/conversations" element={<Conversations />} />
                     <Route path="/conversations/chat" element={<Chat />} />
                     <Route path="/schedule" element={<Schedule />} />
