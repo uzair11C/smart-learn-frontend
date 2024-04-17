@@ -14,7 +14,7 @@ const useRoutes = () => {
         () => [
             {
                 label: "Dashboard",
-                href: "/dashboard/",
+                href: "/dashboard",
                 icon: Home,
             },
             {

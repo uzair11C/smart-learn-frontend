@@ -11,7 +11,13 @@ export const Sidebar = ({ children }) => {
     const lgScreen = useMediaQuery(theme.breakpoints.up("lg"));
     const routes = useRoutes();
     return (
-        <Box sx={{ height: "100%", backgroundColor: "#06061D" }}>
+        <Box
+            sx={{
+                height: "100%",
+                backgroundColor: "#06061D",
+                color: "#FFFFFF",
+            }}
+        >
             {/* Sidebar Options */}
             <Box
                 sx={{
