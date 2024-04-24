@@ -8,7 +8,6 @@ const Home = () => {
             <Banner
                 title="SMART LEARN"
                 catchprase="Made by Students for Students"
-                imageUrl="/images/smartLearn.jpg"
             />
             <Services />
         </>

@@ -5,7 +5,7 @@ import RoadmapsList from "../components/RoadmapComponents/RoadmapsList";
 const Roadmaps = () => {
     return (
         <>
-            <Banner title="Roadmaps" imageUrl="/images/careerRoadmap.jpg" />
+            <Banner title="Roadmaps" />
             <RoadmapsList />
         </>
     );
