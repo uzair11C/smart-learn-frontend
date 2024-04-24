@@ -90,45 +90,12 @@ const UploadCV = () => {
                                 type="file"
                                 hidden
                                 id="browse"
-                                accept=".pdf,.docx,.txt"
+                                accept=".pdf,.docx,.odt,.txt"
                                 onChange={handleFileSelect}
                                 // multiple
                             />
                             Choose File
                         </label>
-                        {/* <Button
-                            variant="contained"
-                            sx={{
-                                textTransform: "none",
-                                background:
-                                    "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
-                                borderRadius: "8px",
-                                fontSize: "20px",
-                                pl: "30px",
-                                pr: "30px",
-                                // width: "60%",
-                            }}
-                        >
-                            <input
-                                type="file"
-                                hidden
-                                id="browse"
-                                onChange={handleFileChange}
-                                accept=".pdf,.docx,.txt"
-                                // multiple
-                                style={{
-                                    textTransform: "none",
-                                    background:
-                                        "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
-                                    borderRadius: "8px",
-                                    fontSize: "20px",
-                                    padding: "10px 30px",
-                                    // pr: "30px",
-                                    // width: "60%",
-                                }}
-                            />
-                            Choose File
-                        </Button> */}
                         <Typography variant="p" component="p">
                             {file.name ? file.name : `No File Chosen`}
                         </Typography>

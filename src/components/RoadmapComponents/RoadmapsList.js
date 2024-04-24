@@ -17,7 +17,7 @@ const RoadmapsList = () => {
                 Our Latest Roadmaps for IT Industry
             </Typography>
 
-            <Box sx={{ width: "85%", background: "red" }}>
+            <Box sx={{ width: "85%", background: "red", p: "15px" }}>
                 Section for roadmaps
             </Box>
         </Box>
