@@ -14,7 +14,7 @@ const RoadmapsList = () => {
             }}
         >
             <Typography variant="h2" component="h2" sx={{ fontSize: "9vmin" }}>
-                Our Latest Roadmaps for IT Industry
+                AI Generated Roadmaps
             </Typography>
 
             <Box
