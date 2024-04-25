@@ -4,12 +4,17 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import Chat from "./pages/Chat";
 import App from "./App";
 
 const router = createBrowserRouter([
     {
         path: "*",
         element: <App />,
+    },
+    {
+        path: "/chat",
+        element: <Chat />,
     },
     {
         path: "/login",
