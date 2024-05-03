@@ -99,7 +99,10 @@ export const Sidebar = ({ children }) => {
                             sx={{
                                 display: "flex",
                                 justifyContent: "center",
-                                padding: "1rem",
+                                padding: route.active ? "10px" : "1rem",
+                                border: route.active
+                                    ? "1px solid rgba(255,255,255, 0.3)"
+                                    : "transparent",
                                 transition: "opacity 0.3s",
                                 borderRadius: "9999px",
                                 backdropFilter: "blur(25px)",
