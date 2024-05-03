@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 
 const UploadCV = () => {
     const [file, setFile] = useState([]);
+    const [background, setBackground] = useState("rgba(0,0,0,0.0)");
 
     const handleFileSelect = (event) => {
         const selectedFile = event.target.files[0];
@@ -13,12 +14,14 @@ const UploadCV = () => {
 
     const handleDragOver = (event) => {
         event.preventDefault();
+        setBackground("rgba(0,0,0,0.4)");
     };
 
     const handleDrop = (event) => {
         event.preventDefault();
         const droppedFile = event.dataTransfer.files[0];
         setFile(droppedFile);
+        setBackground("rgba(0,0,0,0.0)");
     };
 
     return (
@@ -56,14 +59,47 @@ const UploadCV = () => {
                         justifyContent: "center",
                         alignItems: "center",
                         gap: "20px",
+                        position: "relative",
                     }}
                     onDragOver={handleDragOver}
                     onDrop={handleDrop}
                 >
+                    <Box
+                        sx={{
+                            position: "absolute",
+                            // top: "50%",
+                            // right: "50%",
+                            // bottom: "50%",
+                            top: 0,
+                            width: "100%",
+                            height: "100%",
+                            background: background,
+                            borderRadius: "12px",
+                            pointerEvents: "none",
+                        }}
+                    />
                     <Typography variant="h4" component="h4">
                         Select or drop your resume here
                     </Typography>
-                    <img src="/images/Upload.png" alt="drag-here" />
+                    {file.name && file.name ? (
+                        <Button
+                            variant="outlined"
+                            sx={{
+                                textTransform: "none",
+                                // background:
+                                //     "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                borderRadius: "12px",
+                                fontSize: "5vmin",
+                                padding: "10px 35px",
+                                fontWeight: "bold",
+                                color: "#FFFFFF",
+                            }}
+                        >
+                            Get Prediction
+                        </Button>
+                    ) : (
+                        <img src="/images/Upload.png" alt="drag-here" />
+                    )}
                     <Box
                         sx={{
                             display: "flex",
@@ -71,7 +107,7 @@ const UploadCV = () => {
                             justifyContent: "center",
                             alignItems: "center",
                             gap: "30px",
-                            width: "40%",
+                            width: "100%",
                         }}
                     >
                         <label
@@ -99,7 +135,6 @@ const UploadCV = () => {
                         <Typography variant="p" component="p">
                             {file.name ? file.name : `No File Chosen`}
                         </Typography>
-                        {/* <p>{file ? file.name : "No File Chosen"}</p> */}
                     </Box>
                 </Box>
             </Box>
