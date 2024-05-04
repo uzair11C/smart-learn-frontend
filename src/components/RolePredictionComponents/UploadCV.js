@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 const UploadCV = () => {
     const [file, setFile] = useState([]);
@@ -63,13 +64,13 @@ const UploadCV = () => {
                     }}
                     onDragOver={handleDragOver}
                     onDrop={handleDrop}
+                    onDragLeave={() => {
+                        setBackground("rgba:(0,0,0,0.0)");
+                    }}
                 >
                     <Box
                         sx={{
                             position: "absolute",
-                            // top: "50%",
-                            // right: "50%",
-                            // bottom: "50%",
                             top: 0,
                             width: "100%",
                             height: "100%",
@@ -78,28 +79,14 @@ const UploadCV = () => {
                             pointerEvents: "none",
                         }}
                     />
-                    <Typography variant="h4" component="h4">
-                        Select or drop your resume here
-                    </Typography>
                     {file.name && file.name ? (
-                        <Button
-                            variant="outlined"
-                            sx={{
-                                textTransform: "none",
-                                // background:
-                                //     "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
-                                borderRadius: "12px",
-                                fontSize: "5vmin",
-                                padding: "10px 35px",
-                                fontWeight: "bold",
-                                color: "#FFFFFF",
-                            }}
-                        >
-                            Get Prediction
-                        </Button>
+                        ""
                     ) : (
-                        <img src="/images/Upload.png" alt="drag-here" />
+                        <Typography variant="h4" component="h4">
+                            Select or drop your resume here
+                        </Typography>
                     )}
+
                     <Box
                         sx={{
                             display: "flex",
@@ -136,6 +123,32 @@ const UploadCV = () => {
                             {file.name ? file.name : `No File Chosen`}
                         </Typography>
                     </Box>
+                    {file.name && file.name ? (
+                        <Button
+                            variant="contained"
+                            sx={{
+                                textTransform: "none",
+                                fontSize: "4vmin",
+                                fontWeight: "bold",
+                                padding: "10px 30px",
+                                color: "#FFFFFF",
+                                backgroundColor: "#F219A1",
+                                borderRadius: "12px",
+                                "&:hover": {
+                                    backgroundColor: "#AD0CF8",
+                                },
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                gap: "15px",
+                            }}
+                        >
+                            <CloudUploadIcon fontSize="large" /> Get Prediction
+                        </Button>
+                    ) : (
+                        <img src="/images/Upload.png" alt="drag-here" />
+                    )}
                 </Box>
             </Box>
         </Box>

@@ -6,3 +6,19 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.node__root > circle {
+  fill: red;
+  r: 80;
+}
+
+.node__branch > circle {
+  fill: yellow;
+  r: 70;
+}
+
+.node__leaf > circle {
+  fill: rgb(16, 199, 16);
+  /* Let's also make the radius of leaf nodes larger */
+  r: 40;
+}
