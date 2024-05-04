@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Consultation from "./pages/Consultation";
 import Roadmaps from "./pages/Roadmaps";
 import RolePrediction from "./pages/RolePrediction";
+// import Result from "./pages/Result";
 
 function App() {
     return (
@@ -22,6 +23,10 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/consultation" element={<Consultation />} />
                 <Route path="/role-prediction" element={<RolePrediction />} />
+                {/* <Route
+                    path="/role-prediction/prediction"
+                    element={<Result />}
+                /> */}
                 <Route path="/roadmaps" element={<Roadmaps />} />
             </Routes>
         </div>

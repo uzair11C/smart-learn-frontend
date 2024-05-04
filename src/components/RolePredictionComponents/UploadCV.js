@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import Result from "./Result";
+import axios from "axios";
+import pdfToText from "react-pdftotext";
 
 const UploadCV = () => {
-    const [file, setFile] = useState([]);
+    const [file, setFile] = useState("");
+    const [parsedFile, setParsedFile] = useState([]);
+    const [prediction, setPrediction] = useState({});
     const [background, setBackground] = useState("rgba(0,0,0,0.0)");
 
     const handleFileSelect = (event) => {
+        event.preventDefault();
         const selectedFile = event.target.files[0];
         setFile(selectedFile);
+        setParsedFile(extractText(file));
         console.log("File info: ", event.target.files);
         console.log("Uploaded File: ", selectedFile);
     };
@@ -22,8 +29,52 @@ const UploadCV = () => {
         event.preventDefault();
         const droppedFile = event.dataTransfer.files[0];
         setFile(droppedFile);
+        setParsedFile(extractText(file));
         setBackground("rgba(0,0,0,0.0)");
     };
+
+    const extractText = (file) => {
+        pdfToText(file)
+            .then((text) => {
+                console.log(text);
+                setFile(text);
+                return text;
+            })
+            .catch((error) =>
+                console.error("Failed to extract text from pdf", error)
+            );
+    };
+
+    function extractRoles(input) {
+        const rolesRegex =
+            /Predicted Role:\s*(.*?)\/(.*?)\/(.*?)(?:\s\(Developer\)|$)/;
+        const match = input.match(rolesRegex);
+        if (match) {
+            return {
+                majorRole: match[1].trim(),
+                otherRole1: match[2].trim(),
+                otherRole2: match[3].trim(),
+            };
+        } else {
+            return {};
+        }
+    }
+
+    const GetPrediction = async () => {
+        const data = await axios.post("http://localhost:5000/api/roadmap", {
+            role: "user",
+            content: `Tell me my role in software industry based on my skills; 
+            here's my resume: ${parsedFile}`,
+        });
+
+        const response = data.data;
+        setPrediction(extractRoles(response.content));
+        console.log(response);
+    };
+
+    // useEffect(() => {
+
+    // }, [third])
 
     return (
         <Box
@@ -143,6 +194,7 @@ const UploadCV = () => {
                                 alignItems: "center",
                                 gap: "15px",
                             }}
+                            onClick={GetPrediction}
                         >
                             <CloudUploadIcon fontSize="large" /> Get Prediction
                         </Button>
@@ -151,6 +203,13 @@ const UploadCV = () => {
                     )}
                 </Box>
             </Box>
+            {prediction && prediction.majorRole ? (
+                <Result
+                    majorRole={prediction.majorRole}
+                    otherRole1={prediction.otherRole1}
+                    otherRole2={prediction.otherRole2}
+                />
+            ) : null}
         </Box>
     );
 };
