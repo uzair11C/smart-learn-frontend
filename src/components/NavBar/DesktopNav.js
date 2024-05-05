@@ -1,5 +1,9 @@
 import React from "react";
-import { Box, Typography, Button } from "@mui/material";
+import {
+    Box,
+    Typography,
+    // Button
+} from "@mui/material";
 import { Link } from "react-router-dom";
 
 const DesktopNav = ({ handleCloseNavMenu }) => {
@@ -117,6 +121,7 @@ const DesktopNav = ({ handleCloseNavMenu }) => {
                             Roadmaps
                         </Link>
                     </Typography>
+                    {/* 
                     <Typography
                         variant="h6"
                         component="h6"
@@ -151,7 +156,7 @@ const DesktopNav = ({ handleCloseNavMenu }) => {
                         }}
                     >
                         Logout
-                    </Button>
+                    </Button> */}
                 </Box>
             </Box>
         </Box>

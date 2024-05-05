@@ -5,24 +5,12 @@ import {
     Typography,
     Menu,
     MenuItem,
-    Button,
+    // Button,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-// import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Link } from "react-router-dom";
 
 const MobileNav = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu }) => {
-    // const [expand, setExpand] = useState(false);
-
-    // const handleExpand = () => {
-    //     setExpand(true);
-    // };
-
-    // const handleClose = () => {
-    //     setExpand(false);
-    //     handleCloseNavMenu();
-    // };
-
     return (
         <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -91,24 +79,6 @@ const MobileNav = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu }) => {
                         </Link>
                     </Typography>
                 </MenuItem>
-                {/* <MenuItem onClick={handleCloseNavMenu}>
-                    <Typography
-                        variant="body1"
-                        textAlign="center"
-                        sx={{
-                            // display: "block",
-                            margin: "10px",
-                            textDecoration: "none",
-                            color: "#FFFFFF",
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }}
-                    >
-                        Services <ArrowDropDownIcon />
-                    </Typography>
-                </MenuItem> */}
 
                 <MenuItem onClick={handleCloseNavMenu}>
                     <Typography
@@ -173,7 +143,7 @@ const MobileNav = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu }) => {
                         </Link>
                     </Typography>
                 </MenuItem>
-                <MenuItem onClick={handleCloseNavMenu}>
+                {/* <MenuItem onClick={handleCloseNavMenu}>
                     <Typography
                         variant="body1"
                         textAlign="center"
@@ -211,7 +181,7 @@ const MobileNav = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu }) => {
                     >
                         Logout
                     </Button>
-                </MenuItem>
+                </MenuItem> */}
             </Menu>
         </Box>
     );
