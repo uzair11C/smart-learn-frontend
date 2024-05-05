@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import Tree from "react-d3-tree";
 import axios from "axios";
 
 const RoadmapsList = () => {
-    const [searchTerm, setSearchTerm] = useState(null);
+    const [searchTerm, setSearchTerm] = useState("");
     const [loading, setLoading] = useState(true);
     const [roadmapJson, setRoadmapJson] = useState(null);
 
@@ -14,7 +14,7 @@ const RoadmapsList = () => {
     };
 
     const GetRoadmap = async () => {
-        if (searchTerm !== null) {
+        if (searchTerm !== "") {
             setLoading(true); // Set loading to true before making the API call
 
             console.log(loading);
@@ -158,7 +158,7 @@ const RoadmapsList = () => {
                         }}
                         onClick={GetRoadmap}
                     >
-                        Search
+                        Generate
                     </Button>
                 </Box>
                 {loading ? (
@@ -167,9 +167,12 @@ const RoadmapsList = () => {
                     <Box
                         sx={{
                             width: "100%",
-                            height: "70vh",
+                            height: "80vh",
                             background: "#FFFFFF",
                             mt: "50px",
+                            borderRadius: "17px",
+                            overflow: "hidden",
+                            border: "3px solid #F219A1",
                         }}
                     >
                         <Tree
@@ -177,7 +180,7 @@ const RoadmapsList = () => {
                             rootNodeClassName="node__root"
                             branchNodeClassName="node__branch"
                             leafNodeClassName="node__leaf"
-                            separation={{ siblings: 1, nonSiblings: 1.5 }}
+                            separation={{ siblings: 2, nonSiblings: 2 }}
                             nodeSize={{ x: 350, y: 100 }}
                             orientation="vertical"
                             depthFactor={550}
