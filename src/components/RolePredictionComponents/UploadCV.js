@@ -1,23 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { Box, Button, Typography } from "@mui/material";
+import React, { useState, useRef, useEffect } from "react";
+import {
+    Backdrop,
+    Box,
+    Button,
+    CircularProgress,
+    Typography,
+} from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Result from "./Result";
 import axios from "axios";
 import pdfToText from "react-pdftotext";
 
 const UploadCV = () => {
-    const [file, setFile] = useState("");
-    const [parsedFile, setParsedFile] = useState([]);
+    const [parsedFile, setParsedFile] = useState("");
     const [prediction, setPrediction] = useState({});
     const [background, setBackground] = useState("rgba(0,0,0,0.0)");
+    const [open, setOpen] = useState(false);
+
+    const resultRef = useRef(null); // Reference to the result component
 
     const handleFileSelect = (event) => {
         event.preventDefault();
-        const selectedFile = event.target.files[0];
-        setFile(selectedFile);
-        setParsedFile(extractText(file));
+        extractText(event.target.files[0]);
         console.log("File info: ", event.target.files);
-        console.log("Uploaded File: ", selectedFile);
+        console.log("Uploaded File: ", parsedFile);
     };
 
     const handleDragOver = (event) => {
@@ -27,19 +33,14 @@ const UploadCV = () => {
 
     const handleDrop = (event) => {
         event.preventDefault();
-        const droppedFile = event.dataTransfer.files[0];
-        setFile(droppedFile);
-        setParsedFile(extractText(file));
+        extractText(event.dataTransfer.files[0]);
+        console.log("Uploaded File: ", parsedFile);
         setBackground("rgba(0,0,0,0.0)");
     };
 
     const extractText = (file) => {
         pdfToText(file)
-            .then((text) => {
-                console.log(text);
-                setFile(text);
-                return text;
-            })
+            .then((text) => setParsedFile(text))
             .catch((error) =>
                 console.error("Failed to extract text from pdf", error)
             );
@@ -61,10 +62,18 @@ const UploadCV = () => {
     }
 
     const GetPrediction = async () => {
+        setOpen(true);
         const data = await axios.post("http://localhost:5000/api/roadmap", {
             role: "user",
             content: `Tell me my role in software industry based on my skills; 
-            here's my resume: ${parsedFile}`,
+            here's my resume: ${parsedFile}
+            Your reply should be like so, 
+          with major role and secondary role separated by a slash, 
+          nothing more than that, no extra text, omit the text in brackets:
+          Predicted Role: devops engineer(major role, closer to my skills)/
+          system engineer(another role, close to my skills)/
+          network(another role,close to my skills)
+            `,
         });
 
         const response = data.data;
@@ -72,9 +81,13 @@ const UploadCV = () => {
         console.log(response);
     };
 
-    // useEffect(() => {
-
-    // }, [third])
+    useEffect(() => {
+        // Scroll to the result component when it's shown
+        if (prediction.majorRole && resultRef.current) {
+            resultRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+        setOpen(false);
+    }, [prediction]);
 
     return (
         <Box
@@ -130,12 +143,37 @@ const UploadCV = () => {
                             pointerEvents: "none",
                         }}
                     />
-                    {file.name && file.name ? (
-                        ""
+                    {parsedFile && parsedFile.length > 0 ? (
+                        <Button
+                            variant="contained"
+                            sx={{
+                                textTransform: "none",
+                                fontSize: "4vmin",
+                                fontWeight: "bold",
+                                padding: "10px 30px",
+                                color: "#FFFFFF",
+                                backgroundColor: "#F219A1",
+                                borderRadius: "12px",
+                                "&:hover": {
+                                    backgroundColor: "#AD0CF8",
+                                },
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                gap: "15px",
+                            }}
+                            onClick={GetPrediction}
+                        >
+                            <CloudUploadIcon fontSize="large" /> Get Prediction
+                        </Button>
                     ) : (
-                        <Typography variant="h4" component="h4">
-                            Select or drop your resume here
-                        </Typography>
+                        <>
+                            <Typography variant="h4" component="h4">
+                                Select or drop your resume here
+                            </Typography>
+                            <img src="/images/Upload.png" alt="drag-here" />
+                        </>
                     )}
 
                     <Box
@@ -171,45 +209,27 @@ const UploadCV = () => {
                             Choose File
                         </label>
                         <Typography variant="p" component="p">
-                            {file.name ? file.name : `No File Chosen`}
+                            {parsedFile && parsedFile.length > 0
+                                ? null
+                                : `No File Chosen`}
                         </Typography>
                     </Box>
-                    {file.name && file.name ? (
-                        <Button
-                            variant="contained"
-                            sx={{
-                                textTransform: "none",
-                                fontSize: "4vmin",
-                                fontWeight: "bold",
-                                padding: "10px 30px",
-                                color: "#FFFFFF",
-                                backgroundColor: "#F219A1",
-                                borderRadius: "12px",
-                                "&:hover": {
-                                    backgroundColor: "#AD0CF8",
-                                },
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                gap: "15px",
-                            }}
-                            onClick={GetPrediction}
-                        >
-                            <CloudUploadIcon fontSize="large" /> Get Prediction
-                        </Button>
-                    ) : (
-                        <img src="/images/Upload.png" alt="drag-here" />
-                    )}
                 </Box>
             </Box>
             {prediction && prediction.majorRole ? (
-                <Result
-                    majorRole={prediction.majorRole}
-                    otherRole1={prediction.otherRole1}
-                    otherRole2={prediction.otherRole2}
-                />
+                <>
+                    {/* <div ref={resultRef}></div> */}
+                    <Result
+                        majorRole={prediction.majorRole}
+                        otherRole1={prediction.otherRole1}
+                        otherRole2={prediction.otherRole2}
+                        resultRef={resultRef}
+                    />
+                </>
             ) : null}
+            <Backdrop open={open}>
+                <CircularProgress color="secondary" size={120} thickness={5} />
+            </Backdrop>
         </Box>
     );
 };

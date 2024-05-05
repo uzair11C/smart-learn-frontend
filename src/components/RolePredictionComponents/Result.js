@@ -1,14 +1,15 @@
 import React from "react";
 import { Box, Stack, Typography } from "@mui/material";
 
-const Result = ({ majorRole, otherRole1, otherRole2 }) => {
+const Result = ({ majorRole, otherRole1, otherRole2, resultRef }) => {
     return (
         <Box
+            ref={resultRef}
             sx={{
                 width: "100%",
                 maxWidth: "100%",
-                height: "85%",
-                p: { xs: "25px", md: "30px" },
+                height: "80%",
+                p: { xs: "25px", md: "20px" },
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
@@ -49,7 +50,8 @@ const Result = ({ majorRole, otherRole1, otherRole2 }) => {
                         />
                         <Typography
                             variant="h2"
-                            component="h2"
+                            component="p"
+                            fontSize="10vmin"
                             sx={{ fontWeight: "900" }}
                         >
                             {majorRole}
@@ -64,10 +66,18 @@ const Result = ({ majorRole, otherRole1, otherRole2 }) => {
 
                     <Stack direction="row" alignItems="center">
                         <Stack spacing={2}>
-                            <Typography variant="h5" component="h5">
+                            <Typography
+                                variant="h5"
+                                component="p"
+                                fontSize="5vmin"
+                            >
                                 {otherRole1}
                             </Typography>
-                            <Typography variant="h5" component="h5">
+                            <Typography
+                                variant="h5"
+                                component="p"
+                                fontSize="5vmin"
+                            >
                                 {otherRole2}
                             </Typography>
                         </Stack>
