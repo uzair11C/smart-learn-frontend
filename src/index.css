@@ -14,7 +14,7 @@ body {
 
 .node__branch > circle {
   fill: yellow;
-  r: 70;
+  r: 55;
 }
 
 .node__leaf > circle {
