@@ -1,5 +1,12 @@
-import React, { useState } from "react";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
+import {
+    Backdrop,
+    Box,
+    Button,
+    CircularProgress,
+    TextField,
+    Typography,
+} from "@mui/material";
 import Tree from "react-d3-tree";
 import axios from "axios";
 
@@ -7,6 +14,9 @@ const RoadmapsList = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [loading, setLoading] = useState(true);
     const [roadmapJson, setRoadmapJson] = useState(null);
+    const [open, setOpen] = useState(false);
+
+    const resultRef = useRef(null); // Reference to the result component
 
     const handleInputChange = (event) => {
         event.preventDefault();
@@ -15,67 +25,85 @@ const RoadmapsList = () => {
 
     const GetRoadmap = async () => {
         if (searchTerm !== "") {
-            setLoading(true); // Set loading to true before making the API call
+            try {
+                setOpen(true);
+                setLoading(true); // Set loading to true before making the API call
 
-            console.log(loading);
-            const data = await axios.post("http://localhost:5000/api/roadmap", {
-                role: "user",
-                content: `Generate a dynamic roadmap in JSON format. The roadmap 
-            should be structured as a tree, with each node representing a role or 
-            task within the website development process.
-
-        The JSON format should follow the example below:
-
-        const orgChart = {
-          name: 'CEO',
-          children: [
-            {
-              name: 'Manager',
-              attributes: {
-                department: 'Production',
-              },
+                console.log(loading);
+                const data = await axios.post(
+                    "http://localhost:5000/api/roadmap",
+                    {
+                        role: "user",
+                        content: `Generate a dynamic roadmap in JSON format. The roadmap 
+                should be structured as a tree, with each node representing a role or 
+                task within the website development process.
+    
+            The JSON format should follow the example below:
+    
+            const orgChart = {
+              name: 'CEO',
               children: [
                 {
-                  name: 'Foreman',
+                  name: 'Manager',
                   attributes: {
-                    department: 'Fabrication',
+                    department: 'Production',
                   },
                   children: [
                     {
-                      name: 'Worker',
+                      name: 'Foreman',
+                      attributes: {
+                        department: 'Fabrication',
+                      },
+                      children: [
+                        {
+                          name: 'Worker',
+                        },
+                      ],
                     },
-                  ],
-                },
-                {
-                  name: 'Foreman',
-                  attributes: {
-                    department: 'Assembly',
-                  },
-                  children: [
                     {
-                      name: 'Worker',
+                      name: 'Foreman',
+                      attributes: {
+                        department: 'Assembly',
+                      },
+                      children: [
+                        {
+                          name: 'Worker',
+                        },
+                      ],
                     },
                   ],
                 },
               ],
-            },
-          ],
-        };
+            };
+    
+             generate a JSON structure that represents the learning roadmap for ${searchTerm}. 
+             organize the stages/phases hierarchically as a tree. Only generate the json,
+             no other extra text, do not write json and do not format the json to code`,
+                    }
+                );
 
-         generate a JSON structure that represents the learning roadmap for ${searchTerm}. 
-         organize the stages/phases hierarchically as a tree. Only generate the json,
-         no other extra text, do not write json and do not format the json to code`,
-            });
-
-            const roadmap = await data.data;
-            setRoadmapJson(JSON.parse(roadmap.content));
-            setLoading(false);
-            // console.log(roadmap.content);
-            console.log(roadmapJson);
+                const roadmap = await data.data;
+                setRoadmapJson(JSON.parse(roadmap.content));
+                setLoading(false);
+                // console.log(roadmap.content);
+                console.log(roadmapJson);
+            } catch (error) {
+                window.alert(
+                    `Something went wrong, please search again. Error: ${error}`
+                );
+            }
         } else {
-            window.alert("Search cannot be empty");
+            window.alert("Search cannot be empty!");
         }
     };
+
+    useEffect(() => {
+        // Scroll to the result component when it's shown
+        if (roadmapJson && resultRef.current) {
+            resultRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+        setOpen(false);
+    }, [roadmapJson]);
 
     return (
         <Box
@@ -106,6 +134,7 @@ const RoadmapsList = () => {
                     Discover current roadmaps tailored to 2024. Simply search
                     for them here.
                 </Typography>
+                <div ref={resultRef} />
                 <Box
                     sx={{
                         display: "flex",
@@ -173,8 +202,22 @@ const RoadmapsList = () => {
                             borderRadius: "17px",
                             overflow: "hidden",
                             border: "3px solid #F219A1",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
                         }}
                     >
+                        <Typography
+                            variant="h3"
+                            fontSize="7vmin"
+                            mt="30px"
+                            color="black"
+                        >
+                            {searchTerm.charAt(0).toUpperCase() +
+                                searchTerm.slice(1)}{" "}
+                            Roadmap
+                        </Typography>
                         <Tree
                             data={roadmapJson}
                             rootNodeClassName="node__root"
@@ -185,10 +228,14 @@ const RoadmapsList = () => {
                             orientation="vertical"
                             depthFactor={550}
                             collapsible={false}
+                            translate={{ x: 600, y: 50 }}
                         />
                     </Box>
                 )}
             </Box>
+            <Backdrop open={open}>
+                <CircularProgress color="secondary" size={120} thickness={5} />
+            </Backdrop>
         </Box>
     );
 };
