@@ -221,8 +221,8 @@ const UploadCV = () => {
                     {/* <div ref={resultRef}></div> */}
                     <Result
                         majorRole={prediction.majorRole}
-                        otherRole1={prediction.otherRole1}
-                        otherRole2={prediction.otherRole2}
+                        otherRole1={prediction.otherRole2}
+                        otherRole2={prediction.otherRole1}
                         resultRef={resultRef}
                     />
                 </>
