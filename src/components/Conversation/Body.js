@@ -1,4 +1,5 @@
 import React from "react";
+import { Box, Typography, Stack } from "@mui/material";
 
 export const Body = () => {
   return (
@@ -11,18 +12,6 @@ export const Body = () => {
           justifyContent: "flex-end",
         }}
       >
-        <div style={{ order: "2" }}>
-          <img
-            style={{
-              display: "block",
-              width: "50px",
-              height: "50px",
-              borderRadius: "50%",
-            }}
-            src="/images/placeholder.jpg"
-            alt="Avatar"
-          />
-        </div>
         <div
           style={{
             display: "flex",
@@ -31,36 +20,39 @@ export const Body = () => {
             alignItems: "flex-end",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <div
-              style={{
-                fontSize: "0.875rem",
-                lineHeight: "1.25rem",
-                color: "rgb(107 114 128 / 1)",
-              }}
-            >
-              Moeed Rafi
-            </div>
-          </div>
           <div
             style={{
               fontSize: "1rem",
-              borderRadius: "16px",
+              borderRadius: "8px",
               lineHeight: "1.25rem",
               display: "inline-block",
-              width: "fit-content",
+              minWidth: "30%",
+              maxWidth: "70%",
               overflow: "hidden",
               padding: "1.25rem",
               color: "white",
               background:
-                "url('/public/images/Card.png'), linear-gradient(-253.09deg, rgba(217, 217, 217, 0.15) 100.53%, rgba(217, 217, 217, 0) 100.04%)",
+                "url(frosted-glass-texture-as-background-frosted-glass-texture-as-background-interior-design-decoration-111091129.jpg), linear-gradient(253.09deg, rgba(217, 217, 217, 0.15) -7.53%, rgba(217, 217, 217, 0) 97.04%)",
+              backdropFilter: "blur(25px)",
+              border: "1px solid rgba(255, 255, 255, 0.5)",
             }}
           >
-            <div>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
-              imperdiet semper lacinia. Aenean varius tellus ut odio fermentum
-              pulvinar.
-            </div>
+            <Stack direction="column" spacing={2}>
+              <Typography
+                variant="p"
+                sx={{
+                  fontSize: "0.875rem",
+                  color: "rgb(107 114 128 / 1)",
+                }}
+              >
+                You
+              </Typography>
+              <Typography variant="p">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
+                imperdiet semper lacinia. Aenean varius tellus ut odio fermentum
+                pulvinar.
+              </Typography>
+            </Stack>
           </div>
         </div>
       </div>

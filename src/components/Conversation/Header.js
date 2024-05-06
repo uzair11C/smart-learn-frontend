@@ -15,7 +15,6 @@ export const Header = () => {
             sx={{
                 backgroundColor: "#06061D",
                 display: "flex",
-                // borderBottomWidth: "1px",
                 width: "100%",
                 maxWidth: "100%",
                 color: "#FFFFFF",
@@ -42,9 +41,10 @@ export const Header = () => {
                     />
                 </Box>
                 <Avatar />
+                🤖
                 <div style={{ display: "flex", flexDirection: "column" }}>
-                    <Typography variant="h4" fontWeight="600">
-                        Moeed Rafi
+                    <Typography variant="h4" fontWeight="600" fontSize="5vmin">
+                        Career Sage
                     </Typography>
                     <Typography
                         variant="body1"

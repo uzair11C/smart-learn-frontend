@@ -13,7 +13,7 @@ const router = createBrowserRouter([
         element: <App />,
     },
     {
-        path: "/chat",
+        path: "/consultation/chat",
         element: <Chat />,
     },
     {
