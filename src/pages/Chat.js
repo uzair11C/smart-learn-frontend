@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { Header } from "../components/Conversation/Header";
 import { Body } from "../components/Conversation/Body";
@@ -14,24 +14,37 @@ const Chat = () => {
   const [message, setMessage] = useState({});
 
   const handleInputChange = (e) => {
-    // setValue(e.target.value);
-    const newValue = e.target.value;
-    setValue(newValue);
-    setMessage({ role: "user", content: value });
+    setValue(e.target.value);
   };
 
-  console.log("Messages Array:", messages);
+  // const handleClick = async (e) => {
+  //   e.preventDefault();
+  //   setMessage({ role: "user", content: value });
+  //   // messages.push(message);
+  //   await setMessages([...messages, message]);
 
-  const handleClick = async (e) => {
+  //   const data = await axios.post("http://localhost:5000/api/chat", {
+  //     messages,
+  //   });
+  //   const response = await data.data;
+  //   console.log(response);
+  // };
+
+  const handleClick = (e) => {
     e.preventDefault();
+    setMessage({ role: "user", content: value });
     // messages.push(message);
     setMessages([...messages, message]);
 
-    const data = await axios.post("http://localhost:5000/api/chat", {
-      messages,
-    });
-    const response = await data.data;
-    console.log(response);
+    console.log("message: ", message, "arary", messages);
+
+    axios
+      .post("http://localhost:5000/api/chat", {
+        messages,
+      })
+      .then((data) => console.log(data.data));
+    // const response = await data.data;
+    // console.log(response);
   };
 
   return (
