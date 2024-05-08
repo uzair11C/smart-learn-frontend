@@ -12,8 +12,8 @@ const Chat = () => {
 
     const [value, setValue] = useState("");
     const [status, setStatus] = useState("active");
-    const [limit, setLimit] = useState(messages.length);
-    const [open, setOpen] = useState(true);
+    const [limit, setLimit] = useState(messages ? messages.length : 0);
+    const [open, setOpen] = useState(false);
 
     var message = {
         role: "user",
@@ -30,7 +30,8 @@ const Chat = () => {
                 "Please type something if you wanna chat with our bot!"
             );
         } else {
-            if (limit === 30) {
+            // one extra message, because one is system message
+            if (limit === 31) {
                 window.alert("Context Limit Reached!");
             } else {
                 e.preventDefault();
@@ -83,7 +84,7 @@ const Chat = () => {
                 messages.push(response);
                 localStorage.setItem("messages", JSON.stringify(messages));
                 setStatus("active");
-                // setLimit(limit + 1);
+                setLimit(messages ? messages.length : limit + 1);
             }
         }
     };
