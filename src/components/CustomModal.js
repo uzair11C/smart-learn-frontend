@@ -1,69 +1,69 @@
 import React from "react";
 import {
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    IconButton,
-    Typography,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-const CustomModal = ({ open, handleClose, title }) => {
-    return (
-        <Dialog
-            onClose={handleClose}
-            aria-labelledby="customized-dialog"
-            open={open}
-            sx={{
-                ".MuiPaper-root": {
-                    background: "#26263A",
-                    color: "#FFFFFF",
-                    borderRadius: "15px",
-                },
-            }}
+const CustomModal = ({ open, handleClose, title, content }) => {
+  return (
+    <Dialog
+      onClose={handleClose}
+      aria-labelledby="customized-dialog"
+      open={open}
+      sx={{
+        ".MuiPaper-root": {
+          background: "#26263A",
+          color: "#FFFFFF",
+          borderRadius: "15px",
+        },
+      }}
+    >
+      <DialogTitle
+        sx={{ m: 0, p: 2, color: "red", fontSize: "4vmin" }}
+        id="customized-dialog-title"
+      >
+        {title}
+      </DialogTitle>
+      <IconButton
+        aria-label="close"
+        onClick={handleClose}
+        sx={{
+          position: "absolute",
+          right: 8,
+          top: 8,
+          color: (theme) => theme.palette.grey[500],
+        }}
+      >
+        <CloseIcon />
+      </IconButton>
+      <DialogContent dividers>
+        <Typography fontSize="3vmin" gutterBottom>
+          {content}
+        </Typography>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={handleClose}
+          variant="contained"
+          sx={{
+            borderRadius: "12px",
+            padding: "10px 15px",
+            fontSize: "3vmin",
+            background:
+              "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+          }}
         >
-            <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                {title}
-            </DialogTitle>
-            <IconButton
-                aria-label="close"
-                onClick={handleClose}
-                sx={{
-                    position: "absolute",
-                    right: 8,
-                    top: 8,
-                    color: (theme) => theme.palette.grey[500],
-                }}
-            >
-                <CloseIcon />
-            </IconButton>
-            <DialogContent dividers>
-                <Typography gutterBottom>
-                    Cras mattis consectetur purus sit amet fermentum. Cras justo
-                    odio, dapibus ac facilisis in, egestas eget quam. Morbi leo
-                    risus, porta ac consectetur ac, vestibulum at eros.
-                </Typography>
-                <Typography gutterBottom>
-                    Praesent commodo cursus magna, vel scelerisque nisl
-                    consectetur et. Vivamus sagittis lacus vel augue laoreet
-                    rutrum faucibus dolor auctor.
-                </Typography>
-                <Typography gutterBottom>
-                    Aenean lacinia bibendum nulla sed consectetur. Praesent
-                    commodo cursus magna, vel scelerisque nisl consectetur et.
-                    Donec sed odio dui. Donec ullamcorper nulla non metus auctor
-                    fringilla.
-                </Typography>
-            </DialogContent>
-            <DialogActions>
-                <Button variant="contained" onClick={handleClose}>
-                    Save changes
-                </Button>
-            </DialogActions>
-        </Dialog>
-    );
+          Confirm
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
 };
 
 export default CustomModal;

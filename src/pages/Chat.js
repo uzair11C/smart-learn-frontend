@@ -8,51 +8,56 @@ import axios from "axios";
 import CustomModal from "../components/CustomModal";
 
 const Chat = () => {
-    var messages = JSON.parse(localStorage.getItem("messages"));
+  var messages = JSON.parse(localStorage.getItem("messages"));
 
-    const [value, setValue] = useState("");
-    const [status, setStatus] = useState("active");
-    const [limit, setLimit] = useState(messages ? messages.length : 0);
-    const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("");
+  const [status, setStatus] = useState("active");
+  const [limit, setLimit] = useState(
+    messages
+      ? messages.filter((message) => message.role === "assistant").length
+      : 0
+  );
+  const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(false);
 
-    var message = {
-        role: "user",
-        content: "",
-    };
+  var message = {
+    role: "user",
+    content: "",
+  };
 
-    const handleInputChange = (e) => {
-        setValue(e.target.value);
-    };
+  const handleInputChange = (e) => {
+    setValue(e.target.value);
+  };
 
-    const handleClick = async (e) => {
-        if (value === "") {
-            window.alert(
-                "Please type something if you wanna chat with our bot!"
-            );
+  const handleClick = async (e) => {
+    e.preventDefault();
+    if (value === "") {
+      setOpen(true);
+      setTitle("Input Required");
+      setContent("Please type something if you wanna chat with our bot!");
+    } else {
+      // one extra message, because one is system message
+      if (limit === 70) {
+        setOpen(true);
+        setTitle("Limit Reached!");
+        setContent("Your Limit is Reached for today, Try again tomorrow");
+      } else {
+        setStatus("typing");
+        message = {
+          role: "user",
+          content: value,
+        };
+
+        if (messages) {
+          messages.push(message);
+          localStorage.setItem("messages", JSON.stringify(messages));
         } else {
-            // one extra message, because one is system message
-            if (limit === 31) {
-                window.alert("Context Limit Reached!");
-            } else {
-                e.preventDefault();
-                setStatus("typing");
-                message = {
-                    role: "user",
-                    content: value,
-                };
-
-                if (messages) {
-                    messages.push(message);
-                    console.log(
-                        "New messages ,writing to local storage: ",
-                        messages
-                    );
-                    localStorage.setItem("messages", JSON.stringify(messages));
-                } else {
-                    messages = [
-                        {
-                            role: "system",
-                            content: `You are a career guiding bot, 
+          messages = [
+            {
+              role: "system",
+              content: `You are a career guiding bot, 
                             identified as Career Sage, 
                             focused on queries related to careers 
                             in the software/IT industry. 
@@ -62,129 +67,132 @@ const Chat = () => {
                             I only talk about careers in IT industry. Is there
                             anything else I can help you with?
                             `,
-                        },
-                    ];
-                    messages.push(message);
-                    console.log(
-                        "Nothing in local storage, writing messages: ",
-                        messages
-                    );
-                    localStorage.setItem("messages", JSON.stringify(messages));
-                }
-                setValue("");
-
-                const data = await axios.post(
-                    "http://localhost:5000/api/chat",
-                    {
-                        messages,
-                    }
-                );
-                const response = await data.data;
-                console.log(response);
-                messages.push(response);
-                localStorage.setItem("messages", JSON.stringify(messages));
-                setStatus("active");
-                setLimit(messages ? messages.length : limit + 1);
-            }
+            },
+          ];
+          messages.push(message);
+          localStorage.setItem("messages", JSON.stringify(messages));
         }
-    };
+        setValue("");
+        setLoading(true);
 
-    const handleClose = () => {
-        setOpen(false);
-    };
+        const data = await axios.post("http://localhost:5000/api/chat", {
+          messages,
+        });
+        const response = await data.data;
+        messages.push(response);
+        localStorage.setItem("messages", JSON.stringify(messages));
+        setLoading(false);
+        setStatus("Active");
+        setLimit(
+          messages
+            ? messages.filter((message) => message.role === "assistant").length
+            : limit + 1
+        );
+      }
+    }
+  };
 
-    return (
-        <Box
-            sx={{
-                height: "100vh",
-                width: "100%",
-                maxWidth: "100%",
-                backgroundColor: "#19192F",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "stretch",
-            }}
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <Box
+      sx={{
+        height: "100vh",
+        width: "100%",
+        maxWidth: "100%",
+        backgroundColor: "#19192F",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "stretch",
+      }}
+    >
+      <Header status={status} limit={limit} />
+      <Body messages={messages} status={status} loading={loading} />
+      {/* Form */}
+      <Box
+        sx={{
+          padding: { md: "35px", xs: "20px" },
+          borderTopWidth: "1px",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <form
+          onSubmit={handleClick}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "20px",
+            width: "100%",
+          }}
         >
-            <Header status={status} limit={limit} />
-            <Body messages={messages} />
-
-            {/* Form */}
-            <Box
-                sx={{
-                    padding: "35px",
-                    borderTopWidth: "1px",
-                    display: "flex",
-                    alignItems: "center",
-                }}
-            >
-                <form
-                    onSubmit={handleClick}
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: "20px",
-                        width: "100%",
-                    }}
-                >
-                    <div
-                        style={{
-                            width: "80%",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            gap: "20px",
-                        }}
-                    >
-                        <TextField
-                            id="email"
-                            label="Search for a roadmap"
-                            variant="outlined"
-                            type="text"
-                            onChange={handleInputChange}
-                            value={value}
-                            sx={{
-                                // mt: "20px",
-                                flex: 1,
-                                ".MuiOutlinedInput-notchedOutline": {
-                                    borderColor: "rgba(255,255,255,0.3)",
-                                    borderRadius: "8px",
-                                },
-                            }}
-                            InputLabelProps={{
-                                style: { color: "rgba(255,255,255,0.3)" },
-                            }}
-                            inputProps={{
-                                style: {
-                                    color: "#FFFFFF",
-                                },
-                            }}
-                            InputProps={{
-                                style: {
-                                    background: "#222141",
-                                },
-                            }}
-                        />
-                    </div>
-                    <Button
-                        // onClick={handleClick}
-                        type="submit"
-                        variant="contained"
-                        style={{
-                            borderRadius: "12px",
-                            padding: "15px 20px",
-                            background:
-                                "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
-                        }}
-                    >
-                        <SendIcon style={{ width: "30px", height: "30px" }} />
-                    </Button>
-                </form>
-            </Box>
-            <CustomModal open={open} handleClose={handleClose} title="Error" />
-        </Box>
-    );
+          <div
+            style={{
+              width: "80%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "20px",
+            }}
+          >
+            <TextField
+              id="email"
+              multiline
+              maxRows={5}
+              label="Search for a roadmap"
+              variant="outlined"
+              type="text"
+              onChange={handleInputChange}
+              value={value}
+              sx={{
+                // mt: "20px",
+                flex: 1,
+                ".MuiOutlinedInput-notchedOutline": {
+                  borderColor: "rgba(255,255,255,0.3)",
+                  borderRadius: "8px",
+                },
+              }}
+              InputLabelProps={{
+                style: { color: "rgba(255,255,255,0.3)" },
+              }}
+              inputProps={{
+                style: {
+                  color: "#FFFFFF",
+                },
+              }}
+              InputProps={{
+                style: {
+                  background: "#222141",
+                },
+              }}
+            />
+          </div>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{
+              borderRadius: "12px",
+              padding: { md: "15px 20px", xs: "10px 10px" },
+              background:
+                "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+            }}
+          >
+            <SendIcon style={{ width: "30px", height: "30px" }} />
+          </Button>
+        </form>
+      </Box>
+      <CustomModal
+        open={open}
+        title={title}
+        content={content}
+        handleClose={handleClose}
+      />
+    </Box>
+  );
 };
 
 export default Chat;
