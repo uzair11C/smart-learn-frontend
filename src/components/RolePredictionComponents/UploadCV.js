@@ -10,20 +10,32 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Result from "./Result";
 import axios from "axios";
 import pdfToText from "react-pdftotext";
+import CustomModal from "../CustomModal";
 
 const UploadCV = () => {
     const [parsedFile, setParsedFile] = useState("");
     const [prediction, setPrediction] = useState({});
     const [background, setBackground] = useState("rgba(0,0,0,0.0)");
     const [open, setOpen] = useState(false);
+    const [open2, setOpen2] = useState(false);
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
 
     const resultRef = useRef(null); // Reference to the result component
 
     const handleFileSelect = (event) => {
         event.preventDefault();
-        extractText(event.target.files[0]);
-        console.log("File info: ", event.target.files);
-        console.log("Uploaded File: ", parsedFile);
+        if (event.target.files[0].type !== "application/pdf") {
+            setTitle("Invalid File Type");
+            setContent(
+                "We currently only accept .pdf files, please upload a valid pdf file."
+            );
+            setOpen2(true);
+        } else {
+            extractText(event.target.files[0]);
+            console.log("File info: ", event.target.files);
+            console.log("Uploaded File: ", parsedFile);
+        }
     };
 
     const handleDragOver = (event) => {
@@ -33,9 +45,18 @@ const UploadCV = () => {
 
     const handleDrop = (event) => {
         event.preventDefault();
-        extractText(event.dataTransfer.files[0]);
-        console.log("Uploaded File: ", parsedFile);
-        setBackground("rgba(0,0,0,0.0)");
+        if (event.dataTransfer.files[0].type !== "application/pdf") {
+            setTitle("Invalid File Type");
+            setContent(
+                "We currently only accept .pdf files, please upload a valid pdf file."
+            );
+            setOpen2(true);
+            setBackground("rgba(0,0,0,0.0)");
+        } else {
+            console.log("Uploaded File: ", event.dataTransfer.files[0]);
+            extractText(event.dataTransfer.files[0]);
+            setBackground("rgba(0,0,0,0.0)");
+        }
     };
 
     const extractText = (file) => {
@@ -62,10 +83,11 @@ const UploadCV = () => {
     }
 
     const GetPrediction = async () => {
-        setOpen(true);
-        const data = await axios.post("http://localhost:5000/api/roadmap", {
-            role: "user",
-            content: `Tell me my role in software industry based on my skills; 
+        try {
+            setOpen(true);
+            const data = await axios.post("http://localhost:5000/api/roadmap", {
+                role: "user",
+                content: `Tell me my role in software industry based on my skills; 
             here's my resume: ${parsedFile}
             Your reply should be like so, 
           with major role and secondary role separated by a slash, 
@@ -73,16 +95,30 @@ const UploadCV = () => {
           Predicted Role: devops engineer(major role, closer to my skills)/
           system engineer(another role, close to my skills)/
           network(another role,close to my skills)
-            `,
-        });
+          `,
+            });
 
-        const response = data.data;
-        setPrediction(extractRoles(response.content));
-        console.log(response);
+            const response = data.data;
+            setPrediction(extractRoles(response.content));
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+            setTitle("Error!");
+            setContent(
+                `Something went wrong, please try again later.
+                \nError: ${error.message}
+                `
+            );
+            setOpen(false);
+            setOpen2(true);
+        }
+    };
+
+    const handleClose = () => {
+        setOpen2(false);
     };
 
     useEffect(() => {
-        // Scroll to the result component when it's shown
         if (prediction.majorRole && resultRef.current) {
             resultRef.current.scrollIntoView({ behavior: "smooth" });
         }
@@ -102,8 +138,8 @@ const UploadCV = () => {
                 gap: "30px",
             }}
         >
-            <Typography variant="h2" component="h2" sx={{ fontSize: "9vmin" }}>
-                Upload Your Resume
+            <Typography variant="h2" component="h2" sx={{ fontSize: "8vmin" }}>
+                Get Prediction for your future from our AI
             </Typography>
             <Box
                 sx={{
@@ -230,6 +266,12 @@ const UploadCV = () => {
             <Backdrop open={open}>
                 <CircularProgress color="secondary" size={120} thickness={5} />
             </Backdrop>
+            <CustomModal
+                open={open2}
+                title={title}
+                content={content}
+                handleClose={handleClose}
+            />
         </Box>
     );
 };

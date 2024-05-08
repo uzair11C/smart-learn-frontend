@@ -9,12 +9,16 @@ import {
 } from "@mui/material";
 import Tree from "react-d3-tree";
 import axios from "axios";
+import CustomModal from "../CustomModal";
 
 const RoadmapsList = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [loading, setLoading] = useState(true);
     const [roadmapJson, setRoadmapJson] = useState(null);
     const [open, setOpen] = useState(false);
+    const [open2, setOpen2] = useState(false);
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
 
     const resultRef = useRef(null); // Reference to the result component
 
@@ -88,13 +92,24 @@ const RoadmapsList = () => {
                 // console.log(roadmap.content);
                 console.log(roadmapJson);
             } catch (error) {
-                window.alert(
-                    `Something went wrong, please search again. Error: ${error}`
+                setTitle("Error!");
+                setContent(
+                    `Something went wrong, please search again. Error: ${error.message}`
                 );
+                setOpen(false);
+                setOpen2(true);
             }
         } else {
-            window.alert("Search cannot be empty!");
+            setTitle("Input Required!");
+            setContent(
+                "Search cannot be empty! Type some text to generate a roadmap"
+            );
+            setOpen2(true);
         }
+    };
+
+    const handleClose = () => {
+        setOpen2(false);
     };
 
     useEffect(() => {
@@ -236,6 +251,12 @@ const RoadmapsList = () => {
             <Backdrop open={open}>
                 <CircularProgress color="secondary" size={120} thickness={5} />
             </Backdrop>
+            <CustomModal
+                open={open2}
+                title={title}
+                content={content}
+                handleClose={handleClose}
+            />
         </Box>
     );
 };
