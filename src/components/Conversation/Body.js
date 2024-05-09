@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Box, Typography, Stack, Skeleton } from "@mui/material";
 import "./Body.css";
+import Markdown from "https://esm.sh/react-markdown@9";
 
 export const Body = ({ messages, loading }) => {
     const messageRef = useRef(null);
@@ -79,7 +80,7 @@ export const Body = ({ messages, loading }) => {
                                             lineHeight: "25px",
                                         }}
                                     >
-                                        {message.content}
+                                        <Markdown>{message.content}</Markdown>
                                     </Typography>
                                 </Stack>
                             </Box>

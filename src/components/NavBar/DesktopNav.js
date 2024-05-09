@@ -100,7 +100,7 @@ const DesktopNav = ({ handleCloseNavMenu }) => {
                             }}
                             to="/role-prediction"
                         >
-                            Role Prediction
+                            Resume Analysis
                         </Link>
                     </Typography>
                     <Typography

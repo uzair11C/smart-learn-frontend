@@ -118,7 +118,7 @@ const MobileNav = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu }) => {
                             }}
                             to="/role-prediction"
                         >
-                            Role Prediction
+                            Resume Analysis
                         </Link>
                     </Typography>
                 </MenuItem>

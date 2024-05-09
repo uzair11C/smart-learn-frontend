@@ -133,8 +133,14 @@ const UploadCV = () => {
                 gap: "30px",
             }}
         >
-            <Typography variant="h2" component="h2" sx={{ fontSize: "8vmin" }}>
-                Get Prediction for your future from our AI
+            <Typography
+                variant="h2"
+                component="h2"
+                textAlign="center"
+                sx={{ fontSize: "7vmin", maxWidth: "60%" }}
+            >
+                Get Your Resume Analyzed to Predict Your Future in Software
+                Industry
             </Typography>
             <Box
                 sx={{
@@ -196,7 +202,8 @@ const UploadCV = () => {
                             }}
                             onClick={GetPrediction}
                         >
-                            <CloudUploadIcon fontSize="large" /> Get Prediction
+                            <CloudUploadIcon fontSize="large" /> Analyze my
+                            Resume
                         </Button>
                     ) : (
                         <>

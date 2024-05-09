@@ -6,7 +6,7 @@ const RolePrediction = () => {
     return (
         <>
             <Banner
-                title="Role Prediction"
+                title="Resume Analysis"
                 imageUrl="/images/rolePrediction.jpg"
             />
             <UploadCV />
