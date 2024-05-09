@@ -3,7 +3,7 @@ import { Backdrop, CircularProgress, Typography } from "@mui/material";
 
 const CustomLoader = ({ open }) => {
     const texts = [
-        "Please wait, our is Working it's Magic!",
+        "Please wait, our AI is Working it's Magic!",
         "Our AI is working, please be patient",
         "Still loading, almost there!",
         "Hol' up, our AI is cookin'!",
@@ -11,11 +11,22 @@ const CustomLoader = ({ open }) => {
 
     const [text, setText] = useState("Please wait, our is Working it's Magic!");
 
+    function setRandomText() {
+        const index = Math.floor(Math.random() * texts.length);
+        let newText = texts[index];
+        if (newText === text) {
+            setRandomText();
+        } else {
+            setText(newText);
+        }
+        return;
+    }
+
     useEffect(() => {
         setTimeout(() => {
-            setText(texts[Math.floor(Math.random() * 4)]);
-        }, 2500);
-    }, []);
+            setRandomText();
+        }, 4500);
+    }, [text]);
 
     return (
         <Backdrop

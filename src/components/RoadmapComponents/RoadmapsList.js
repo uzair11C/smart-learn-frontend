@@ -3,6 +3,7 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import Tree from "react-d3-tree";
 import axios from "axios";
 import CustomModal from "../CustomModal";
+import CustomLoader from "../CustomLoader";
 
 const RoadmapsList = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -33,7 +34,7 @@ const RoadmapsList = () => {
                         role: "user",
                         content: `Generate a dynamic roadmap in JSON format. The roadmap 
                 should be structured as a tree, with each node representing a role or 
-                task within the website development process.
+                task within the process.
     
             The JSON format should follow the example below:
     
@@ -241,7 +242,7 @@ const RoadmapsList = () => {
                     </Box>
                 )}
             </Box>
-            <CustomModal open={open} />
+            <CustomLoader open={open} />
             <CustomModal
                 open={open2}
                 title={title}

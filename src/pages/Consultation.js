@@ -42,8 +42,8 @@ const Consultation = () => {
                         gap: "30px",
                         border: "2px solid #F219A1",
                         borderRadius: "10px",
-                        width: "65%",
-                        padding: "20px",
+                        width: "70%",
+                        p: "25px 60px",
                         background: "rgba(255, 255, 255, 0.1)",
                         backdropFilter: "blur(5px)",
                     }}
