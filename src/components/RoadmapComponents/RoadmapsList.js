@@ -1,12 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-    Backdrop,
-    Box,
-    Button,
-    CircularProgress,
-    TextField,
-    Typography,
-} from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import Tree from "react-d3-tree";
 import axios from "axios";
 import CustomModal from "../CustomModal";
@@ -248,9 +241,7 @@ const RoadmapsList = () => {
                     </Box>
                 )}
             </Box>
-            <Backdrop open={open}>
-                <CircularProgress color="secondary" size={120} thickness={5} />
-            </Backdrop>
+            <CustomModal open={open} />
             <CustomModal
                 open={open2}
                 title={title}

@@ -1,22 +1,17 @@
 import React, { useState, useRef, useEffect } from "react";
-import {
-    Backdrop,
-    Box,
-    Button,
-    CircularProgress,
-    Typography,
-} from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Result from "./Result";
 import axios from "axios";
 import pdfToText from "react-pdftotext";
 import CustomModal from "../CustomModal";
+import CustomLoader from "../CustomLoader";
 
 const UploadCV = () => {
     const [parsedFile, setParsedFile] = useState("");
     const [prediction, setPrediction] = useState({});
     const [background, setBackground] = useState("rgba(0,0,0,0.0)");
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
     const [open2, setOpen2] = useState(false);
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
@@ -263,9 +258,7 @@ const UploadCV = () => {
                     />
                 </>
             ) : null}
-            <Backdrop open={open}>
-                <CircularProgress color="secondary" size={120} thickness={5} />
-            </Backdrop>
+            <CustomLoader open={open} />
             <CustomModal
                 open={open2}
                 title={title}

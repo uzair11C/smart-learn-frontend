@@ -2,6 +2,7 @@ import React from "react";
 import Banner from "../components/Banner";
 import { Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import EastIcon from "@mui/icons-material/East";
 
 const Consultation = () => {
     const navigate = useNavigate();
@@ -35,53 +36,50 @@ const Consultation = () => {
                 <Box
                     sx={{
                         display: "flex",
-                        flexDirection: "column",
+                        flexDirection: "row",
                         justifyContent: "center",
                         alignItems: "center",
-                        gap: "20px",
+                        gap: "30px",
                         border: "2px solid #F219A1",
                         borderRadius: "10px",
+                        width: "65%",
                         padding: "20px",
                         background: "rgba(255, 255, 255, 0.1)",
                         backdropFilter: "blur(5px)",
                     }}
                 >
-                    <Typography variant="h4" sx={{ color: "#F219A1" }}>
-                        Ready to get personalized advice?
-                    </Typography>
-                    <Typography variant="body1" sx={{ textAlign: "center" }}>
-                        Our AI assistant is here to help you with your career
-                        decisions. Chat with us now!
-                    </Typography>
-                    <Button
-                        variant="contained"
-                        onClick={() => navigate("/consultation/chat")}
+                    <img src="/images/Sage.png" alt="sage" width="250" />
+                    <Box
                         sx={{
-                            textTransform: "none",
-                            borderRadius: "5px",
-                            padding: "10px 30px",
-                            fontSize: "3vmin",
-                            background:
-                                "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "flex-start",
+                            alignItems: "flex-start",
+                            gap: "20px",
                         }}
                     >
-                        Chat Now
-                    </Button>
+                        <Typography variant="p" component="p" fontSize="4vmin">
+                            Need personalized advice? Our AI assistant,{" "}
+                            <strong>The Career Sage</strong>, is here to help
+                            you with your career decisions. Chat with us now!
+                        </Typography>
+                        <Button
+                            variant="contained"
+                            onClick={() => navigate("/consultation/chat")}
+                            sx={{
+                                textTransform: "none",
+                                borderRadius: "5px",
+                                padding: "10px 30px",
+                                fontSize: "3vmin",
+                                background:
+                                    "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                            }}
+                            endIcon={<EastIcon sx={{ fontSize: 50 }} />}
+                        >
+                            Chat with Him Now
+                        </Button>
+                    </Box>
                 </Box>
-                {/* <Button
-                    variant="contained"
-                    onClick={() => navigate("/consultation/chat")}
-                    sx={{
-                        textTransform: "none",
-                        borderRadius: "5px",
-                        padding: "0.5% 3%",
-                        fontSize: "3vmin",
-                        background:
-                            "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
-                    }}
-                >
-                    Chat
-                </Button> */}
             </Box>
         </>
     );

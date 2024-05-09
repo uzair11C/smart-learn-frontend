@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import EastIcon from "@mui/icons-material/East";
 
 const Services = () => {
     const navigate = useNavigate();
@@ -75,6 +76,7 @@ const Services = () => {
                         onClick={() => {
                             navigate("/consultation");
                         }}
+                        endIcon={<EastIcon sx={{ fontSize: 50 }} />}
                     >
                         Go to Consultation
                     </Button>
@@ -133,6 +135,7 @@ const Services = () => {
                         onClick={() => {
                             navigate("/role-prediction");
                         }}
+                        endIcon={<EastIcon sx={{ fontSize: 50 }} />}
                     >
                         Go to Prediction
                     </Button>
@@ -191,6 +194,7 @@ const Services = () => {
                         onClick={() => {
                             navigate("/roadmaps");
                         }}
+                        endIcon={<EastIcon sx={{ fontSize: 50 }} />}
                     >
                         Go to Roadmaps
                     </Button>
