@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Box, Typography, Stack, Skeleton } from "@mui/material";
+import "./Body.css";
 
 export const Body = ({ messages, loading }) => {
     const messageRef = useRef(null);
@@ -11,7 +12,17 @@ export const Body = ({ messages, loading }) => {
     }, [messages]);
 
     return (
-        <Box sx={{ flex: "1", overflowY: "auto", height: "100%" }}>
+        <Box
+            sx={{
+                flex: "1",
+                overflowY: "auto",
+                height: "100%",
+                backgroundImage: "url('/images/ChatBG.png')",
+                backgroundPosition: "center center",
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "70% 100%",
+            }}
+        >
             <Box
                 sx={{
                     display: "flex",
@@ -19,7 +30,7 @@ export const Body = ({ messages, loading }) => {
                     justifyContent: "flex-end",
                     // alignItems: role === "user" ? "flex-end" : "flex-start",
                     padding: { md: "10px 70px", xs: "10px 30px" },
-                    gap: "10px",
+                    gap: "20px",
                 }}
             >
                 {messages &&
@@ -74,26 +85,32 @@ export const Body = ({ messages, loading }) => {
                             </Box>
                         )
                     )}
-
                 {loading && (
                     <Box
                         sx={{
                             borderRadius: "8px",
                             lineHeight: "10px",
-                            minWidth: "7%",
-                            maxWidth: { md: "55%", xs: "80%" },
+                            // minWidth: "7%",
+                            width: { md: "45%", xs: "70%" },
                             padding: { md: "20px", xs: "10px" },
-                            //   background:
-                            //     "url(frosted-glass-texture-as-background-frosted-glass-texture-as-background-interior-design-decoration-111091129.jpg), linear-gradient(253.09deg, rgba(217, 217, 217, 0.15) -7.53%, rgba(217, 217, 217, 0) 97.04%)",
+                            background:
+                                "url(frosted-glass-texture-as-background-frosted-glass-texture-as-background-interior-design-decoration-111091129.jpg), linear-gradient(253.09deg, rgba(217, 217, 217, 0.1) -7.53%, rgba(217, 217, 217, 0) 97.04%)",
                             border: "1px solid rgba(255, 255, 255, 0.5)",
                         }}
                     >
                         <Stack direction="column" spacing={2}>
                             <Typography>
-                                <Skeleton animation="wave" />
+                                <Skeleton
+                                    animation="pulse"
+                                    variant="rounded"
+                                    width={80}
+                                />
                             </Typography>
                             <Typography variant="p" lineHeight="20px">
-                                <Skeleton animation="wave" />
+                                <Skeleton animation="wave" variant="rounded" />
+                            </Typography>
+                            <Typography variant="p" lineHeight="20px">
+                                <Skeleton animation="wave" variant="rounded" />
                             </Typography>
                         </Stack>
                     </Box>

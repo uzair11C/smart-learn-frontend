@@ -39,7 +39,7 @@ const Consultation = () => {
                         flexDirection: "row",
                         justifyContent: "center",
                         alignItems: "center",
-                        gap: "30px",
+                        gap: "40px",
                         border: "2px solid #F219A1",
                         borderRadius: "10px",
                         width: "70%",

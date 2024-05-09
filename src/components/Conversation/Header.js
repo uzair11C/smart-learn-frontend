@@ -15,7 +15,7 @@ export const Header = ({ status, limit }) => {
                 backgroundColor: "#06061D",
                 display: "flex",
                 color: "#FFFFFF",
-                padding: "1.5% 7%",
+                padding: "1.3% 7%",
             }}
         >
             <Box

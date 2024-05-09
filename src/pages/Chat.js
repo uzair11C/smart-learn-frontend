@@ -184,6 +184,7 @@ const Chat = () => {
                     <Button
                         type="submit"
                         variant="contained"
+                        onSubmit={handleClick}
                         sx={{
                             borderRadius: "12px",
                             padding: { md: "15px 20px", xs: "10px 10px" },
