@@ -31,7 +31,7 @@ const CustomLoader = ({ open }) => {
     useEffect(() => {
         setTimeout(() => {
             setRandomText();
-        }, 4500);
+        }, 5000);
     }, [text]);
 
     return (
@@ -57,7 +57,7 @@ const CustomLoader = ({ open }) => {
                 width="80"
                 style={{
                     position: "absolute",
-                    top: "41%",
+                    top: "42%",
                     // left: "50%",
                     // right: "50%",
                     bottom: "50%",
