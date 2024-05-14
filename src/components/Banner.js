@@ -9,6 +9,8 @@ const Banner = ({ title, catchprase, imageUrl }) => {
                 height: "100vh",
                 background: `url('${imageUrl}')`,
                 backgroundSize: { xs: "cover", md: "100% 100%" },
+                backgroundPosition: "center",
+                backgroundAttachment: "fixed",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
