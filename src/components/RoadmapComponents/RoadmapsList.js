@@ -4,6 +4,7 @@ import Tree from "react-d3-tree";
 import axios from "axios";
 import CustomModal from "../CustomModal";
 import CustomLoader from "../CustomLoader";
+import { useNavigate } from "react-router-dom";
 
 const RoadmapsList = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -13,6 +14,8 @@ const RoadmapsList = () => {
     const [open2, setOpen2] = useState(false);
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+
+    const navigate = useNavigate();
 
     const resultRef = useRef(null); // Reference to the result component
 
@@ -110,6 +113,7 @@ const RoadmapsList = () => {
         // Scroll to the result component when it's shown
         if (roadmapJson && resultRef.current) {
             resultRef.current.scrollIntoView({ behavior: "smooth" });
+            // navigate("/analysis", { state: { roadmapJson } });
         }
         setOpen(false);
     }, [roadmapJson]);
