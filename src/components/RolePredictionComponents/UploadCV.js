@@ -1,20 +1,23 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import Result from "./Result";
+// import Result from "./Result";
 import axios from "axios";
 import pdfToText from "react-pdftotext";
 import CustomModal from "../CustomModal";
 import CustomLoader from "../CustomLoader";
+import { useNavigate } from "react-router-dom";
 
 const UploadCV = () => {
     const [parsedFile, setParsedFile] = useState("");
     const [prediction, setPrediction] = useState({});
     const [background, setBackground] = useState("rgba(0,0,0,0.0)");
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+
+    const navigate = useNavigate();
 
     const resultRef = useRef(null); // Reference to the result component
 
@@ -114,10 +117,11 @@ const UploadCV = () => {
     };
 
     useEffect(() => {
-        if (prediction.majorRole && resultRef.current) {
-            resultRef.current.scrollIntoView({ behavior: "smooth" });
+        if (prediction.majorRole) {
+            // resultRef.current.scrollIntoView({ behavior: "smooth" });
+            setOpen(false);
+            navigate("/analysis", { state: { prediction } });
         }
-        setOpen(false);
     }, [prediction]);
 
     return (
@@ -254,17 +258,16 @@ const UploadCV = () => {
                     </Box>
                 </Box>
             </Box>
-            {prediction && prediction.majorRole ? (
+            {/* {prediction && prediction.majorRole ? (
                 <>
-                    {/* <div ref={resultRef}></div> */}
-                    <Result
+                                ]                    <Result
                         majorRole={prediction.majorRole}
                         otherRole1={prediction.otherRole2}
                         otherRole2={prediction.otherRole1}
                         resultRef={resultRef}
                     />
                 </>
-            ) : null}
+            ) : null} */}
             <CustomLoader open={open} />
             <CustomModal
                 open={open2}

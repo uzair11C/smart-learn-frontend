@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Chat from "./pages/Chat";
 import App from "./App";
+import Result from "./components/RolePredictionComponents/Result";
 
 const router = createBrowserRouter([
     {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
     {
         path: "/consultation/chat",
         element: <Chat />,
+    },
+    {
+        path: "/analysis",
+        element: <Result />,
     },
     {
         path: "/login",
