@@ -1,35 +1,19 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import { Box, IconButton, Stack, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { ArrowBackIosNew } from "@mui/icons-material";
-import { PredictionContext } from "../../Contexts/PredictionContext";
 
 const AnalysisResult = ({ prediction, resultRef }) => {
-    // const location = useLocation();
-
-    // const { prediction, setPrediction } = useContext(PredictionContext);
-
     const navigate = useNavigate();
-
-    // const value = { prediction, setPrediction };
-
-    // // if (!prediction) {
-    // //     // navigate("/role-prediction", { replace: true });
-    // //     return <div>No prediction data available</div>;
-    // // }
-
     return (
-        // <PredictionContext.Provider value={value}>
         <Box
             ref={resultRef}
             sx={{
                 width: "100%",
                 backgroundColor: "#19192F",
                 color: "#FFFFFF",
-                // width: "100vw",
                 maxWidth: "100%",
                 height: "100vh",
-                // p: { xs: "25px", md: "20px" },
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-start",
@@ -147,16 +131,7 @@ const AnalysisResult = ({ prediction, resultRef }) => {
                     </Stack>
                 </Box>
             </Box>
-            {/* <Typography
-                variant="h2"
-                component="h2"
-                sx={{ fontSize: "8vmin", mt: "30px" }}
-            >
-                Latest Industry Trends for {prediction.majorRole}
-            </Typography>
-            <Trends /> */}
         </Box>
-        // </PredictionContext.Provider>
     );
 };
 

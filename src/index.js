@@ -7,7 +7,7 @@ import SignUp from "./pages/SignUp";
 import Chat from "./pages/Chat";
 import App from "./App";
 import AnalysisResult from "./components/RolePredictionComponents/AnalysisResult";
-import { PredictionContext } from "./Contexts/PredictionContext";
+import RoadmapResult from "./pages/RoadmapResult";
 
 const router = createBrowserRouter([
     {
@@ -22,10 +22,10 @@ const router = createBrowserRouter([
         path: "/resume-analysis/analysis",
         element: <AnalysisResult />,
     },
-    // {
-    //     path: "/:name",
-    //     element: <AnalysisResult />,
-    // },
+    {
+        path: "/roadmaps/:name",
+        element: <RoadmapResult />,
+    },
     {
         path: "/login",
         element: <Login />,
