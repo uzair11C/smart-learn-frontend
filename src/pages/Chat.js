@@ -41,7 +41,8 @@ const Chat = () => {
             setContent("Please type something if you wanna chat with our bot!");
         } else {
             // one extra message, because one is system message
-            if (limit === 70) {
+            if (limit === 100) {
+                setRefresh(true);
                 setOpen(true);
                 setTitle("Limit Reached!");
                 setContent(

@@ -133,7 +133,7 @@ const Services = () => {
                             borderRadius: "6px",
                         }}
                         onClick={() => {
-                            navigate("/role-prediction");
+                            navigate("/resume-analysis");
                         }}
                         endIcon={<EastIcon sx={{ fontSize: 50 }} />}
                     >

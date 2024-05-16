@@ -1,24 +1,27 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Box, IconButton, Stack, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { ArrowBackIosNew } from "@mui/icons-material";
 import { PredictionContext } from "../../Contexts/PredictionContext";
 
-const AnalysisResult = () => {
+const AnalysisResult = ({ prediction, resultRef }) => {
     // const location = useLocation();
 
-    const [prediction, setPrediction] = useContext(PredictionContext);
+    // const { prediction, setPrediction } = useContext(PredictionContext);
 
     const navigate = useNavigate();
 
-    // if (!prediction) {
-    //     // navigate("/role-prediction", { replace: true });
-    //     return <div>No prediction data available</div>;
-    // }
+    // const value = { prediction, setPrediction };
+
+    // // if (!prediction) {
+    // //     // navigate("/role-prediction", { replace: true });
+    // //     return <div>No prediction data available</div>;
+    // // }
 
     return (
+        // <PredictionContext.Provider value={value}>
         <Box
-            // ref={resultRef}
+            ref={resultRef}
             sx={{
                 width: "100%",
                 backgroundColor: "#19192F",
@@ -53,7 +56,7 @@ const AnalysisResult = () => {
                     }}
                     // disableRipple
                     onClick={() => {
-                        navigate("/role-prediction", { replace: true });
+                        navigate("/resume-analysis", { replace: true });
                     }}
                 >
                     <ArrowBackIosNew
@@ -153,6 +156,7 @@ const AnalysisResult = () => {
             </Typography>
             <Trends /> */}
         </Box>
+        // </PredictionContext.Provider>
     );
 };
 

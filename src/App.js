@@ -10,38 +10,35 @@ import { useState } from "react";
 // import Result from "./pages/Result";
 
 function App() {
-    const [prediction, setPrediction] = useState({
-        majorRole: "",
-        otherRole1: "",
-        otherRole2: "",
-    });
+    // const [prediction, setPrediction] = useState({
+    //     majorRole: "",
+    //     otherRole1: "",
+    //     otherRole2: "",
+    // });
     return (
-        <PredictionContext.Provider value={[prediction, setPrediction]}>
-            <div
-                style={{
-                    backgroundColor: "#19192F",
-                    color: "#FFFFFF",
-                    width: "100vw",
-                    maxWidth: "100%",
-                }}
-            >
-                <CssBaseline />
-                <NavBar />
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/consultation" element={<Consultation />} />
-                    <Route
-                        path="/role-prediction"
-                        element={<RolePrediction />}
-                    />
-                    {/* <Route
+        // <PredictionContext.Provider value={[prediction, setPrediction]}>
+        <div
+            style={{
+                backgroundColor: "#19192F",
+                color: "#FFFFFF",
+                width: "100vw",
+                maxWidth: "100%",
+            }}
+        >
+            <CssBaseline />
+            <NavBar />
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/consultation" element={<Consultation />} />
+                <Route path="/resume-analysis" element={<RolePrediction />} />
+                {/* <Route
                     path="/role-prediction/prediction"
                     element={<Result />}
                 /> */}
-                    <Route path="/roadmaps" element={<Roadmaps />} />
-                </Routes>
-            </div>
-        </PredictionContext.Provider>
+                <Route path="/roadmaps" element={<Roadmaps />} />
+            </Routes>
+        </div>
+        // </PredictionContext.Provider>
     );
 }
 

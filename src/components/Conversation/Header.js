@@ -83,7 +83,7 @@ export const Header = ({ status, limit }) => {
                         limit < 45 ? "green" : limit <= 60 ? "yellow" : "red"
                     }
                 >
-                    Limit: {limit} / 70
+                    Limit: {limit} / 100
                 </Typography>
             </Box>
         </Box>

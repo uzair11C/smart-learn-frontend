@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import axios from "axios";
@@ -7,17 +7,20 @@ import CustomModal from "../CustomModal";
 import CustomLoader from "../CustomLoader";
 import { useNavigate } from "react-router-dom";
 import { PredictionContext } from "../../Contexts/PredictionContext";
+import AnalysisResult from "./AnalysisResult";
 
 const UploadCV = () => {
     const [parsedFile, setParsedFile] = useState("");
-    // const [prediction, setPrediction] = useState({});
+    const [prediction, setPrediction] = useState({});
     const [background, setBackground] = useState("rgba(0,0,0,0.0)");
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 
-    const { prediction, setPrediction } = useContext(PredictionContext);
+    const resultRef = useRef(null); // Reference to the result component
+
+    // const { prediction, setPrediction } = useContext(PredictionContext);
 
     const navigate = useNavigate();
 
@@ -119,152 +122,167 @@ const UploadCV = () => {
     useEffect(() => {
         if (prediction && prediction.majorRole) {
             setOpen(false);
-            navigate("/analysis");
+            resultRef.current.scrollIntoView({ behavior: "smooth" });
+
+            // navigate("/resume-analysis/analysis");
         }
     }, [prediction]);
 
     return (
-        <Box
-            sx={{
-                width: "100%",
-                maxWidth: "100%",
-                p: { xs: "25px", md: "45px" },
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: "30px",
-            }}
-        >
-            <Typography
-                variant="h2"
-                component="h2"
-                textAlign="center"
-                sx={{ fontSize: "7vmin", maxWidth: "60%" }}
-            >
-                Get Your Resume Analyzed to Predict Your Future in Software
-                Industry
-            </Typography>
+        <PredictionContext.Provider value={{ prediction, setPrediction }}>
             <Box
                 sx={{
-                    background:
-                        "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
-                    borderRadius: "12px",
-                    p: "2px",
+                    width: "100%",
+                    maxWidth: "100%",
+                    p: { xs: "25px", md: "45px" },
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: "30px",
                 }}
             >
+                <Typography
+                    variant="h2"
+                    component="h2"
+                    textAlign="center"
+                    sx={{ fontSize: "7vmin", maxWidth: "60%" }}
+                >
+                    Get Your Resume Analyzed to Predict Your Future in Software
+                    Industry
+                </Typography>
                 <Box
-                    width="70vw"
                     sx={{
-                        background: "#19192F",
-                        p: "30px",
+                        background:
+                            "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
                         borderRadius: "12px",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        gap: "20px",
-                        position: "relative",
-                    }}
-                    onDragOver={handleDragOver}
-                    onDrop={handleDrop}
-                    onDragLeave={() => {
-                        setBackground("rgba:(0,0,0,0.0)");
+                        p: "2px",
                     }}
                 >
                     <Box
+                        width="70vw"
                         sx={{
-                            position: "absolute",
-                            top: 0,
-                            width: "100%",
-                            height: "100%",
-                            background: background,
+                            background: "#19192F",
+                            p: "30px",
                             borderRadius: "12px",
-                            pointerEvents: "none",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            gap: "20px",
+                            position: "relative",
                         }}
-                    />
-                    {parsedFile && parsedFile.length > 0 ? (
-                        <Button
-                            variant="contained"
+                        onDragOver={handleDragOver}
+                        onDrop={handleDrop}
+                        onDragLeave={() => {
+                            setBackground("rgba:(0,0,0,0.0)");
+                        }}
+                    >
+                        <Box
                             sx={{
-                                textTransform: "none",
-                                fontSize: "4vmin",
-                                fontWeight: "bold",
-                                padding: "10px 30px",
-                                color: "#FFFFFF",
-                                backgroundColor: "#F219A1",
+                                position: "absolute",
+                                top: 0,
+                                width: "100%",
+                                height: "100%",
+                                background: background,
                                 borderRadius: "12px",
-                                "&:hover": {
-                                    backgroundColor: "#AD0CF8",
-                                },
+                                pointerEvents: "none",
+                            }}
+                        />
+                        {parsedFile && parsedFile.length > 0 ? (
+                            <Button
+                                variant="contained"
+                                sx={{
+                                    textTransform: "none",
+                                    fontSize: "4vmin",
+                                    fontWeight: "bold",
+                                    padding: "10px 30px",
+                                    color: "#FFFFFF",
+                                    backgroundColor: "#F219A1",
+                                    borderRadius: "12px",
+                                    "&:hover": {
+                                        backgroundColor: "#AD0CF8",
+                                    },
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    gap: "15px",
+                                }}
+                                onClick={GetPrediction}
+                            >
+                                <CloudUploadIcon fontSize="large" /> Analyze my
+                                Resume
+                            </Button>
+                        ) : (
+                            <>
+                                <Typography variant="h4" component="h4">
+                                    Select or drop your resume here
+                                </Typography>
+                                <img src="/images/Upload.png" alt="drag-here" />
+                            </>
+                        )}
+
+                        <Box
+                            sx={{
                                 display: "flex",
                                 flexDirection: "row",
                                 justifyContent: "center",
                                 alignItems: "center",
-                                gap: "15px",
+                                gap: "30px",
+                                width: "100%",
                             }}
-                            onClick={GetPrediction}
                         >
-                            <CloudUploadIcon fontSize="large" /> Analyze my
-                            Resume
-                        </Button>
-                    ) : (
-                        <>
-                            <Typography variant="h4" component="h4">
-                                Select or drop your resume here
+                            <label
+                                htmlFor="browse"
+                                style={{
+                                    textTransform: "none",
+                                    background:
+                                        "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                    borderRadius: "8px",
+                                    fontSize: "20px",
+                                    padding: "10px 35px",
+                                    cursor: "pointer",
+                                }}
+                            >
+                                <input
+                                    type="file"
+                                    hidden
+                                    id="browse"
+                                    accept=".pdf,.docx,.odt,.txt"
+                                    onChange={handleFileSelect}
+                                    // multiple
+                                />
+                                Choose File
+                            </label>
+                            <Typography variant="p" component="p">
+                                {parsedFile && parsedFile.length > 0
+                                    ? null
+                                    : `No File Chosen`}
                             </Typography>
-                            <img src="/images/Upload.png" alt="drag-here" />
-                        </>
-                    )}
-
-                    <Box
-                        sx={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            gap: "30px",
-                            width: "100%",
-                        }}
-                    >
-                        <label
-                            htmlFor="browse"
-                            style={{
-                                textTransform: "none",
-                                background:
-                                    "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
-                                borderRadius: "8px",
-                                fontSize: "20px",
-                                padding: "10px 35px",
-                                cursor: "pointer",
-                            }}
-                        >
-                            <input
-                                type="file"
-                                hidden
-                                id="browse"
-                                accept=".pdf,.docx,.odt,.txt"
-                                onChange={handleFileSelect}
-                                // multiple
-                            />
-                            Choose File
-                        </label>
-                        <Typography variant="p" component="p">
-                            {parsedFile && parsedFile.length > 0
-                                ? null
-                                : `No File Chosen`}
-                        </Typography>
+                        </Box>
                     </Box>
                 </Box>
+                {prediction && prediction.majorRole ? (
+                    <>
+                        <AnalysisResult
+                            // majorRole={prediction.majorRole}
+                            // otherRole1={prediction.otherRole2}
+                            // otherRole2={prediction.otherRole1}
+                            prediction={prediction}
+                            resultRef={resultRef}
+                        />
+                    </>
+                ) : null}
+                <CustomLoader open={open} />
+                <CustomModal
+                    open={open2}
+                    title={title}
+                    content={content}
+                    handleClose={handleClose}
+                />
             </Box>
-            <CustomLoader open={open} />
-            <CustomModal
-                open={open2}
-                title={title}
-                content={content}
-                handleClose={handleClose}
-            />
-        </Box>
+        </PredictionContext.Provider>
     );
 };
 

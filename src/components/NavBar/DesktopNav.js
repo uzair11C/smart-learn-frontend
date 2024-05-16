@@ -98,7 +98,7 @@ const DesktopNav = ({ handleCloseNavMenu }) => {
                                 textDecoration: "none",
                                 color: "#FFFFFF",
                             }}
-                            to="/role-prediction"
+                            to="/resume-analysis"
                         >
                             Resume Analysis
                         </Link>
