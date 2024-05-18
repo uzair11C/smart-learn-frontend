@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Box, Typography, Stack, Skeleton } from "@mui/material";
 import "./Body.css";
-import Markdown from "https://esm.sh/react-markdown@9";
+import Markdown from "react-markdown";
 
 export const Body = ({ messages, loading }) => {
     const messageRef = useRef(null);
