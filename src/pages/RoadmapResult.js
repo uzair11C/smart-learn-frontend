@@ -6,6 +6,7 @@ import CustomLoader from "../components/CustomLoader";
 import CustomModal from "../components/CustomModal";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowBackIosNew } from "@mui/icons-material";
+import LearningResources from "../components/LearningResources";
 
 const RoadmapResult = () => {
     const [loading, setLoading] = useState(true);
@@ -105,10 +106,10 @@ const RoadmapResult = () => {
                 backgroundColor: "#19192F",
                 color: "#FFFFFF",
                 maxWidth: "100%",
-                // height: "100vh",
+                minHeight: "100vh",
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center",
+                justifyContent: "flex-start",
                 alignItems: "center",
                 gap: "20px",
             }}
@@ -150,39 +151,45 @@ const RoadmapResult = () => {
                 {searchTerm.charAt(0).toUpperCase() + searchTerm.slice(1)}{" "}
                 Roadmap
             </Typography>
-            <Box
-                sx={{
-                    width: "90%",
-                    height: "90vh",
-                    background: "#FFFFFF",
-                    mt: "20px",
-                    borderRadius: "17px",
-                    overflow: "hidden",
-                    border: "3px solid #F219A1",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    mb: "20px",
-                }}
-            >
-                {loading ? (
-                    ""
-                ) : (
-                    <Tree
-                        data={roadmapJson}
-                        rootNodeClassName="node__root"
-                        branchNodeClassName="node__branch"
-                        leafNodeClassName="node__leaf"
-                        separation={{ siblings: 2, nonSiblings: 2 }}
-                        nodeSize={{ x: 350, y: 100 }}
-                        orientation="vertical"
-                        depthFactor={550}
-                        collapsible={false}
-                        translate={{ x: 600, y: 50 }}
+            {loading ? (
+                ""
+            ) : (
+                <>
+                    <Box
+                        sx={{
+                            width: "90%",
+                            height: "90vh",
+                            background: "#FFFFFF",
+                            mt: "20px",
+                            borderRadius: "17px",
+                            overflow: "hidden",
+                            border: "3px solid #F219A1",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            mb: "20px",
+                        }}
+                    >
+                        <Tree
+                            data={roadmapJson}
+                            rootNodeClassName="node__root"
+                            branchNodeClassName="node__branch"
+                            leafNodeClassName="node__leaf"
+                            separation={{ siblings: 2, nonSiblings: 2 }}
+                            nodeSize={{ x: 350, y: 100 }}
+                            orientation="vertical"
+                            depthFactor={550}
+                            collapsible={false}
+                            translate={{ x: 600, y: 50 }}
+                        />
+                    </Box>
+                    <LearningResources
+                        roadmapJson={roadmapJson}
+                        roadmap={searchTerm}
                     />
-                )}
-            </Box>
+                </>
+            )}
             <CustomLoader open={open} />
             <CustomModal
                 open={open2}

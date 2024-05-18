@@ -18,7 +18,7 @@ const CustomLoader = ({ open }) => {
     const [text, setText] = useState(Math.floor(Math.random() * texts.length));
 
     function setRandomText() {
-        const index = Math.floor(Math.random() * texts.length);
+        const index = Math.floor(Math.random() * texts.length); // Adjusted here
         let newText = texts[index];
         if (newText === text) {
             setRandomText();
