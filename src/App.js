@@ -5,41 +5,29 @@ import Home from "./pages/Home";
 import Consultation from "./pages/Consultation";
 import Roadmaps from "./pages/Roadmaps";
 import RolePrediction from "./pages/RolePrediction";
-import { PredictionContext } from "./Contexts/PredictionContext";
-import { useState } from "react";
-// import Result from "./pages/Result";
+import ResumeBuilder from "./pages/ResumeBuilder";
 
 function App() {
-    // const [prediction, setPrediction] = useState({
-    //     majorRole: "",
-    //     otherRole1: "",
-    //     otherRole2: "",
-    // });
-    return (
-        // <PredictionContext.Provider value={[prediction, setPrediction]}>
-        <div
-            style={{
-                backgroundColor: "#19192F",
-                color: "#FFFFFF",
-                width: "100vw",
-                maxWidth: "100%",
-            }}
-        >
-            <CssBaseline />
-            <NavBar />
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/consultation" element={<Consultation />} />
-                <Route path="/resume-analysis" element={<RolePrediction />} />
-                {/* <Route
-                    path="/role-prediction/prediction"
-                    element={<Result />}
-                /> */}
-                <Route path="/roadmaps" element={<Roadmaps />} />
-            </Routes>
-        </div>
-        // </PredictionContext.Provider>
-    );
+  return (
+    <div
+      style={{
+        backgroundColor: "#19192F",
+        color: "#FFFFFF",
+        width: "100vw",
+        maxWidth: "100%",
+      }}
+    >
+      <CssBaseline />
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/consultation" element={<Consultation />} />
+        <Route path="/resume-analysis" element={<RolePrediction />} />
+        <Route path="/roadmaps" element={<Roadmaps />} />
+        <Route path="/resume" element={<ResumeBuilder />} />
+      </Routes>
+    </div>
+  );
 }
 
 export default App;
