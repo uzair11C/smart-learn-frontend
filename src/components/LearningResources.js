@@ -124,13 +124,6 @@ const LearningResources = ({ roadmapJson, roadmap }) => {
                                         >
                                             {video.title}
                                         </Typography>
-                                        {/* <Typography
-                                            variant="body1"
-                                            component="p"
-                                            sx={{ mt: "15px" }}
-                                        >
-                                            {video.description}
-                                        </Typography> */}
                                         <Typography
                                             variant="subtitle1"
                                             component="p"
