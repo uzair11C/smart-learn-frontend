@@ -1,6 +1,7 @@
 import { createContext } from "react";
 
 export const PredictionContext = createContext({
-    prediction: {},
-    setPrediction: () => {},
+    majorRole: "",
+    otherRole1: "",
+    otherRole2: "",
 });

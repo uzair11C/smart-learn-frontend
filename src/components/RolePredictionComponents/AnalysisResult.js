@@ -1,19 +1,26 @@
-import React from "react";
 import { Box, IconButton, Stack, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowBackIosNew } from "@mui/icons-material";
+import { PredictionContext } from "../../Contexts/PredictionContext";
 
-const AnalysisResult = ({ prediction, resultRef }) => {
+const AnalysisResult = ({
+    // prediction,
+    resultRef,
+}) => {
+    const prediction = useLocation().state;
+
+    console.log("Hello, prediction: ", prediction);
+
     const navigate = useNavigate();
     return (
         <Box
-            ref={resultRef}
+            // ref={resultRef}
             sx={{
                 width: "100%",
                 backgroundColor: "#19192F",
                 color: "#FFFFFF",
                 maxWidth: "100%",
-                height: "100vh",
+                minHeight: "100vh",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-start",
@@ -31,14 +38,11 @@ const AnalysisResult = ({ prediction, resultRef }) => {
                 }}
             >
                 <IconButton
-                    // sx={{ cursor: "pointer", ":hover": { opacity: 0.5 } }}
-                    // color="#FFFFFF"
                     sx={{
                         color: "#FFFFFF",
                         ml: "50px",
                         borderRadius: "12px",
                     }}
-                    // disableRipple
                     onClick={() => {
                         navigate("/resume-analysis", { replace: true });
                     }}

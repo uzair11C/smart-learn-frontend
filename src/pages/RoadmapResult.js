@@ -27,7 +27,7 @@ const RoadmapResult = () => {
             setLoading(true); // Set loading to true before making the API call
 
             console.log(loading);
-            const data = await axios.post("http://localhost:5000/api/roadmap", {
+            const data = await axios.post("http://localhost:5000/api/ai", {
                 role: "user",
                 content: `Generate a detailed dynamic roadmap in JSON format. The roadmap
                 should be structured as a tree, with each node representing a role or
