@@ -1,6 +1,6 @@
 import { Box, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import CardComponent from "./CardComponent";
+import CardComponent from "../CardComponent";
 import axios from "axios";
 
 const LearningResources = ({ roadmapJson, roadmap }) => {
@@ -116,7 +116,7 @@ const LearningResources = ({ roadmapJson, roadmap }) => {
                                                 mt: "15px",
                                                 overflow: "hidden",
                                                 display: "-webkit-box",
-                                                " -webkit-line-clamp": 2,
+                                                "-webkit-line-clamp": 2,
                                                 "line-clamp": 2,
                                                 "-webkit-box-orient":
                                                     "vertical",

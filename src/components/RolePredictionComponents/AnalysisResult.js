@@ -1,15 +1,74 @@
-import { Box, IconButton, Stack, Typography } from "@mui/material";
+import {
+    Box,
+    CircularProgress,
+    IconButton,
+    Stack,
+    Typography,
+} from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowBackIosNew } from "@mui/icons-material";
-import { PredictionContext } from "../../Contexts/PredictionContext";
+import JobAnalysis from "./JobAnalysis";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import JobsListing from "./JobsListing";
 
-const AnalysisResult = ({
-    // prediction,
-    resultRef,
-}) => {
+const AnalysisResult = () => {
+    const [analysis, setAnalysis] = useState(null);
+    const [jobs, setJobs] = useState(null);
+
     const prediction = useLocation().state;
 
-    console.log("Hello, prediction: ", prediction);
+    const ListJobs = async () => {
+        try {
+            const data = await axios.get(
+                `https://jsearch.p.rapidapi.com/search?query=${prediction.majorRole}%20in%20Pakistan&page=1&num_pages=1`,
+                {
+                    headers: {
+                        "X-RapidAPI-Key":
+                            "77d4030ec2mshcf92f4854993403p14d08fjsndb22243e500f",
+                        "X-RapidAPI-Host": "jsearch.p.rapidapi.com",
+                    },
+                }
+            );
+
+            const response = data.data;
+            console.log("jobs: ", response.data);
+            setJobs(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const GetAnalysis = async () => {
+        try {
+            const data = await axios.post("http://localhost:5000/api/ai", {
+                role: "user",
+                content: `Generate a job analysis report for 
+            ${prediction.majorRole} in the software industry. 
+            Return the result in JSON format with the following structure, 
+            no other extra text, no code or formatting, just json:
+
+            {
+              "demand": "the demand for the entered job",
+              "keySkillsAndTechnologies": list all possible skills and technologies used as an array,
+              "jobOpportunities": list all possible job oppurtunities as an array,
+              "salariesOffered": "salary range in pkr, like Rs. 40,000 - 50,000, no other text"
+            }`,
+            });
+
+            const response = data.data;
+            console.log(JSON.parse(response.content));
+            setAnalysis(JSON.parse(response.content));
+
+            await ListJobs();
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        GetAnalysis();
+    }, []);
 
     const navigate = useNavigate();
     return (
@@ -20,7 +79,7 @@ const AnalysisResult = ({
                 backgroundColor: "#19192F",
                 color: "#FFFFFF",
                 maxWidth: "100%",
-                minHeight: "100vh",
+                minHeight: "105vh",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-start",
@@ -32,7 +91,6 @@ const AnalysisResult = ({
                 sx={{
                     width: "100%",
                     display: "flex",
-                    // justifyContent: "center",
                     alignItems: "center",
                     pt: "20px",
                 }}
@@ -135,6 +193,19 @@ const AnalysisResult = ({
                     </Stack>
                 </Box>
             </Box>
+            {analysis ? (
+                <JobAnalysis
+                    majorRole={prediction.majorRole}
+                    JobAnalysis={analysis}
+                />
+            ) : (
+                <CircularProgress color="secondary" size={70} thickness={5} />
+            )}
+            {jobs ? (
+                <JobsListing majorRole={prediction.majorRole} jobs={jobs} />
+            ) : (
+                <CircularProgress color="secondary" size={70} thickness={5} />
+            )}
         </Box>
     );
 };

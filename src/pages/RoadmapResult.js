@@ -6,7 +6,7 @@ import CustomLoader from "../components/CustomLoader";
 import CustomModal from "../components/CustomModal";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowBackIosNew } from "@mui/icons-material";
-import LearningResources from "../components/LearningResources";
+import LearningResources from "../components/RoadmapComponents/LearningResources";
 
 const RoadmapResult = () => {
     const [loading, setLoading] = useState(true);
