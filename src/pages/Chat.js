@@ -6,8 +6,13 @@ import { Box, Button, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import axios from "axios";
 import CustomModal from "../components/CustomModal";
+import { useUser } from "../Contexts/useUser";
 
 const Chat = () => {
+    const { user } = useUser();
+
+    console.log(user);
+
     var messages = JSON.parse(localStorage.getItem("messages"));
 
     const [value, setValue] = useState("");
@@ -73,34 +78,11 @@ const Chat = () => {
                             I only talk about careers in IT industry. Is there
                             anything else I can help you with?`,
                         },
-                        {
-                            role: "assistant",
-                            content: `Hello there! I am Career Sage! 
-                            I specialize in providing guidance related to careers in 
-                            the IT and software industry. Here are some of the ways 
-                            I can assist you:\n\n1. **Career Paths**: Information on 
-                            various career paths within the IT industry, including roles 
-                            like software developer, data scientist, system administrator, 
-                            IT consultant, and more.\n\n2. **Skill Requirements**: 
-                            Details on the skills and technologies required for different 
-                            positions in the IT sector.\n\n3. **Learning Resources**: 
-                            Recommendations for courses, certifications, and learning 
-                            paths to help you acquire necessary skills.\n\n4. 
-                            **Job Preparation**: Tips on preparing for job interviews, 
-                            creating an effective resume, and building a professional 
-                            portfolio.\n\n5. **Market Trends**: Insights into current 
-                            trends and future projections in the IT industry.\n\n
-                            6. **Work Environment**: Information on the work culture, 
-                            remote work opportunities, and company types within the 
-                            IT sector.\n\n7. **Tools and Technologies**: Overviews of 
-                            popular tools, programming languages, frameworks, and 
-                            platforms used in the industry.\n\n8. 
-                            **Career Transition**: Guidance for transitioning into IT 
-                            from other industries or moving between different roles 
-                            within the IT sector.\n\nIf you have any specific questions 
-                            or need information on any topic related to IT careers, 
-                            feel free to ask!`,
-                        },
+                        // {
+                        //     role: "assistant",
+                        //     content:
+                        //         "Hello there! I am Career Sage! I specialize in providing guidance related to careers in the IT and software industry. Here are some of the ways I can assist you:\n\n1. **Career Paths**: Information on various career paths within the IT industry, including roles like software developer, data scientist, system administrator, IT consultant, and more.\n\n2. **Skill Requirements**: Details on the skills and technologies required for different positions in the IT sector.\n\n3. **Learning Resources**: Recommendations for courses, certifications, and learning paths to help you acquire necessary skills.\n\n4. **Job Preparation**: Tips on preparing for job interviews, creating an effective resume, and building a professional portfolio.\n\n5. **Market Trends**: Insights into current trends and future projections in the IT industry.\n\n6. **Work Environment**: Information on the work culture, remote work opportunities, and company types within the IT sector.\n\n7. **Tools and Technologies**: Overviews of popular tools, programming languages, frameworks, and platforms used in the industry.\n\n8. **Career Transition**: Guidance for transitioning into IT from other industries or moving between different roles within the IT sector.\n\nIf you have any specific questions or need information on any topic related to IT careers, feel free to ask!",
+                        // },
                     ];
                     messages.push(message);
                     localStorage.setItem("messages", JSON.stringify(messages));

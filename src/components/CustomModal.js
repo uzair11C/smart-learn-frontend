@@ -19,6 +19,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const CustomModal = ({ open, handleClose, title, content, refresh }) => {
     const ClearChat = () => {
         localStorage.removeItem("messages");
+        window.location.reload();
     };
 
     return (

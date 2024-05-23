@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, Avatar } from "@mui/material";
+import { Box, Typography, Avatar, Button } from "@mui/material";
 import { ArrowBackIosNew } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
@@ -7,6 +7,11 @@ export const Header = ({ status, limit }) => {
     const navigate = useNavigate();
     const handleClick = () => {
         navigate("/consultation", { replace: true });
+    };
+
+    const ClearChat = () => {
+        localStorage.removeItem("messages");
+        window.location.reload();
     };
 
     return (
@@ -73,18 +78,39 @@ export const Header = ({ status, limit }) => {
                         </Typography>
                     </Box>
                 </Box>
-                <Typography
-                    variant="p"
-                    component="p"
-                    fontSize="3vmin"
-                    fontWeight="bold"
-                    fontFamily="monospace"
-                    color={
-                        limit < 45 ? "green" : limit <= 60 ? "yellow" : "red"
-                    }
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        gap: "30px",
+                    }}
                 >
-                    Limit: {limit} / 100
-                </Typography>
+                    <Typography
+                        variant="p"
+                        component="p"
+                        fontSize="3vmin"
+                        fontWeight="bold"
+                        fontFamily="monospace"
+                        color={
+                            limit < 45
+                                ? "green"
+                                : limit <= 60
+                                ? "yellow"
+                                : "red"
+                        }
+                    >
+                        Limit: {limit} / 100
+                    </Typography>
+                    <Button
+                        color="error"
+                        variant="contained"
+                        sx={{ textTransform: "none" }}
+                        onClick={ClearChat}
+                    >
+                        Delete Chat
+                    </Button>
+                </Box>
             </Box>
         </Box>
     );
