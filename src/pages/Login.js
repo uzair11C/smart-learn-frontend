@@ -1,8 +1,27 @@
-import React from "react";
-import { Box, Typography, TextField, Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Box, Typography, TextField, Button, Alert } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import { useUser } from "../Contexts/useUser";
 
 const Login = () => {
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
+    const { login, setEmail, setPassword, email, password } = useUser();
+
+    const handleLogin = () => {
+        if (!email || !password) {
+            setError("Please provide all required information");
+            return;
+        }
+        login()
+            .then(() => {
+                navigate("/");
+            })
+            .catch((error) => {
+                setError(error.message);
+            });
+    };
+
     return (
         <Box
             sx={{
@@ -56,6 +75,10 @@ const Login = () => {
                         label="Email"
                         variant="outlined"
                         type="email"
+                        value={email}
+                        onChange={(e) => {
+                            setEmail(e.target.value);
+                        }}
                         sx={{
                             mt: "20px",
                             ".MuiOutlinedInput-notchedOutline": {
@@ -98,6 +121,10 @@ const Login = () => {
                         label="Password"
                         variant="outlined"
                         type="password"
+                        value={password}
+                        onChange={(e) => {
+                            setPassword(e.target.value);
+                        }}
                         sx={{
                             mt: "20px",
                             ".MuiOutlinedInput-notchedOutline": {
@@ -126,9 +153,14 @@ const Login = () => {
                             },
                         }}
                     />
-
+                    {error && (
+                        <Alert severity="error" sx={{ mt: "35px" }}>
+                            {error}
+                        </Alert>
+                    )}
                     <Button
                         variant="contained"
+                        onClick={handleLogin}
                         sx={{
                             textTransform: "none",
                             background:

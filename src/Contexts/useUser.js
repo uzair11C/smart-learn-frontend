@@ -25,18 +25,18 @@ export const UserProvider = ({ children }) => {
         });
 
         setIsAuthenticated(true);
-        // setEmail("");
-        // setPassword("");
 
         const { data } = await supabase.auth.updateUser({
             data: {
                 name: "Nigga Chan",
+                messages: [],
             },
         });
     };
 
-    const updateUser = async (messages) => {
-        await supabase.auth.updateUser({
+    const storeMessages = async (messages) => {
+        console.log("in store message line 39: ", messages);
+        const { res } = await supabase.auth.updateUser({
             data: {
                 messages: messages,
             },
@@ -96,7 +96,7 @@ export const UserProvider = ({ children }) => {
         loginOAuth,
         login,
         signUp,
-        updateUser,
+        storeMessages,
         logout,
     };
 

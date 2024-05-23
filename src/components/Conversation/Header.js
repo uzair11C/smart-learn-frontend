@@ -3,15 +3,19 @@ import { Box, Typography, Avatar, Button } from "@mui/material";
 import { ArrowBackIosNew } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
-export const Header = ({ status, limit }) => {
+export const Header = ({ status, limit, storeMessages }) => {
     const navigate = useNavigate();
     const handleClick = () => {
         navigate("/consultation", { replace: true });
     };
 
-    const ClearChat = () => {
+    // const { deleteMessages, storeMessages } = useUser();
+
+    const ClearChat = async () => {
+        // deleteMessages();
+        await storeMessages([]);
         localStorage.removeItem("messages");
-        window.location.reload();
+        await window.location.reload();
     };
 
     return (

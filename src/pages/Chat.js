@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Header } from "../components/Conversation/Header";
 import { Body } from "../components/Conversation/Body";
@@ -9,11 +9,20 @@ import CustomModal from "../components/CustomModal";
 import { useUser } from "../Contexts/useUser";
 
 const Chat = () => {
-    const { user } = useUser();
+    const { storeMessages, user } = useUser();
 
-    console.log(user);
+    useEffect(() => {
+        console.log(user);
+    }, []);
 
-    var messages = JSON.parse(localStorage.getItem("messages"));
+    var messages = [
+        {
+            role: "system",
+            content:
+                "You are a career guiding bot, identified as Career Sage, focused on queries related to careers and educationin the software/IT industry. Politely decline any other queries.To any query other than career guidance in IT/software industry, you will say: I am sorry,I only talk about careers in IT industry. Is thereanything else I can help you with?",
+        },
+        ...((user && user.user_metadata.messages) || []),
+    ];
 
     const [value, setValue] = useState("");
     const [status, setStatus] = useState("active");
@@ -61,32 +70,14 @@ const Chat = () => {
                     content: value,
                 };
 
-                if (messages) {
-                    messages.push(message);
-                    localStorage.setItem("messages", JSON.stringify(messages));
-                } else {
-                    messages = [
-                        {
-                            role: "system",
-                            content: `You are a career guiding bot, 
-                            identified as Career Sage, 
-                            focused on queries related to careers and education
-                            in the software/IT industry. 
-                            Politely decline any other queries.
-                            To any query other than career guidance in 
-                            IT/software industry, you will say: I am sorry,
-                            I only talk about careers in IT industry. Is there
-                            anything else I can help you with?`,
-                        },
-                        // {
-                        //     role: "assistant",
-                        //     content:
-                        //         "Hello there! I am Career Sage! I specialize in providing guidance related to careers in the IT and software industry. Here are some of the ways I can assist you:\n\n1. **Career Paths**: Information on various career paths within the IT industry, including roles like software developer, data scientist, system administrator, IT consultant, and more.\n\n2. **Skill Requirements**: Details on the skills and technologies required for different positions in the IT sector.\n\n3. **Learning Resources**: Recommendations for courses, certifications, and learning paths to help you acquire necessary skills.\n\n4. **Job Preparation**: Tips on preparing for job interviews, creating an effective resume, and building a professional portfolio.\n\n5. **Market Trends**: Insights into current trends and future projections in the IT industry.\n\n6. **Work Environment**: Information on the work culture, remote work opportunities, and company types within the IT sector.\n\n7. **Tools and Technologies**: Overviews of popular tools, programming languages, frameworks, and platforms used in the industry.\n\n8. **Career Transition**: Guidance for transitioning into IT from other industries or moving between different roles within the IT sector.\n\nIf you have any specific questions or need information on any topic related to IT careers, feel free to ask!",
-                        // },
-                    ];
-                    messages.push(message);
-                    localStorage.setItem("messages", JSON.stringify(messages));
-                }
+                // if (messages) {
+                messages.push(message);
+                localStorage.setItem("messages", JSON.stringify(messages));
+                // } else {
+                //     messages.push(message);
+                //     console.log("before update", messages);
+                //     localStorage.setItem("messages", JSON.stringify(messages));
+                // }
                 setValue("");
                 setLoading(true);
 
@@ -99,6 +90,7 @@ const Chat = () => {
                 const response = await data.data;
                 messages.push(response);
                 localStorage.setItem("messages", JSON.stringify(messages));
+
                 setLoading(false);
                 setStatus("Active");
                 setLimit(
@@ -108,6 +100,7 @@ const Chat = () => {
                           ).length
                         : limit + 1
                 );
+                storeMessages(messages);
             }
         }
     };
@@ -129,7 +122,11 @@ const Chat = () => {
                 alignItems: "stretch",
             }}
         >
-            <Header status={status} limit={limit} />
+            <Header
+                status={status}
+                limit={limit}
+                storeMessages={storeMessages}
+            />
             <Body messages={messages} status={status} loading={loading} />
             {/* Form */}
             <Box
@@ -212,6 +209,7 @@ const Chat = () => {
                 content={content}
                 refresh={refresh}
                 handleClose={handleClose}
+                storeMessages={storeMessages}
             />
         </Box>
     );

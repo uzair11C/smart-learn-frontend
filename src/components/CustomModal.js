@@ -16,10 +16,19 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const CustomModal = ({ open, handleClose, title, content, refresh }) => {
-    const ClearChat = () => {
+const CustomModal = ({
+    open,
+    handleClose,
+    title,
+    content,
+    refresh,
+    storeMessages,
+}) => {
+    const ClearChat = async () => {
+        // deleteMessages();
+        await storeMessages([]);
         localStorage.removeItem("messages");
-        window.location.reload();
+        await window.location.reload();
     };
 
     return (
