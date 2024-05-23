@@ -1,11 +1,54 @@
-import React from "react";
-import { Box, Typography, Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import {
+    Box,
+    Typography,
+    Button,
+    Stack,
+    Divider,
+    CircularProgress,
+} from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 import EastIcon from "@mui/icons-material/East";
 import CardComponent from "../CardComponent";
+import axios from "axios";
+import CustomModal from "../CustomModal";
 
 const Services = () => {
+    const [events, setEvents] = useState(null);
+
+    const [open2, setOpen2] = useState(false);
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
+
     const navigate = useNavigate();
+
+    const handleClose = () => {
+        setOpen2(false);
+    };
+
+    const GetEvents = async () => {
+        try {
+            const data = await axios.get(
+                `https://serpapi.com/search?engine=google_events&q=Software+events+and+conferences+in+Pakistan&hl=en&gl=pk&api_key=${process.env.REACT_APP_SERP_API_KEY}`
+            );
+            const response = await data.data;
+
+            setEvents(response.events_results);
+        } catch (error) {
+            console.log(error);
+            setTitle("Error!");
+            setContent(
+                `Something went wrong, please try again later.
+                \nError: ${error.message}
+                `
+            );
+            setOpen2(true);
+        }
+    };
+
+    useEffect(() => {
+        GetEvents();
+    }, []);
 
     return (
         <Box
@@ -31,38 +74,119 @@ const Services = () => {
                     justifyContent: "center",
                     alignItems: "flex-start",
                     gap: "30px",
+                    width: "100%",
                 }}
             >
-                <CardComponent
-                    borderRadius="12px"
-                    padding="2%"
-                    minWidth="30%"
-                    maxWidth="90%"
-                    minHeight="30%"
+                <Box
                     sx={{
                         display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "flex-start",
+                        justifyContent: "center",
                         alignItems: "center",
+                        width: "30%",
+                        position: "sticky",
+                        top: 120,
                     }}
                 >
-                    <Typography sx={{ width: "100%" }}>
-                        Upcoming Events in software industry
-                    </Typography>
-                </CardComponent>
+                    <CardComponent
+                        borderRadius="12px"
+                        padding="5%"
+                        minWidth="35%"
+                        maxWidth="100%"
+                        minHeight="50%"
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "flex-start",
+                            alignItems: "center",
+                            width: "100%",
+                        }}
+                    >
+                        <Typography
+                            variant="h4"
+                            fontWeight="bold"
+                            sx={{ width: "100%" }}
+                        >
+                            Upcoming Events:
+                        </Typography>
+                        <Stack
+                            direction="column"
+                            justifyContent="center"
+                            alignItems="flex-start"
+                            divider={
+                                <Divider
+                                    orientation="horizontal"
+                                    flexItem
+                                    sx={{ background: "rgba(255,255,255,0.5)" }}
+                                />
+                            }
+                            spacing={2}
+                            sx={{ mt: "15px" }}
+                        >
+                            {events ? (
+                                events.map((softEvent) => (
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            justifyContent: "center",
+                                            alignItems: "flex-start",
+                                            gap: "5px",
+                                        }}
+                                        key={softEvent.title}
+                                    >
+                                        <Typography
+                                            variant="h6"
+                                            component="p"
+                                            fontWeight="bold"
+                                        >
+                                            {softEvent.title}
+                                        </Typography>
+                                        <Typography
+                                            variant="body1"
+                                            component="p"
+                                        >
+                                            {softEvent.date.when &&
+                                                softEvent.date.when}
+                                        </Typography>
+                                        <Typography
+                                            variant="subtitle2"
+                                            component="p"
+                                        >
+                                            {softEvent.address &&
+                                                softEvent.address.join(", ")}
+                                        </Typography>
+                                        <Link
+                                            to={softEvent.link}
+                                            target="_blank"
+                                            style={{ color: "#E717AF" }}
+                                        >
+                                            {softEvent.link}
+                                        </Link>
+                                    </Box>
+                                ))
+                            ) : (
+                                <CircularProgress
+                                    color="secondary"
+                                    size={70}
+                                    thickness={5}
+                                />
+                            )}
+                        </Stack>
+                    </CardComponent>
+                </Box>
                 <Box
                     sx={{
                         display: "flex",
                         flexDirection: "column",
                         justifyContent: "center",
                         alignItems: "center",
-                        // width: "90%",
+                        width: "70%",
                     }}
                 >
                     {/* consultation */}
                     <Box
                         sx={{
-                            width: { xs: " 100% ", md: "70%" },
+                            width: "100%",
                             display: "flex",
                             flexDirection: { xs: "column", md: "row" },
                             justifyContent: "center",
@@ -125,7 +249,7 @@ const Services = () => {
                     {/* Prediction */}
                     <Box
                         sx={{
-                            width: { xs: " 100% ", md: "70%" },
+                            width: "100%",
                             display: "flex",
                             flexDirection: { xs: "column", md: "row-reverse" },
                             justifyContent: "center",
@@ -189,7 +313,7 @@ const Services = () => {
                     {/* Roadmaps */}
                     <Box
                         sx={{
-                            width: { xs: " 100% ", md: "70%" },
+                            width: "100%",
                             display: "flex",
                             flexDirection: { xs: "column", md: "row" },
                             justifyContent: "center",
@@ -252,6 +376,12 @@ const Services = () => {
                     </Box>
                 </Box>
             </Box>
+            <CustomModal
+                open={open2}
+                title={title}
+                content={content}
+                handleClose={handleClose}
+            />
         </Box>
     );
 };

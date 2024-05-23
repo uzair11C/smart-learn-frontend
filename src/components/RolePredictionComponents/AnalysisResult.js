@@ -11,10 +11,19 @@ import JobAnalysis from "./JobAnalysis";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import JobsListing from "./JobsListing";
+import CustomModal from "../CustomModal";
 
 const AnalysisResult = () => {
     const [analysis, setAnalysis] = useState(null);
     const [jobs, setJobs] = useState(null);
+
+    const [open2, setOpen2] = useState(false);
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
+
+    const handleClose = () => {
+        setOpen2(false);
+    };
 
     const prediction = useLocation().state;
 
@@ -24,8 +33,7 @@ const AnalysisResult = () => {
                 `https://jsearch.p.rapidapi.com/search?query=${prediction.majorRole}%20in%20Pakistan&page=1&num_pages=1`,
                 {
                     headers: {
-                        "X-RapidAPI-Key":
-                            "77d4030ec2mshcf92f4854993403p14d08fjsndb22243e500f",
+                        "X-RapidAPI-Key": process.env.REACT_APP_JOBS_API_KEY,
                         "X-RapidAPI-Host": "jsearch.p.rapidapi.com",
                     },
                 }
@@ -36,6 +44,13 @@ const AnalysisResult = () => {
             setJobs(response.data);
         } catch (error) {
             console.log(error);
+            setTitle("Error!");
+            setContent(
+                `Something went wrong, please try again later.
+                \nError: ${error.message}
+                `
+            );
+            setOpen2(true);
         }
     };
 
@@ -63,6 +78,13 @@ const AnalysisResult = () => {
             await ListJobs();
         } catch (error) {
             console.log(error);
+            setTitle("Error!");
+            setContent(
+                `Something went wrong, please try again later.
+                \nError: ${error.message}
+                `
+            );
+            setOpen2(true);
         }
     };
 
@@ -206,6 +228,12 @@ const AnalysisResult = () => {
             ) : (
                 <CircularProgress color="secondary" size={70} thickness={5} />
             )}
+            <CustomModal
+                open={open2}
+                title={title}
+                content={content}
+                handleClose={handleClose}
+            />
         </Box>
     );
 };
