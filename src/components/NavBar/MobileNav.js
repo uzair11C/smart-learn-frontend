@@ -5,12 +5,23 @@ import {
     Typography,
     Menu,
     MenuItem,
+    Button,
     // Button,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
 
-const MobileNav = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu }) => {
+const MobileNav = ({
+    anchorElNav,
+    handleOpenNavMenu,
+    handleCloseNavMenu,
+    user,
+    logout,
+    navigate,
+}) => {
+    const handleLogin = () => {
+        user && user.id ? logout() : navigate("/login");
+    };
     return (
         <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -95,9 +106,9 @@ const MobileNav = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu }) => {
                                 textDecoration: "none",
                                 color: "#FFFFFF",
                             }}
-                            to="/consultation"
+                            to="/roadmaps"
                         >
-                            Consultation
+                            Roadmaps
                         </Link>
                     </Typography>
                 </MenuItem>
@@ -137,33 +148,13 @@ const MobileNav = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu }) => {
                                 textDecoration: "none",
                                 color: "#FFFFFF",
                             }}
-                            to="/roadmaps"
+                            to="/consultation"
                         >
-                            Roadmaps
+                            Consultation
                         </Link>
                     </Typography>
                 </MenuItem>
-                {/* <MenuItem onClick={handleCloseNavMenu}>
-                    <Typography
-                        variant="body1"
-                        textAlign="center"
-                        sx={{
-                            display: "block",
-                            margin: "10px",
-                            textDecoration: "none",
-                        }}
-                    >
-                        <Link
-                            style={{
-                                textDecoration: "none",
-                                color: "#FFFFFF",
-                            }}
-                            to="/profile"
-                        >
-                            Profile
-                        </Link>
-                    </Typography>
-                </MenuItem>
+
                 <MenuItem>
                     <Button
                         variant="contained"
@@ -177,11 +168,14 @@ const MobileNav = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu }) => {
                             pr: "30px",
                             width: "100%",
                         }}
-                        onClick={handleCloseNavMenu}
+                        onClick={() => {
+                            handleCloseNavMenu();
+                            handleLogin();
+                        }}
                     >
                         Logout
                     </Button>
-                </MenuItem> */}
+                </MenuItem>
             </Menu>
         </Box>
     );

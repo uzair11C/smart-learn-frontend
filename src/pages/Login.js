@@ -2,19 +2,24 @@ import React, { useState } from "react";
 import { Box, Typography, TextField, Button, Alert } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../Contexts/useUser";
+import Loader2 from "../components/Loader2";
 
 const Login = () => {
     const [error, setError] = useState("");
+    const [open, setOpen] = useState(false);
+
     const navigate = useNavigate();
     const { login, setEmail, setPassword, email, password } = useUser();
 
     const handleLogin = () => {
+        setOpen(true);
         if (!email || !password) {
             setError("Please provide all required information");
             return;
         }
         login()
             .then(() => {
+                setOpen(false);
                 navigate("/");
             })
             .catch((error) => {
@@ -188,6 +193,7 @@ const Login = () => {
                     </Typography>
                 </Box>
             </Box>
+            <Loader2 open={open} />
         </Box>
     );
 };

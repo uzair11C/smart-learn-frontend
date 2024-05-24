@@ -24,7 +24,7 @@ export const Header = ({ status, limit, storeMessages }) => {
                 backgroundColor: "#06061D",
                 display: "flex",
                 color: "#FFFFFF",
-                padding: "1.3% 7%",
+                padding: "1.2% 7%",
             }}
         >
             <Box
@@ -58,8 +58,8 @@ export const Header = ({ status, limit, storeMessages }) => {
                         alt="Sage"
                         src="/images/SageAvatar.png"
                         sx={{
-                            width: { lg: "60px", xs: "50px" },
-                            height: { lg: "60px", xs: "50px" },
+                            width: { lg: "55px", xs: "45px" },
+                            height: { lg: "55px", xs: "45px" },
                         }}
                     />
                     <Box sx={{ display: "flex", flexDirection: "column" }}>

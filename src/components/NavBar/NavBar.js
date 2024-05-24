@@ -3,8 +3,14 @@ import { AppBar, Toolbar, Container } from "@mui/material";
 import MobileNav from "./MobileNav";
 import DesktopNav from "./DesktopNav";
 import { useEffect } from "react";
+import { useUser } from "../../Contexts/useUser";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+    const { user, logout } = useUser();
+
+    const navigate = useNavigate();
+
     const [anchorElNav, setAnchorElNav] = useState(null);
 
     const handleOpenNavMenu = (event) => {
@@ -19,7 +25,7 @@ const Header = () => {
 
     useEffect(() => {
         const handleScroll = () => {
-            const sectionHeight = window.innerHeight;
+            const sectionHeight = window.innerHeight - 500;
             const scrollPosition = window.scrollY;
 
             // Check if the user has scrolled past the section
@@ -62,10 +68,18 @@ const Header = () => {
                         anchorElNav={anchorElNav}
                         handleOpenNavMenu={handleOpenNavMenu}
                         handleCloseNavMenu={handleCloseNavMenu}
+                        navigate={navigate}
+                        user={user}
+                        logout={logout}
                     />
 
                     {/** Desktop View of Header **/}
-                    <DesktopNav handleCloseNavMenu={handleCloseNavMenu} />
+                    <DesktopNav
+                        handleCloseNavMenu={handleCloseNavMenu}
+                        navigate={navigate}
+                        user={user}
+                        logout={logout}
+                    />
                 </Toolbar>
             </Container>
         </AppBar>

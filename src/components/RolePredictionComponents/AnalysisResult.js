@@ -192,14 +192,14 @@ const AnalysisResult = () => {
                                 component="p"
                                 fontSize="5vmin"
                             >
-                                {prediction && prediction.otherRole2}
+                                {prediction && prediction.otherRole1}
                             </Typography>
                             <Typography
                                 variant="h5"
                                 component="p"
                                 fontSize="5vmin"
                             >
-                                {prediction && prediction.otherRole1}
+                                {prediction && prediction.otherRole2}
                             </Typography>
                         </Stack>
                         <img

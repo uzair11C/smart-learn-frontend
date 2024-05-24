@@ -29,7 +29,7 @@ const Services = () => {
     const GetEvents = async () => {
         try {
             const data = await axios.get(
-                `https://serpapi.com/search?engine=google_events&q=Software+events+and+conferences+in+Pakistan&hl=en&gl=pk&api_key=${process.env.REACT_APP_SERP_API_KEY}`
+                `https://serpapi.com/search?engine=google_events&q=Software+events+in+Pakistan&hl=en&gl=pk&api_key=${process.env.REACT_APP_SERP_API_KEY}`
             );
             const response = await data.data;
 
@@ -55,7 +55,7 @@ const Services = () => {
             sx={{
                 width: "100%",
                 maxWidth: "100%",
-                p: { xs: "25px", md: "40px" },
+                p: { xs: "25px", md: "50px" },
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
@@ -73,7 +73,7 @@ const Services = () => {
                     flexDirection: "row",
                     justifyContent: "center",
                     alignItems: "flex-start",
-                    gap: "30px",
+                    gap: "40px",
                     width: "100%",
                 }}
             >
@@ -146,7 +146,8 @@ const Services = () => {
                                             component="p"
                                         >
                                             {softEvent.date.when &&
-                                                softEvent.date.when}
+                                                softEvent.date.when}{" "}
+                                            2024
                                         </Typography>
                                         <Typography
                                             variant="subtitle2"
@@ -181,6 +182,7 @@ const Services = () => {
                         justifyContent: "center",
                         alignItems: "center",
                         width: "70%",
+                        gap: "30px",
                     }}
                 >
                     {/* consultation */}
@@ -198,7 +200,7 @@ const Services = () => {
                         <img
                             src="/images/consultation.png"
                             alt="consultation"
-                            width="100%"
+                            width="70%"
                         />
                         <Box
                             sx={{
@@ -261,7 +263,7 @@ const Services = () => {
                         <img
                             src="/images/prediction.png"
                             alt="consultation"
-                            width="100%"
+                            width="70%"
                         />
                         <Box
                             sx={{
@@ -325,7 +327,7 @@ const Services = () => {
                         <img
                             src="/images/roadmaps.png"
                             alt="consultation"
-                            width="100%%"
+                            width="70%"
                         />
                         <Box
                             sx={{

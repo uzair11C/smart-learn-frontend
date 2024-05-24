@@ -1,11 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import Banner from "../components/Banner";
 import { Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import EastIcon from "@mui/icons-material/East";
+import { useUser } from "../Contexts/useUser";
+import CustomModal from "../components/CustomModal";
 
 const Consultation = () => {
+    const [open, setOpen] = useState(false);
+    const [shouldLogin, setShouldLogin] = useState(false);
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
+
     const navigate = useNavigate();
+
+    const { user } = useUser();
+
+    const LoginCheck = () => {
+        user && user.id ? navigate("/consultation/chat") : DisplayDialog();
+    };
+
+    const DisplayDialog = () => {
+        setShouldLogin(true);
+        setOpen(true);
+        setTitle("Login Required!");
+        setContent(
+            "You need to be logged in to be able to access this feature."
+        );
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (
         <>
@@ -65,7 +91,7 @@ const Consultation = () => {
                         </Typography>
                         <Button
                             variant="contained"
-                            onClick={() => navigate("/consultation/chat")}
+                            onClick={LoginCheck}
                             sx={{
                                 textTransform: "none",
                                 borderRadius: "5px",
@@ -80,6 +106,13 @@ const Consultation = () => {
                         </Button>
                     </Box>
                 </Box>
+                <CustomModal
+                    open={open}
+                    title={title}
+                    content={content}
+                    login={shouldLogin}
+                    handleClose={handleClose}
+                />
             </Box>
         </>
     );

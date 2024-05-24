@@ -11,6 +11,7 @@ import {
     Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { useNavigate } from "react-router-dom";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -22,6 +23,7 @@ const CustomModal = ({
     title,
     content,
     refresh,
+    login,
     storeMessages,
 }) => {
     const ClearChat = async () => {
@@ -30,6 +32,8 @@ const CustomModal = ({
         localStorage.removeItem("messages");
         await window.location.reload();
     };
+
+    const navigate = useNavigate();
 
     return (
         <Dialog
@@ -104,6 +108,22 @@ const CustomModal = ({
                         }}
                     >
                         Refresh
+                    </Button>
+                ) : null}
+                {login ? (
+                    <Button
+                        onClick={() => navigate("/login")}
+                        variant="contained"
+                        sx={{
+                            textTransform: "none",
+                            borderRadius: "5px",
+                            padding: "1% 6%",
+                            fontSize: "3vmin",
+                            background:
+                                "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                        }}
+                    >
+                        Login
                     </Button>
                 ) : null}
                 <Button
