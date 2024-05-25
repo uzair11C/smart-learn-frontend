@@ -6,23 +6,22 @@ import {
     Menu,
     MenuItem,
     Button,
+    // Button,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-// import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Link } from "react-router-dom";
 
-const MobileNav = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu }) => {
-    // const [expand, setExpand] = useState(false);
-
-    // const handleExpand = () => {
-    //     setExpand(true);
-    // };
-
-    // const handleClose = () => {
-    //     setExpand(false);
-    //     handleCloseNavMenu();
-    // };
-
+const MobileNav = ({
+    anchorElNav,
+    handleOpenNavMenu,
+    handleCloseNavMenu,
+    user,
+    logout,
+    navigate,
+}) => {
+    const handleLogin = () => {
+        user && user.id ? logout() : navigate("/login");
+    };
     return (
         <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -91,67 +90,7 @@ const MobileNav = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu }) => {
                         </Link>
                     </Typography>
                 </MenuItem>
-                {/* <MenuItem onClick={handleCloseNavMenu}>
-                    <Typography
-                        variant="body1"
-                        textAlign="center"
-                        sx={{
-                            // display: "block",
-                            margin: "10px",
-                            textDecoration: "none",
-                            color: "#FFFFFF",
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }}
-                    >
-                        Services <ArrowDropDownIcon />
-                    </Typography>
-                </MenuItem> */}
 
-                <MenuItem onClick={handleCloseNavMenu}>
-                    <Typography
-                        variant="body1"
-                        textAlign="center"
-                        sx={{
-                            display: "block",
-                            margin: "10px",
-                            textDecoration: "none",
-                        }}
-                    >
-                        <Link
-                            style={{
-                                textDecoration: "none",
-                                color: "#FFFFFF",
-                            }}
-                            to="/consultation"
-                        >
-                            Consultation
-                        </Link>
-                    </Typography>
-                </MenuItem>
-                <MenuItem onClick={handleCloseNavMenu}>
-                    <Typography
-                        variant="body1"
-                        textAlign="center"
-                        sx={{
-                            display: "block",
-                            margin: "10px",
-                            textDecoration: "none",
-                        }}
-                    >
-                        <Link
-                            style={{
-                                textDecoration: "none",
-                                color: "#FFFFFF",
-                            }}
-                            to="/role-prediction"
-                        >
-                            Role Prediction
-                        </Link>
-                    </Typography>
-                </MenuItem>
                 <MenuItem onClick={handleCloseNavMenu}>
                     <Typography
                         variant="body1"
@@ -188,12 +127,34 @@ const MobileNav = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu }) => {
                                 textDecoration: "none",
                                 color: "#FFFFFF",
                             }}
-                            to="/profile"
+                            to="/resume-analysis"
                         >
-                            Profile
+                            Resume Analysis
                         </Link>
                     </Typography>
                 </MenuItem>
+                <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography
+                        variant="body1"
+                        textAlign="center"
+                        sx={{
+                            display: "block",
+                            margin: "10px",
+                            textDecoration: "none",
+                        }}
+                    >
+                        <Link
+                            style={{
+                                textDecoration: "none",
+                                color: "#FFFFFF",
+                            }}
+                            to="/consultation"
+                        >
+                            Consultation
+                        </Link>
+                    </Typography>
+                </MenuItem>
+
                 <MenuItem>
                     <Button
                         variant="contained"
@@ -207,7 +168,10 @@ const MobileNav = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu }) => {
                             pr: "30px",
                             width: "100%",
                         }}
-                        onClick={handleCloseNavMenu}
+                        onClick={() => {
+                            handleCloseNavMenu();
+                            handleLogin();
+                        }}
                     >
                         Logout
                     </Button>

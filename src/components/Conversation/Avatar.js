@@ -9,8 +9,8 @@ export const Avatar = () => {
           display: "inline-block",
           borderRadius: "50%",
           overflow: "hidden",
-          height: "5rem",
-          width: "5rem",
+          height: "10%",
+          width: "10%",
         }}
       >
         <img

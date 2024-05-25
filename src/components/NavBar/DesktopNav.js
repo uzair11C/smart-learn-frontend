@@ -2,7 +2,13 @@ import React from "react";
 import { Box, Typography, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 
-const DesktopNav = ({ handleCloseNavMenu }) => {
+const DesktopNav = ({ handleCloseNavMenu, user, logout, navigate }) => {
+    // const { logout } = useUser();
+
+    const handleLogin = () => {
+        user && user.id ? logout() : navigate("/login");
+    };
+
     return (
         <Box
             sx={{
@@ -76,42 +82,6 @@ const DesktopNav = ({ handleCloseNavMenu }) => {
                                 textDecoration: "none",
                                 color: "#FFFFFF",
                             }}
-                            to="/consultation"
-                        >
-                            Consultation
-                        </Link>
-                    </Typography>
-                    <Typography
-                        variant="h6"
-                        sx={{
-                            display: "block",
-                            margin: "10px",
-                            textDecoration: "none",
-                        }}
-                    >
-                        <Link
-                            style={{
-                                textDecoration: "none",
-                                color: "#FFFFFF",
-                            }}
-                            to="/role-prediction"
-                        >
-                            Role Prediction
-                        </Link>
-                    </Typography>
-                    <Typography
-                        variant="h6"
-                        sx={{
-                            display: "block",
-                            margin: "10px",
-                            textDecoration: "none",
-                        }}
-                    >
-                        <Link
-                            style={{
-                                textDecoration: "none",
-                                color: "#FFFFFF",
-                            }}
                             to="/roadmaps"
                         >
                             Roadmaps
@@ -119,10 +89,7 @@ const DesktopNav = ({ handleCloseNavMenu }) => {
                     </Typography>
                     <Typography
                         variant="h6"
-                        component="h6"
-                        onClick={handleCloseNavMenu}
                         sx={{
-                            my: 2,
                             display: "block",
                             margin: "10px",
                             textDecoration: "none",
@@ -131,15 +98,53 @@ const DesktopNav = ({ handleCloseNavMenu }) => {
                         <Link
                             style={{
                                 textDecoration: "none",
-                                color: "inherit",
+                                color: "#FFFFFF",
                             }}
-                            to="/profile"
+                            to="/resume-analysis"
                         >
-                            Profile
+                            Resume Analysis
                         </Link>
                     </Typography>
+
+                    <Typography
+                        variant="h6"
+                        sx={{
+                            display: "block",
+                            margin: "10px",
+                            textDecoration: "none",
+                        }}
+                    >
+                        <Link
+                            style={{
+                                textDecoration: "none",
+                                color: "#FFFFFF",
+                            }}
+                            to="/consultation"
+                        >
+                            Consultation
+                        </Link>
+                    </Typography>
+
+                    {user?.id && (
+                        // <Link to="/profile">
+                        <Box
+                            component="img"
+                            sx={{
+                                height: 50,
+                                width: 50,
+                                borderRadius: "50px",
+                            }}
+                            alt={`${user?.user_metadata.full_name} Photo`}
+                            src={
+                                user?.user_metadata.avatar_url ||
+                                "/images/placeholder.jpg"
+                            }
+                        />
+                    )}
+
                     <Button
                         variant="contained"
+                        onClick={handleLogin}
                         sx={{
                             textTransform: "none",
                             background:
@@ -150,7 +155,7 @@ const DesktopNav = ({ handleCloseNavMenu }) => {
                             pr: "30px",
                         }}
                     >
-                        Logout
+                        {user?.id ? "Logout" : "Login"}
                     </Button>
                 </Box>
             </Box>

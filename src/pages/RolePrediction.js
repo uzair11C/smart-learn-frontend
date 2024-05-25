@@ -1,16 +1,17 @@
 import React from "react";
 import Banner from "../components/Banner";
-import UploadCV from "../components/ConsultationComponents/UploadCV";
-import Result from "../components/ConsultationComponents/Result";
+import UploadCV from "../components/RolePredictionComponents/UploadCV";
 
 const RolePrediction = () => {
-  return (
-    <>
-      <Banner title="Role Prediction" />
-      <UploadCV />
-      <Result />
-    </>
-  );
+    return (
+        <>
+            <Banner
+                title="Resume Analysis"
+                imageUrl="/images/rolePrediction.jpg"
+            />
+            <UploadCV />
+        </>
+    );
 };
 
 export default RolePrediction;
