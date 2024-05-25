@@ -39,8 +39,9 @@ const Login = () => {
             });
     };
     useEffect(() => {
-        console.log("current logged in user: ", user);
         if (user?.id) {
+            console.log("current logged in user useEffect: ", user);
+            console.log("got user ID: ", user.id);
             navigate("/");
         }
     }, []);
