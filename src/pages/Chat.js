@@ -14,7 +14,8 @@ const Chat = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!user?.id) {
+        console.log("current logged in user: ", user);
+        if (user && !user?.id) {
             navigate("/login");
         }
     }, []);
@@ -74,14 +75,10 @@ const Chat = () => {
                     content: value,
                 };
 
-                // if (messages) {
-                messages.push(message);
+                messages = [...messages, message];
+                // messages.push(message);
                 localStorage.setItem("messages", JSON.stringify(messages));
-                // } else {
-                //     messages.push(message);
-                //     console.log("before update", messages);
-                //     localStorage.setItem("messages", JSON.stringify(messages));
-                // }
+
                 setValue("");
                 setLoading(true);
 
@@ -92,7 +89,8 @@ const Chat = () => {
                     }
                 );
                 const response = await data.data;
-                messages.push(response);
+                messages = [...messages, response];
+                // messages.push(response);
                 localStorage.setItem("messages", JSON.stringify(messages));
 
                 setLoading(false);
@@ -135,8 +133,7 @@ const Chat = () => {
             {/* Form */}
             <Box
                 sx={{
-                    padding: { md: "35px", xs: "20px" },
-                    borderTopWidth: "1px",
+                    padding: "15px 65px",
                     display: "flex",
                     alignItems: "center",
                 }}
@@ -153,7 +150,7 @@ const Chat = () => {
                 >
                     <div
                         style={{
-                            width: "80%",
+                            width: "100%",
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
@@ -163,14 +160,13 @@ const Chat = () => {
                         <TextField
                             id="email"
                             multiline
-                            maxRows={5}
+                            maxRows={2}
                             label="Search for a roadmap"
                             variant="outlined"
                             type="text"
                             onChange={handleInputChange}
                             value={value}
                             sx={{
-                                // mt: "20px",
                                 flex: 1,
                                 ".MuiOutlinedInput-notchedOutline": {
                                     borderColor: "rgba(255,255,255,0.3)",

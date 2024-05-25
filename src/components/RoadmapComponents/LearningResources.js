@@ -8,7 +8,7 @@ const LearningResources = ({ roadmapJson, roadmap }) => {
 
     const GetVideos = async () => {
         const data = await axios.get(
-            `https://youtube-v2.p.rapidapi.com/search/?query=${roadmap}`,
+            `https://youtube-v2.p.rapidapi.com/search/?query=${roadmap}&order_by=this_year`,
             {
                 headers: {
                     "X-RapidAPI-Key": process.env.REACT_APP_YOUTUBE_API_KEY,
@@ -90,6 +90,7 @@ const LearningResources = ({ roadmapJson, roadmap }) => {
                                             ":hover": {
                                                 transform: "scale(1.05)", // Scale up on hover
                                             },
+                                            cursor: "pointer",
                                         }}
                                         key={video.video_id}
                                         OnClick={() => {
@@ -106,20 +107,35 @@ const LearningResources = ({ roadmapJson, roadmap }) => {
                                             }
                                             alt="thumbnail"
                                             width={"100%"}
-                                            style={{ borderRadius: "12px" }}
+                                            style={{
+                                                borderRadius: "12px",
+                                                position: "relative",
+                                            }}
                                         />
+                                        <Typography
+                                            variant="subtitle2"
+                                            component="p"
+                                            sx={{
+                                                position: "absolute",
+                                                bottom: "50%",
+                                                right: "10%",
+                                                background: "rgba(0,0,0,0.7)",
+                                                p: "2px 5px",
+                                            }}
+                                        >
+                                            {video.video_length}
+                                        </Typography>
                                         <Typography
                                             variant="h5"
                                             component="p"
                                             fontWeight="bold"
                                             sx={{
                                                 mt: "15px",
+                                                maxHeight: "3.6em", // Adjust this value as needed to fit two lines
                                                 overflow: "hidden",
                                                 display: "-webkit-box",
-                                                "-webkit-line-clamp": 2,
-                                                "line-clamp": 2,
-                                                "-webkit-box-orient":
-                                                    "vertical",
+                                                WebkitLineClamp: 2,
+                                                WebkitBoxOrient: "vertical",
                                             }}
                                         >
                                             {video.title}

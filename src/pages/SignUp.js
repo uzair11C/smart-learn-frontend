@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Box,
     Typography,
@@ -18,7 +18,7 @@ const SignUp = () => {
     const [open, setOpen] = useState(false);
 
     const navigate = useNavigate();
-    const { email, setEmail, password, setPassword, signUp, loginOAuth } =
+    const { email, setEmail, password, setPassword, signUp, loginOAuth, user } =
         useUser();
 
     const handleSignUp = () => {
@@ -36,6 +36,13 @@ const SignUp = () => {
                 setError(error.message);
             });
     };
+
+    useEffect(() => {
+        console.log("current logged in user: ", user);
+        if (user?.id) {
+            navigate("/");
+        }
+    }, []);
 
     return (
         <Box

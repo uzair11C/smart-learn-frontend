@@ -193,7 +193,7 @@ const UploadCV = () => {
                                 fontWeight: "bold",
                                 padding: "10px 30px",
                                 color: "#FFFFFF",
-                                backgroundColor: "#F219A1",
+                                // backgroundColor: "#F219A1",
                                 borderRadius: "12px",
                                 "&:hover": {
                                     backgroundColor: "#AD0CF8",

@@ -28,7 +28,6 @@ export const UserProvider = ({ children }) => {
 
         const { data } = await supabase.auth.updateUser({
             data: {
-                name: "Nigga Chan",
                 messages: [],
             },
         });
@@ -57,6 +56,12 @@ export const UserProvider = ({ children }) => {
     const loginOAuth = async (provider) => {
         await supabase.auth.signInWithOAuth({
             provider,
+        });
+
+        const { data } = await supabase.auth.updateUser({
+            data: {
+                messages: [],
+            },
         });
 
         setIsAuthenticated(true);

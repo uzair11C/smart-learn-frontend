@@ -62,15 +62,6 @@ const JobsListing = ({ majorRole, jobs }) => {
                                             },
                                         }}
                                     >
-                                        {/* <Box sx={{ width: "100%" }}> */}
-                                        {/* <img
-                                                src={jobData.employer_logo}
-                                                alt={jobData.employer_name}
-                                                style={{
-                                                    borderRadius: "8px",
-                                                }}
-                                                width="100%"
-                                            /> */}
                                         <Avatar
                                             alt={jobData.employer_name}
                                             src={jobData.employer_logo}
@@ -81,7 +72,6 @@ const JobsListing = ({ majorRole, jobs }) => {
                                                 borderRadius: "12px",
                                             }}
                                         />
-                                        {/* </Box> */}
                                         <Box
                                             sx={{
                                                 display: "flex",
@@ -104,9 +94,9 @@ const JobsListing = ({ majorRole, jobs }) => {
                                                 sx={{
                                                     overflow: "hidden",
                                                     display: "-webkit-box",
-                                                    WebkitLineClamp: 3,
-                                                    lineClamp: 3,
+                                                    WebkitLineClamp: 2,
                                                     WebkitBoxOrient: "vertical",
+                                                    maxHeight: "3.6em",
                                                     width: "90%",
                                                     mt: "10px",
                                                     mb: "20px",
