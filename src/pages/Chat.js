@@ -7,12 +7,16 @@ import SendIcon from "@mui/icons-material/Send";
 import axios from "axios";
 import CustomModal from "../components/CustomModal";
 import { useUser } from "../Contexts/useUser";
+import { useNavigate } from "react-router-dom";
 
 const Chat = () => {
     const { storeMessages, user } = useUser();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        console.log(user);
+        if (!user.id) {
+            navigate("/login");
+        }
     }, []);
 
     var messages = [

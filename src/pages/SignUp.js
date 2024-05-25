@@ -56,7 +56,7 @@ const SignUp = () => {
                     backdropFilter: "blur(25px)",
                     borderRadius: "16px",
                     border: "1px solid rgba(255,255,255,0.3)",
-                    p: "50px",
+                    p: "30px 50px",
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "center",
@@ -93,7 +93,7 @@ const SignUp = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         sx={{
-                            mt: "20px",
+                            mt: "10px",
                             ".MuiOutlinedInput-notchedOutline": {
                                 borderColor: "rgba(255,255,255,0.3)",
                                 borderRadius: "8px",
@@ -130,7 +130,7 @@ const SignUp = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         sx={{
-                            mt: "20px",
+                            mt: "10px",
                             ".MuiOutlinedInput-notchedOutline": {
                                 borderColor: "rgba(255,255,255,0.3)",
                                 borderRadius: "8px",
@@ -178,7 +178,8 @@ const SignUp = () => {
                             fullWidth
                             variant="contained"
                             sx={{
-                                background: "transparent",
+                                background: "#4285F4",
+                                transition: "background-color 0.3s ease",
                                 ":hover": {
                                     background:
                                         "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
@@ -192,7 +193,8 @@ const SignUp = () => {
                             fullWidth
                             variant="contained"
                             sx={{
-                                background: "transparent",
+                                background: "#333",
+                                transition: "background-color 0.3s ease",
                                 ":hover": {
                                     background:
                                         "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
