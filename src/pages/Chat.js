@@ -14,7 +14,7 @@ const Chat = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!user.id) {
+        if (!user?.id) {
             navigate("/login");
         }
     }, []);
