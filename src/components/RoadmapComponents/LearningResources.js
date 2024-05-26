@@ -74,7 +74,7 @@ const LearningResources = ({ roadmapJson, roadmap }) => {
                     <Grid container spacing={3}>
                         {videos &&
                             videos.map((video) => (
-                                <Grid item xs={6} md={4}>
+                                <Grid item xs={12} md={4}>
                                     <CardComponent
                                         borderRadius="12px"
                                         padding="5%"

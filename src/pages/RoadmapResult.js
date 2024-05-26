@@ -27,9 +27,11 @@ const RoadmapResult = () => {
             setLoading(true); // Set loading to true before making the API call
 
             console.log(loading);
-            const data = await axios.post("http://localhost:5000/api/ai", {
-                role: "user",
-                content: `Generate a detailed dynamic roadmap in JSON format. The roadmap
+            const data = await axios.post(
+                "https://smart-learn-smart-learn-463c5cef.koyeb.app/api/ai",
+                {
+                    role: "user",
+                    content: `Generate a detailed dynamic roadmap in JSON format. The roadmap
                 should be structured as a tree, with each node representing a role or
                 task within the process.
 
@@ -74,7 +76,8 @@ const RoadmapResult = () => {
              generate a JSON structure that represents the learning roadmap for ${searchTerm}.
              organize the stages/phases hierarchically as a tree. Only generate the json,
              no other extra text, do not write json and do not format the json to code`,
-            });
+                }
+            );
 
             const roadmap = await data.data;
             setRoadmapJson(JSON.parse(roadmap.content));

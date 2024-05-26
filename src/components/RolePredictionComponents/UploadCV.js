@@ -83,9 +83,11 @@ const UploadCV = () => {
     const GetPrediction = async () => {
         try {
             setOpen(true);
-            const data = await axios.post("http://localhost:5000/api/ai", {
-                role: "user",
-                content: `Tell me my role in software industry based on my skills;
+            const data = await axios.post(
+                "https://smart-learn-smart-learn-463c5cef.koyeb.app/api/ai",
+                {
+                    role: "user",
+                    content: `Tell me my role in software industry based on my skills;
             here's my resume: ${parsedFile}
             Your reply should be like so,
           with major role and secondary role separated by a slash,
@@ -94,7 +96,8 @@ const UploadCV = () => {
           (another role, close to my skills)/
           (another role,close to my skills)
           `,
-            });
+                }
+            );
 
             const response = data.data;
             setPrediction(extractRoles(response.content));
@@ -141,7 +144,7 @@ const UploadCV = () => {
                 variant="h2"
                 component="h2"
                 textAlign="center"
-                sx={{ fontSize: "7vmin", maxWidth: "60%" }}
+                sx={{ fontSize: "7vmin", maxWidth: { sx: "100%", md: "60%" } }}
             >
                 Get Your Resume Analyzed to Predict Your Future in Software
                 Industry
@@ -211,10 +214,19 @@ const UploadCV = () => {
                         </Button>
                     ) : (
                         <>
-                            <Typography variant="h4" component="h4">
+                            <Typography
+                                variant="h4"
+                                component="h4"
+                                textAlign="center"
+                                fontSize="6vmin"
+                            >
                                 Select or drop your resume here
                             </Typography>
-                            <img src="/images/Upload.png" alt="drag-here" />
+                            <img
+                                src="/images/Upload.png"
+                                alt="drag-here"
+                                width="60%"
+                            />
                         </>
                     )}
 
@@ -235,8 +247,8 @@ const UploadCV = () => {
                                 background:
                                     "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
                                 borderRadius: "8px",
-                                fontSize: "20px",
-                                padding: "10px 35px",
+                                fontSize: "4vmin",
+                                padding: "10px 30px",
                                 cursor: "pointer",
                             }}
                         >
@@ -250,11 +262,11 @@ const UploadCV = () => {
                             />
                             Choose File
                         </label>
-                        <Typography variant="p" component="p">
+                        {/* <Typography variant="p" component="p" fontSize="3vmin">
                             {parsedFile && parsedFile.length > 0
                                 ? null
                                 : `No File Chosen`}
-                        </Typography>
+                        </Typography> */}
                     </Box>
                 </Box>
             </Box>

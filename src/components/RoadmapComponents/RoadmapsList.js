@@ -9,6 +9,8 @@ const RoadmapsList = () => {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 
+    const isSmallScreen = window.innerWidth < 600;
+
     const navigate = useNavigate();
 
     const resultRef = useRef(null); // Reference to the result component
@@ -38,6 +40,7 @@ const RoadmapsList = () => {
         <Box
             sx={{
                 p: { xs: "10px", md: "40px" },
+
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
@@ -45,13 +48,22 @@ const RoadmapsList = () => {
                 gap: "20px",
             }}
         >
-            <Typography variant="h2" component="h2" sx={{ fontSize: "9vmin" }}>
+            <Typography
+                variant="h2"
+                component="h2"
+                textAlign="center"
+                sx={{
+                    fontSize: "9vmin",
+                    width: "100%",
+                    mt: { xs: "20px", md: 0 },
+                }}
+            >
                 AI Generated Roadmaps
             </Typography>
 
             <Box
                 sx={{
-                    width: "85%",
+                    width: { xs: "100%", md: "85%" },
                     p: "15px",
                     display: "flex",
                     flexDirection: "column",
@@ -59,7 +71,11 @@ const RoadmapsList = () => {
                     alignItems: "center",
                 }}
             >
-                <Typography variant="h5" textAlign="center">
+                <Typography
+                    variant="h5"
+                    textAlign="center"
+                    sx={{ width: "100%" }}
+                >
                     Discover current roadmaps tailored to 2024. Simply search
                     for them here.
                 </Typography>
@@ -67,7 +83,7 @@ const RoadmapsList = () => {
                 <Box
                     sx={{
                         display: "flex",
-                        flexDirection: "row",
+                        flexDirection: { xs: "column", md: "row" },
                         // justifyContent: "space-between",
                         alignItems: "center",
                         gap: "20px",
@@ -79,6 +95,7 @@ const RoadmapsList = () => {
                         id="email"
                         label="Search for a roadmap"
                         variant="outlined"
+                        size={isSmallScreen ? "small" : "medium"}
                         type="text"
                         onChange={handleInputChange}
                         value={searchTerm}
@@ -110,9 +127,9 @@ const RoadmapsList = () => {
                             textTransform: "none",
                             background:
                                 "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
-                            borderRadius: "8px",
-                            fontSize: "20px",
-                            padding: "10px 35px",
+                            borderRadius: { xs: "5px", md: "8px" },
+                            fontSize: { sx: "4vmin", md: "3vmin" },
+                            padding: { sx: "10px 25px", md: "10px 35px" },
                         }}
                         onClick={GetRoadmap}
                         // onClick={() => }
