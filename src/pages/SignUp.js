@@ -44,17 +44,20 @@ const SignUp = () => {
     const handleSignUp = () => {
         setOpen(true);
         try {
-            if (!email || !password) {
+            if (!name || !email || !password) {
                 setError("Please provide all required information");
                 return;
             }
 
-            if (!isValidEmail(email)) {
+            if (name !== "") {
+                setOpen(false);
+                setError("Please enter a name.");
+            } else if (!isValidEmail(email)) {
                 setOpen(false);
                 setError("Please enter a valid email.");
-            } else if (password.length < 8) {
+            } else if (password.length < 6) {
                 setOpen(false);
-                setError("Password should have minimum 8 characters.");
+                setError("Password should have minimum 6 characters.");
             } else {
                 signUp();
                 setOpen(false);

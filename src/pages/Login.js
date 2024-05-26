@@ -12,6 +12,7 @@ import { useUser } from "../Contexts/useUser";
 import Loader2 from "../components/Loader2";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import { supabase } from "../components/supabaseClient";
 
 const Login = () => {
     const [error, setError] = useState("");
@@ -20,7 +21,7 @@ const Login = () => {
     const isSmallScreen = window.innerWidth < 600;
 
     const navigate = useNavigate();
-    const { login, setEmail, setPassword, email, password, loginOAuth, user } =
+    const { setEmail, setPassword, email, password, loginOAuth, user } =
         useUser();
 
     function isValidEmail(text) {
@@ -31,11 +32,11 @@ const Login = () => {
         // Test if the text matches the email pattern
         return emailPattern.test(text);
     }
-    const handleLogin = () => {
+    const handleLogin = async () => {
         setOpen(true);
         try {
             if (!email || !password) {
-                setError("Please provide all required information");
+                setError("Email and password are required");
                 setOpen(false);
                 return;
             }
@@ -43,13 +44,23 @@ const Login = () => {
             if (!isValidEmail(email)) {
                 setOpen(false);
                 setError("Please enter a valid email.");
-            } else if (password.length < 8) {
+            } else if (password.length < 6) {
                 setOpen(false);
-                setError("Password should have minimum 8 characters.");
+                setError("Password should have minimum 6 characters.");
             } else {
-                login();
-                setOpen(false);
-                navigate("/");
+                console.log("login useUser()", email, password);
+                const { error } = await supabase.auth.signInWithPassword({
+                    email,
+                    password,
+                });
+                console.log("error in login", error);
+                if (error) {
+                    setOpen(false);
+                    setError(error.message);
+                } else {
+                    setOpen(false);
+                    navigate("/");
+                }
             }
         } catch (error) {
             console.log("error in signup: ", error);

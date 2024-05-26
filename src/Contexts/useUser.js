@@ -45,18 +45,6 @@ export const UserProvider = ({ children }) => {
         });
     };
 
-    const login = async () => {
-        console.log("login useUser()", email, password);
-        await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
-
-        setIsAuthenticated(true);
-        setEmail("");
-        setPassword("");
-    };
-
     const loginOAuth = async (provider) => {
         await supabase.auth.signInWithOAuth({
             provider,
@@ -105,7 +93,6 @@ export const UserProvider = ({ children }) => {
         user,
         userSession,
         loginOAuth,
-        login,
         signUp,
         storeMessages,
         logout,

@@ -20,18 +20,14 @@ const Chat = () => {
         }
     }, []);
 
-    JSON.stringify([
+    var messages = [
         {
             role: "system",
             content:
                 "You are a career guiding bot, identified as Career Sage, focused on queries related to careers and educationin the software/IT industry. Politely decline any other queries.To any query other than career guidance in IT/software industry, you will say: I am sorry,I only talk about careers in IT industry. Is thereanything else I can help you with?",
         },
         ...((user && user.user_metadata.messages) || []),
-    ]);
-
-    var localMessages = [JSON.parse(localStorage.getItem("messages"))];
-
-    var messages = [...localMessages];
+    ];
 
     const [value, setValue] = useState("");
     const [status, setStatus] = useState("active");
@@ -143,7 +139,10 @@ const Chat = () => {
                 }}
             >
                 <form
-                    onSubmit={handleClick}
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        handleClick(e);
+                    }}
                     style={{
                         display: "flex",
                         alignItems: "center",
@@ -170,6 +169,12 @@ const Chat = () => {
                             type="text"
                             onChange={handleInputChange}
                             value={value}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    // e.preventDefault(); // Prevent default behavior (like new line in multiline TextField)
+                                    handleClick(e); // Call handleClick function
+                                }
+                            }}
                             sx={{
                                 flex: 1,
                                 ".MuiOutlinedInput-notchedOutline": {
@@ -195,7 +200,7 @@ const Chat = () => {
                     <Button
                         type="submit"
                         variant="contained"
-                        onSubmit={handleClick}
+                        // onSubmit={handleClick}
                         sx={{
                             borderRadius: "12px",
                             padding: { md: "15px 20px", xs: "10px 10px" },

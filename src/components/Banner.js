@@ -29,7 +29,7 @@ const Banner = ({ title, catchprase, imageUrl }) => {
                 variant="h2"
                 component="h2"
                 fontWeight="bold"
-                fontSize="15vmin"
+                fontSize="14vmin"
                 textAlign="center"
                 fontFamily="Raleway"
                 sx={{
@@ -37,9 +37,6 @@ const Banner = ({ title, catchprase, imageUrl }) => {
                     textShadow: "8px 12px 4px rgba(0, 0, 0, 0.4)",
                     position: "absolute",
                     top: "45%",
-                    // left: "50%",
-                    // right: "50%",
-                    // bottom: "50%",
                 }}
             >
                 {title}
@@ -48,13 +45,11 @@ const Banner = ({ title, catchprase, imageUrl }) => {
                 variant="h4"
                 component="h4"
                 textAlign="center"
+                fontSize="6vmin"
                 sx={{
                     mt: "25px",
                     position: "absolute",
-                    // left: "50%",
-                    // right: "50%",
                     top: "55%",
-                    // bottom: 50,
                 }}
             >
                 <i>{catchprase && catchprase}</i>
