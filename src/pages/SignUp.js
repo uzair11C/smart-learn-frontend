@@ -17,24 +17,53 @@ const SignUp = () => {
     const [error, setError] = useState("");
     const [open, setOpen] = useState(false);
 
+    const isSmallScreen = window.innerWidth < 600;
+
     const navigate = useNavigate();
-    const { email, setEmail, password, setPassword, signUp, loginOAuth, user } =
-        useUser();
+    const {
+        name,
+        setName,
+        email,
+        setEmail,
+        password,
+        setPassword,
+        signUp,
+        loginOAuth,
+        user,
+    } = useUser();
+
+    function isValidEmail(text) {
+        // Regular expression pattern for validating email addresses
+        const emailPattern =
+            /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/;
+
+        // Test if the text matches the email pattern
+        return emailPattern.test(text);
+    }
 
     const handleSignUp = () => {
         setOpen(true);
-        if (!email || !password) {
-            setError("Please provide all required information");
-            return;
-        }
-        signUp()
-            .then(() => {
+        try {
+            if (!email || !password) {
+                setError("Please provide all required information");
+                return;
+            }
+
+            if (!isValidEmail(email)) {
+                setOpen(false);
+                setError("Please enter a valid email.");
+            } else if (password.length < 8) {
+                setOpen(false);
+                setError("Password should have minimum 8 characters.");
+            } else {
+                signUp();
                 setOpen(false);
                 navigate("/");
-            })
-            .catch((error) => {
-                setError(error.message);
-            });
+            }
+        } catch (error) {
+            console.log("error in signup: ", error);
+            setError(error.message);
+        }
     };
 
     useEffect(() => {
@@ -68,7 +97,7 @@ const SignUp = () => {
                     flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "stretch",
-                    width: "20%",
+                    width: { xs: "60%", md: "20%" },
                     gap: "30px",
                 }}
             >
@@ -89,7 +118,51 @@ const SignUp = () => {
                         alignItems: "stretch",
                     }}
                 >
-                    <Typography variant="h5" component="h5" fontWeight="600">
+                    <Typography
+                        variant="h5"
+                        component="h5"
+                        fontWeight="600"
+                        fontSize="4.5vmin"
+                    >
+                        Enter Name:
+                    </Typography>
+                    <TextField
+                        id="name"
+                        label="Name"
+                        variant="outlined"
+                        type="text"
+                        size="small"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        sx={{
+                            mt: "10px",
+                            ".MuiOutlinedInput-notchedOutline": {
+                                borderColor: "rgba(255,255,255,0.3)",
+                                borderRadius: "8px",
+                            },
+                        }}
+                        InputLabelProps={{
+                            style: { color: "rgba(255,255,255,0.3)" },
+                        }}
+                        inputProps={{
+                            style: {
+                                color: "#FFFFFF",
+                            },
+                        }}
+                        InputProps={{
+                            style: {
+                                background: "#222141",
+                            },
+                        }}
+                    />
+
+                    <Typography
+                        variant="h5"
+                        component="h5"
+                        fontWeight="600"
+                        sx={{ mt: "20px" }}
+                        fontSize="4.5vmin"
+                    >
                         Enter Email:
                     </Typography>
                     <TextField
@@ -97,6 +170,7 @@ const SignUp = () => {
                         label="Email"
                         variant="outlined"
                         type="email"
+                        size="small"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         sx={{
@@ -125,7 +199,7 @@ const SignUp = () => {
                         variant="h5"
                         component="h5"
                         fontWeight="600"
-                        sx={{ mt: "35px" }}
+                        sx={{ mt: "20px" }}
                     >
                         Enter Password:
                     </Typography>
@@ -134,6 +208,7 @@ const SignUp = () => {
                         label="Password"
                         variant="outlined"
                         type="password"
+                        size="small"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         sx={{
@@ -159,8 +234,12 @@ const SignUp = () => {
                     />
 
                     {error && (
-                        <Alert severity="error" sx={{ mt: "35px" }}>
-                            {error}
+                        <Alert
+                            severity="error"
+                            variant="filled"
+                            sx={{ mt: "25px" }}
+                        >
+                            {error}hi
                         </Alert>
                     )}
 
@@ -172,14 +251,14 @@ const SignUp = () => {
                             background:
                                 "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
                             borderRadius: "5px",
-                            mt: "35px",
-                            fontSize: "3vmin",
+                            mt: "20px",
+                            fontSize: "3.5vmin",
                         }}
                     >
                         Sign Up
                     </Button>
 
-                    <Stack direction="row" spacing={2} sx={{ mt: "35px" }}>
+                    <Stack direction="row" spacing={2} sx={{ mt: "20px" }}>
                         <Button
                             onClick={() => loginOAuth("google")}
                             fullWidth
@@ -213,10 +292,10 @@ const SignUp = () => {
                     </Stack>
 
                     <Typography
-                        variant="subtitle1"
+                        variant={isSmallScreen ? "subtitle2" : "subtitle1"}
                         component="p"
                         sx={{
-                            mt: "35px",
+                            mt: "20px",
                             textDecoration: "underline",
                             color: "#E717AF",
                         }}

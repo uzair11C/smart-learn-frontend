@@ -20,14 +20,18 @@ const Chat = () => {
         }
     }, []);
 
-    var messages = [
+    JSON.stringify([
         {
             role: "system",
             content:
                 "You are a career guiding bot, identified as Career Sage, focused on queries related to careers and educationin the software/IT industry. Politely decline any other queries.To any query other than career guidance in IT/software industry, you will say: I am sorry,I only talk about careers in IT industry. Is thereanything else I can help you with?",
         },
         ...((user && user.user_metadata.messages) || []),
-    ];
+    ]);
+
+    var localMessages = [JSON.parse(localStorage.getItem("messages"))];
+
+    var messages = [...localMessages];
 
     const [value, setValue] = useState("");
     const [status, setStatus] = useState("active");

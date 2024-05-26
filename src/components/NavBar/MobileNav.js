@@ -173,7 +173,7 @@ const MobileNav = ({
                             handleLogin();
                         }}
                     >
-                        Logout
+                        {user?.id ? "Logout" : "Login"}
                     </Button>
                 </MenuItem>
             </Menu>

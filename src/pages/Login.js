@@ -17,30 +17,48 @@ const Login = () => {
     const [error, setError] = useState("");
     const [open, setOpen] = useState(false);
 
+    const isSmallScreen = window.innerWidth < 600;
+
     const navigate = useNavigate();
     const { login, setEmail, setPassword, email, password, loginOAuth, user } =
         useUser();
 
+    function isValidEmail(text) {
+        // Regular expression pattern for validating email addresses
+        const emailPattern =
+            /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/;
+
+        // Test if the text matches the email pattern
+        return emailPattern.test(text);
+    }
     const handleLogin = () => {
         setOpen(true);
-        if (!email || !password) {
-            setError("Please provide all required information");
-            setOpen(false);
-            return;
-        }
-        login()
-            .then(() => {
+        try {
+            if (!email || !password) {
+                setError("Please provide all required information");
+                setOpen(false);
+                return;
+            }
+
+            if (!isValidEmail(email)) {
+                setOpen(false);
+                setError("Please enter a valid email.");
+            } else if (password.length < 8) {
+                setOpen(false);
+                setError("Password should have minimum 8 characters.");
+            } else {
+                login();
                 setOpen(false);
                 navigate("/");
-            })
-            .catch((error) => {
-                setOpen(false);
-                setError(error.message);
-            });
+            }
+        } catch (error) {
+            console.log("error in signup: ", error);
+            setError(error.message);
+        }
     };
     useEffect(() => {
         if (user?.id) {
-            console.log("current logged in user useEffect: ", user);
+            console.log("current logged in user in login useEffect: ", user);
             console.log("got user ID: ", user.id);
             navigate("/");
         }
@@ -69,7 +87,7 @@ const Login = () => {
                     flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "stretch",
-                    width: "20%",
+                    width: { xs: "60%", md: "20%" },
                     gap: "30px",
                 }}
             >
@@ -90,7 +108,12 @@ const Login = () => {
                         alignItems: "stretch",
                     }}
                 >
-                    <Typography variant="h5" component="h5" fontWeight="600">
+                    <Typography
+                        variant="h5"
+                        component="h5"
+                        fontWeight="600"
+                        fontSize="4.5vmin"
+                    >
                         Enter Email:
                     </Typography>
                     <TextField
@@ -99,6 +122,7 @@ const Login = () => {
                         variant="outlined"
                         type="email"
                         value={email}
+                        size={isSmallScreen ? "small" : "medium"}
                         onChange={(e) => {
                             setEmail(e.target.value);
                         }}
@@ -128,7 +152,8 @@ const Login = () => {
                         variant="h5"
                         component="h5"
                         fontWeight="600"
-                        sx={{ mt: "35px" }}
+                        sx={{ mt: "30px" }}
+                        fontSize="4.5vmin"
                     >
                         Enter Password:
                     </Typography>
@@ -138,6 +163,7 @@ const Login = () => {
                         variant="outlined"
                         type="password"
                         value={password}
+                        size={isSmallScreen ? "small" : "medium"}
                         onChange={(e) => {
                             setPassword(e.target.value);
                         }}
@@ -163,7 +189,11 @@ const Login = () => {
                         }}
                     />
                     {error && (
-                        <Alert severity="error" sx={{ mt: "35px" }}>
+                        <Alert
+                            severity="error"
+                            variant="filled"
+                            sx={{ mt: "35px" }}
+                        >
                             {error}
                         </Alert>
                     )}
@@ -175,13 +205,13 @@ const Login = () => {
                             background:
                                 "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
                             borderRadius: "5px",
-                            mt: "35px",
-                            fontSize: "3vmin",
+                            mt: "30px",
+                            fontSize: "3.5vmin",
                         }}
                     >
                         Sign In
                     </Button>
-                    <Stack direction="row" spacing={2} sx={{ mt: "35px" }}>
+                    <Stack direction="row" spacing={2} sx={{ mt: "30px" }}>
                         <Button
                             onClick={() => loginOAuth("google")}
                             fullWidth
@@ -215,10 +245,10 @@ const Login = () => {
                     </Stack>
 
                     <Typography
-                        variant="subtitle1"
+                        variant={isSmallScreen ? "subtitle2" : "subtitle1"}
                         component="p"
                         sx={{
-                            mt: "35px",
+                            mt: "30px",
                             textDecoration: "underline",
                             color: "#E717AF",
                         }}

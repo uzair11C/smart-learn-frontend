@@ -12,6 +12,7 @@ export const useUser = () => {
 };
 
 export const UserProvider = ({ children }) => {
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [userSession, setUserSession] = useState(null);
@@ -19,6 +20,7 @@ export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
     const signUp = async () => {
+        console.log("useUser() signup: ", name, email);
         await supabase.auth.signUp({
             email,
             password,
@@ -28,6 +30,7 @@ export const UserProvider = ({ children }) => {
 
         const { data } = await supabase.auth.updateUser({
             data: {
+                name: name,
                 messages: [],
             },
         });
@@ -43,6 +46,7 @@ export const UserProvider = ({ children }) => {
     };
 
     const login = async () => {
+        console.log("login useUser()", email, password);
         await supabase.auth.signInWithPassword({
             email,
             password,
@@ -91,6 +95,8 @@ export const UserProvider = ({ children }) => {
     }, []);
 
     const value = {
+        name,
+        setName,
         email,
         setEmail,
         isAuthenticated,
