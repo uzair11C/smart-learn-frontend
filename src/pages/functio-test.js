@@ -130,14 +130,3 @@
 //       date: "Date Period",
 //     },
 //   ]);
-
-PDF - Resume;
-// import { useReactToPrint } from "react-to-print";
-{
-  /* <button onClick={handlePrint}>Print article</button>; */
-}
-// ref = { componentRef };
-// const componentRef = useRef();
-// const handlePrint = useReactToPrint({
-//   content: () => componentRef.current,
-// });

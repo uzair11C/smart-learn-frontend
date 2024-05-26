@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Box,
   Button,
   Divider,
+  Grid,
   List,
   ListItem,
   Stack,
@@ -11,9 +12,13 @@ import {
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { v4 as uuidv4 } from "uuid";
+import { useReactToPrint } from "react-to-print";
 
 const ResumeCreate = () => {
-  const [isEdit, setIsEdit] = useState(false);
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
   const [fields, setFields] = useState([
     {
       id: 1,
@@ -40,7 +45,7 @@ const ResumeCreate = () => {
       id: 4,
       label: "Phone",
       value: "Phone",
-      type: "text",
+      type: "tel",
       defaultValue: "Phone",
     },
     {
@@ -63,6 +68,7 @@ const ResumeCreate = () => {
       value: "Location",
       type: "text",
       defaultValue: "Location",
+      showLocation: true,
     },
   ]);
   const [summaryFields, setSummaryFields] = useState([
@@ -74,6 +80,7 @@ const ResumeCreate = () => {
   const [educationFields, setEducationFields] = useState([
     {
       id: uuidv4(),
+      header: "Education",
       university: "University",
       degree: "Degree and Field of Study",
       cgpa: "CGPA",
@@ -84,9 +91,9 @@ const ResumeCreate = () => {
   const [experienceFields, setExperienceFields] = useState([
     {
       id: uuidv4(),
+      header: "Experience",
       company: "Company Name",
       title: "Title",
-      location: "Location",
       date: "Date Period",
       descriptions: [
         "What are your achievements",
@@ -97,7 +104,6 @@ const ResumeCreate = () => {
   const [projectFields, setProjectFields] = useState([
     {
       id: uuidv4(),
-      header: "Project",
       title: "Title",
       date: "Date Period",
       descriptions: ["Description 1", "Description 2"],
@@ -152,6 +158,7 @@ const ResumeCreate = () => {
   const [certificationsFields, setCertificationsFields] = useState([
     {
       id: uuidv4(),
+      header: "Certifications",
       issueBy: "Issued By",
       name: "Certificate Name",
     },
@@ -163,33 +170,6 @@ const ResumeCreate = () => {
         field.id === id ? { ...field, [fieldName]: !field[fieldName] } : field
       )
     );
-  };
-
-  // summary
-  const handleChange = (id, value) => {
-    setSummaryFields(
-      summaryFields.map((field) => {
-        if (field.id === id) {
-          return { ...field, value };
-        }
-        return field;
-      })
-    );
-  };
-  const handleAddField = () => {
-    const newField = [
-      ...summaryFields,
-      {
-        id: uuidv4(),
-        value:
-          "What's the one thing that makes you best candidate for this job",
-      },
-    ];
-    setSummaryFields(newField);
-  };
-  const handleRemoveField = (id) => {
-    const updatedFields = summaryFields.filter((field) => field.id !== id);
-    setSummaryFields(updatedFields);
   };
 
   // Personal Information
@@ -206,149 +186,26 @@ const ResumeCreate = () => {
     };
     setFields([...fields, newField]);
   };
-  const handleRemoveInfoField = (id) => {
-    const removeField = fields.filter((field) => field.id !== id);
-    setFields(removeField);
-  };
-  const handleFieldChange = (id, value, label) => {
-    if (label === "education") {
-      console.log("edu");
-      setEducationFields((prevFields) =>
-        prevFields.map((field) =>
-          field.id === id ? { ...field, value } : field
-        )
-      );
-    }
-
-    if (label === "personal") {
-      setFields((prevFields) =>
-        prevFields.map((field) =>
-          field.id === id ? { ...field, value } : field
-        )
-      );
-    }
+  // const handleRemoveInfoField = (id) => {
+  //   const removeField = fields.filter((field) => field.id !== id);
+  //   setFields(removeField);
+  // };
+  const handlePersonalFieldChange = (id, value, label) => {
+    setFields((prevFields) =>
+      prevFields.map((field) => (field.id === id ? { ...field, value } : field))
+    );
   };
 
-  // education
-  const handleEducationChange = (id, value, label) => {
-    setEducationFields((prevFields) =>
+  // Change Functions
+  const handleFieldChange = (setFields) => (id, value, label) => {
+    setFields((prevFields) =>
       prevFields.map((field) =>
         field.id === id ? { ...field, [label]: value } : field
       )
     );
   };
-  const handleAddEducationField = () => {
-    const newField = {
-      id: uuidv4(),
-      university: "University",
-      degree: "Degree and Field of Study",
-      cgpa: "CGPA",
-      date: "Date Period",
-    };
-    setEducationFields([...educationFields, newField]);
-  };
-  const handleRemoveEducationField = (id) => {
-    const removeField = educationFields.filter((field) => field.id !== id);
-    setEducationFields(removeField);
-  };
-
-  // Experience
-  const handleExperienceChange = (id, value, label) => {
-    setExperienceFields((prevFields) =>
-      prevFields.map((field) =>
-        field.id === id ? { ...field, [label]: value } : field
-      )
-    );
-  };
-  const handleAddExperienceField = () => {
-    const newField = {
-      id: uuidv4(),
-      company: "Company Name",
-      title: "Title",
-      location: "Location",
-      date: "Date Period",
-      descriptions: [
-        "What are your achievements",
-        "What are your achievements",
-      ],
-    };
-
-    setExperienceFields([...experienceFields, newField]);
-  };
-  const handleRemoveExperienceField = (id) => {
-    const removeField = experienceFields.filter((field) => field.id !== id);
-    setExperienceFields(removeField);
-  };
-
-  const handleExperienceDescriptionChange = (experienceId, index, value) => {
-    setExperienceFields((prevFields) =>
-      prevFields.map((experience) =>
-        experience.id === experienceId
-          ? {
-              ...experience,
-              descriptions: experience.descriptions.map((desc, i) =>
-                i === index ? value : desc
-              ),
-            }
-          : experience
-      )
-    );
-  };
-  const handleAddExperienceDescription = (experienceId) => {
-    setExperienceFields((prevFields) =>
-      prevFields.map((experience) =>
-        experience.id === experienceId
-          ? {
-              ...experience,
-              descriptions: [
-                ...experience.descriptions,
-                "What are your achievements",
-              ],
-            }
-          : experience
-      )
-    );
-  };
-  const handleRemoveExperienceDescription = (experienceId, index) => {
-    setExperienceFields((prevFields) =>
-      prevFields.map((experience) =>
-        experience.id === experienceId
-          ? {
-              ...experience,
-              descriptions: experience.descriptions.filter(
-                (_, i) => i !== index
-              ),
-            }
-          : experience
-      )
-    );
-  };
-
-  // Project
-  const handleProjectChange = (id, value, label) => {
-    setProjectFields((prevFields) =>
-      prevFields.map((field) =>
-        field.id === id ? { ...field, [label]: value } : field
-      )
-    );
-  };
-  const handleAddProjectField = () => {
-    const newField = {
-      id: uuidv4(),
-      title: "Title",
-      date: "Date Period",
-      descriptions: ["Description 1", "Description 2"],
-    };
-
-    setProjectFields([...projectFields, newField]);
-  };
-  const handleRemoveProjectField = (id) => {
-    const removeField = projectFields.filter((field) => field.id !== id);
-    setProjectFields(removeField);
-  };
-
-  const handleDescriptionChange = (projectId, index, value) => {
-    setProjectFields((prevFields) =>
+  const handleDescChange = (setFields) => (projectId, index, value) => {
+    setFields((prevFields) =>
       prevFields.map((project) =>
         project.id === projectId
           ? {
@@ -361,20 +218,105 @@ const ResumeCreate = () => {
       )
     );
   };
-  const handleAddDescription = (projectId) => {
-    setProjectFields((prevFields) =>
-      prevFields.map((project) =>
-        project.id === projectId
-          ? {
-              ...project,
-              descriptions: [...project.descriptions, "Description"],
-            }
-          : project
+  const handleSkillChange = (setFields) => (id, value, label) => {
+    setFields((prevFields) =>
+      prevFields.map((field) =>
+        field.id === id
+          ? { ...field, [label]: value.split(",").map((skill) => skill.trim()) }
+          : field
       )
     );
   };
-  const handleRemoveDescription = (projectId, index) => {
-    setProjectFields((prevFields) =>
+
+  const handleChange = handleFieldChange(setSummaryFields);
+  const handleEducationChange = handleFieldChange(setEducationFields);
+  const handleExperienceChange = handleFieldChange(setExperienceFields);
+  const handleExperienceDescriptionChange =
+    handleDescChange(setExperienceFields);
+  const handleProjectChange = handleFieldChange(setProjectFields);
+  const handleDescriptionChange = handleDescChange(setProjectFields);
+  const handleSkillsChange = handleSkillChange(setSkillsFields);
+  const handleCertificationChange = handleFieldChange(setCertificationsFields);
+
+  // Add Functions
+  const handleAddField = (setFields, defaultField) => {
+    const newField = { id: uuidv4(), ...defaultField };
+    setFields((prevFields) => [...prevFields, newField]);
+  };
+  const handleAddDescription = (setFields, fieldId) => {
+    setFields((prevFields) =>
+      prevFields.map((field) =>
+        field.id === fieldId
+          ? { ...field, descriptions: [...field.descriptions, "Description"] }
+          : field
+      )
+    );
+  };
+  const handleAddExperienceDescription = (experienceId) => {
+    handleAddDescription(setExperienceFields, experienceId);
+  };
+  const handleAddProjectDescription = (projectId) => {
+    handleAddDescription(setProjectFields, projectId);
+  };
+
+  const defaultSummaryField = {
+    value:
+      "What's the one thing that makes you the best candidate for this job",
+  };
+  const handleAddSummaryField = () =>
+    handleAddField(setSummaryFields, defaultSummaryField);
+
+  // For Education
+  const defaultEducationField = {
+    university: "University",
+    degree: "Degree and Field of Study",
+    cgpa: "CGPA",
+    date: "Date Period",
+  };
+  const handleAddEducationField = () =>
+    handleAddField(setEducationFields, defaultEducationField);
+
+  // For Experience
+  const defaultExperienceField = {
+    company: "Company Name",
+    title: "Title",
+    date: "Date Period",
+    descriptions: ["What are your achievements", "What are your achievements"],
+  };
+  const handleAddExperienceField = () =>
+    handleAddField(setExperienceFields, defaultExperienceField);
+
+  // For Project
+  const defaultProjectField = {
+    title: "Title",
+    date: "Date Period",
+    descriptions: ["Description 1", "Description 2"],
+  };
+  const handleAddProjectField = () =>
+    handleAddField(setProjectFields, defaultProjectField);
+
+  // For Skills
+  const defaultSkillsField = {
+    title: "Title",
+    skills: ["Skill 1", "Skill 2"],
+  };
+  const handleAddSkillsField = () =>
+    handleAddField(setSkillsFields, defaultSkillsField);
+
+  // For Certifications
+  const defaultCertificationField = {
+    issueBy: "Issued By",
+    name: "Certificate Name",
+  };
+  const handleAddCertificationField = () =>
+    handleAddField(setCertificationsFields, defaultCertificationField);
+
+  // Remove Functions
+  const handleRemoveField = (setFields) => (id) => {
+    setFields((prevFields) => prevFields.filter((field) => field.id !== id));
+  };
+  const handleRemoveDescription = (setFields) => (projectId, index) => {
+    setFields((prevFields) =>
       prevFields.map((project) =>
         project.id === projectId
           ? {
@@ -385,64 +327,32 @@ const ResumeCreate = () => {
       )
     );
   };
+  const handleRemoveSummaryField = handleRemoveField(setSummaryFields);
+  const handleRemoveEducationField = handleRemoveField(setEducationFields);
+  const handleRemoveExperienceField = handleRemoveField(setExperienceFields);
+  const handleRemoveExperienceDescription =
+    handleRemoveDescription(setExperienceFields);
+  const handleRemoveProjectField = handleRemoveField(setProjectFields);
+  const handleRemoveProjectDescription =
+    handleRemoveDescription(setProjectFields);
+  const handleRemoveSkillsField = handleRemoveField(setSkillsFields);
+  const handleRemoveCertificationField = handleRemoveField(
+    setCertificationsFields
+  );
 
-  // Skills
-  const handleSkillsChange = (id, value, label) => {
-    setSkillsFields((prevFields) =>
-      prevFields.map((field) =>
-        field.id === id
-          ? { ...field, [label]: value.split(",").map((skill) => skill.trim()) }
-          : field
-      )
-    );
-  };
-  const handleAddSkillsField = () => {
-    const newField = {
-      id: uuidv4(),
-      title: "Title",
-      skills: ["Skill 1", "Skill 2"],
-    };
-    setSkillsFields([...skillsFields, newField]);
-  };
-  const handleRemoveSkillsField = (id) => {
-    const removeField = skillsFields.filter((field) => field.id !== id);
-    setSkillsFields(removeField);
-  };
-
-  // Certifications
-  const handleCertificationChange = (id, value, label) => {
-    setCertificationsFields((prevFields) =>
-      prevFields.map((field) =>
-        field.id === id ? { ...field, [label]: value } : field
-      )
-    );
-  };
-  const handleAddCertificationField = () => {
-    const newField = {
-      id: uuidv4(),
-      issueBy: "Issued By",
-      name: "Certificate Name",
-    };
-    setCertificationsFields([...certificationsFields, newField]);
-  };
-  const handleRemoveCertificationField = (id) => {
-    const removeField = skillsFields.filter((field) => field.id !== id);
-    setCertificationsFields(removeField);
-  };
+  // console.log(JSON.parse(localStorage.getItem("summaryFields")));
+  // useEffect(() => {
+  //   localStorage.setItem("summaryFields", JSON.stringify(summaryFields));
+  // }, [summaryFields]);
 
   return (
     <Box
       sx={{
         backgroundColor: "#19192F",
         padding: "50px",
-        // color: "#FFFFFF",
-        // maxWidth: "100%",
-        // minHeight: "100vh",
         display: "flex",
-        // flexDirection: "column",
-        justifyContent: "center",
-        // alignItems: "center",
-        gap: "20px",
+        // justifyContent: "space-between",
+        // gap: "20px",
         // position: "relative",
         // overflow: "auto",
         // height: "100vh",
@@ -455,58 +365,73 @@ const ResumeCreate = () => {
           <Typography variant="h3" component="h3" sx={{ color: "white" }}>
             Personal Information
           </Typography>
-          {fields.map((field) => (
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="center"
-              key={field.id}
+          <Grid container>
+            {fields.map((field) => (
+              <Grid xs={5} item key={field.id}>
+                <TextField
+                  label={field.label}
+                  variant="outlined"
+                  type={field.type}
+                  // value={field.value ? field.value : field.label}
+                  onChange={(e) =>
+                    handlePersonalFieldChange(
+                      field.id,
+                      e.target.value,
+                      "personal"
+                    )
+                  }
+                  sx={{
+                    mt: "10px",
+                    width: "350px",
+                    flex: 1,
+                    ".MuiOutlinedInput-notchedOutline": {
+                      borderColor: "rgba(255,255,255,0.3)",
+                      borderRadius: "8px",
+                    },
+                  }}
+                  InputLabelProps={{
+                    style: { color: "rgba(255,255,255,0.3)" },
+                  }}
+                  inputProps={{
+                    style: {
+                      color: "#FFFFFF",
+                    },
+                  }}
+                  InputProps={{
+                    style: {
+                      background: "#222141",
+                    },
+                  }}
+                />
+              </Grid>
+            ))}
+          </Grid>
+          {/* <Delete
+            onClick={() => handleRemoveInfoField(field.id)}
+            sx={{
+              width: "40px",
+              color: "white",
+              height: "40px",
+              cursor: "pointer",
+            }}
+          /> */}
+          {fields.length !== 9 && (
+            <Button
+              variant="contained"
+              onClick={handleAddInfoField}
+              sx={{
+                color: "white",
+                textTransform: "none",
+                background:
+                  "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                borderRadius: "5px",
+                mt: "15px",
+                fontSize: "3vmin",
+              }}
             >
-              <TextField
-                label={field.label}
-                variant="outlined"
-                type={field.type}
-                // value={field.value ? field.value : field.label}
-                onChange={(e) =>
-                  handleFieldChange(field.id, e.target.value, "personal")
-                }
-                sx={{
-                  mt: "20px",
-                  width: "500px",
-                  flex: 1,
-                  ".MuiOutlinedInput-notchedOutline": {
-                    borderColor: "rgba(255,255,255,0.3)",
-                    borderRadius: "8px",
-                  },
-                }}
-                InputLabelProps={{
-                  style: { color: "rgba(255,255,255,0.3)" },
-                }}
-                inputProps={{
-                  style: {
-                    color: "#FFFFFF",
-                  },
-                }}
-                InputProps={{
-                  style: {
-                    background: "#222141",
-                  },
-                }}
-              />
-              <Delete
-                onClick={() => handleRemoveInfoField(field.id)}
-                sx={{
-                  width: "40px",
-                  color: "white",
-                  height: "40px",
-                  cursor: "pointer",
-                }}
-              />
-            </Stack>
-          ))}
-          <Button onClick={handleAddInfoField}>
-            {fields.length !== 9 ? "Add Another Field" : null}
-          </Button>
+              Add Another Field
+            </Button>
+          )}
         </Box>
 
         {/* Summary Fields */}
@@ -516,24 +441,20 @@ const ResumeCreate = () => {
           </Typography>
 
           {summaryFields.map((field) => (
-            <Stack
-              key={field.id}
-              direction="row"
-              alignItems="center"
-              justifyContent="center"
-            >
+            <Stack key={field.id} direction="row" alignItems="center">
               <TextField
                 label="What's the one thing that makes you best candidate"
                 variant="outlined"
                 multiline
                 maxRows={5}
                 type="text"
-                onChange={(e) => handleChange(field.id, e.target.value)}
+                onChange={(e) =>
+                  handleChange(field.id, e.target.value, "value")
+                }
                 // value={field.value}
                 sx={{
                   mt: "20px",
-                  width: "500px",
-                  flex: 1,
+                  width: "550px",
                   ".MuiOutlinedInput-notchedOutline": {
                     borderColor: "rgba(255,255,255,0.3)",
                     borderRadius: "8px",
@@ -554,7 +475,7 @@ const ResumeCreate = () => {
                 }}
               />
               <Delete
-                onClick={() => handleRemoveField(field.id)}
+                onClick={() => handleRemoveSummaryField(field.id)}
                 sx={{
                   width: "40px",
                   color: "white",
@@ -565,7 +486,7 @@ const ResumeCreate = () => {
             </Stack>
           ))}
 
-          <Button onClick={handleAddField}>Add Paragraph</Button>
+          <Button onClick={handleAddSummaryField}>Add Paragraph</Button>
         </Box>
 
         {/* Education Fields */}
@@ -576,127 +497,22 @@ const ResumeCreate = () => {
 
           {educationFields.map((field) => (
             <React.Fragment key={field.id}>
-              <Button onClick={() => toggle(field.id, "showCGPA")}>
-                Show CGPA
-              </Button>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <TextField
-                  label="University"
-                  variant="outlined"
-                  type="text"
-                  onChange={(e) =>
-                    handleEducationChange(
-                      field.id,
-                      e.target.value,
-                      "university"
-                    )
-                  }
-                  // value={field.value}
-                  sx={{
-                    mt: "20px",
-                    width: "500px",
-                    flex: 1,
-                    ".MuiOutlinedInput-notchedOutline": {
-                      borderColor: "rgba(255,255,255,0.3)",
-                      borderRadius: "8px",
-                    },
-                  }}
-                  InputLabelProps={{
-                    style: { color: "rgba(255,255,255,0.3)" },
-                  }}
-                  inputProps={{
-                    style: {
-                      color: "#FFFFFF",
-                    },
-                  }}
-                  InputProps={{
-                    style: {
-                      background: "#222141",
-                    },
-                  }}
-                />
-                <Delete
-                  onClick={() => handleRemoveEducationField(field.id)}
-                  sx={{
-                    width: "40px",
-                    color: "white",
-                    height: "40px",
-                    cursor: "pointer",
-                  }}
-                />
-              </Stack>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <TextField
-                  label="Degree"
-                  variant="outlined"
-                  multiline
-                  maxRows={5}
-                  type="text"
-                  onChange={(e) =>
-                    handleEducationChange(field.id, e.target.value, "degree")
-                  }
-                  // value={field.value}
-                  sx={{
-                    mt: "20px",
-                    width: "500px",
-                    flex: 1,
-                    ".MuiOutlinedInput-notchedOutline": {
-                      borderColor: "rgba(255,255,255,0.3)",
-                      borderRadius: "8px",
-                    },
-                  }}
-                  InputLabelProps={{
-                    style: { color: "rgba(255,255,255,0.3)" },
-                  }}
-                  inputProps={{
-                    style: {
-                      color: "#FFFFFF",
-                    },
-                  }}
-                  InputProps={{
-                    style: {
-                      background: "#222141",
-                    },
-                  }}
-                />
-                <Delete
-                  onClick={() => handleRemoveEducationField(field.id)}
-                  sx={{
-                    width: "40px",
-                    color: "white",
-                    height: "40px",
-                    cursor: "pointer",
-                  }}
-                />
-              </Stack>
-              {field.showCGPA && (
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="center"
-                >
+              <Stack spacing={2} sx={{ mt: "30px" }}>
+                <Stack direction="row" spacing={5}>
                   <TextField
-                    label="CGPA"
+                    label="University"
                     variant="outlined"
-                    multiline
-                    maxRows={5}
                     type="text"
                     onChange={(e) =>
-                      handleEducationChange(field.id, e.target.value, "cgpa")
+                      handleEducationChange(
+                        field.id,
+                        e.target.value,
+                        "university"
+                      )
                     }
                     // value={field.value}
                     sx={{
-                      mt: "20px",
-                      width: "500px",
-                      flex: 1,
+                      width: "300px",
                       ".MuiOutlinedInput-notchedOutline": {
                         borderColor: "rgba(255,255,255,0.3)",
                         borderRadius: "8px",
@@ -716,52 +532,113 @@ const ResumeCreate = () => {
                       },
                     }}
                   />
-                  <Delete
-                    onClick={() => handleRemoveEducationField(field.id)}
+                  <TextField
+                    label="Degree"
+                    variant="outlined"
+                    multiline
+                    maxRows={5}
+                    type="text"
+                    onChange={(e) =>
+                      handleEducationChange(field.id, e.target.value, "degree")
+                    }
+                    // value={field.value}
                     sx={{
-                      width: "40px",
-                      color: "white",
-                      height: "40px",
-                      cursor: "pointer",
+                      width: "300px",
+                      ".MuiOutlinedInput-notchedOutline": {
+                        borderColor: "rgba(255,255,255,0.3)",
+                        borderRadius: "8px",
+                      },
+                    }}
+                    InputLabelProps={{
+                      style: { color: "rgba(255,255,255,0.3)" },
+                    }}
+                    inputProps={{
+                      style: {
+                        color: "#FFFFFF",
+                      },
+                    }}
+                    InputProps={{
+                      style: {
+                        background: "#222141",
+                      },
                     }}
                   />
                 </Stack>
-              )}
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <TextField
-                  label="Date"
-                  type="text"
-                  variant="outlined"
-                  onChange={(e) =>
-                    handleEducationChange(field.id, e.target.value, "date")
-                  }
-                  sx={{
-                    mt: "20px",
-                    width: "500px",
-                    flex: 1,
-                    ".MuiOutlinedInput-notchedOutline": {
-                      borderColor: "rgba(255,255,255,0.3)",
-                      borderRadius: "8px",
-                    },
-                  }}
-                  InputLabelProps={{
-                    style: { color: "rgba(255,255,255,0.3)" },
-                  }}
-                  inputProps={{
-                    style: {
-                      color: "#FFFFFF",
-                    },
-                  }}
-                  InputProps={{
-                    style: {
-                      background: "#222141",
-                    },
-                  }}
-                />
+                <Stack direction="row" spacing={5}>
+                  {field.showCGPA && (
+                    <Stack direction="row" alignItems="center">
+                      <TextField
+                        label="CGPA"
+                        variant="outlined"
+                        multiline
+                        maxRows={5}
+                        type="text"
+                        onChange={(e) =>
+                          handleEducationChange(
+                            field.id,
+                            e.target.value,
+                            "cgpa"
+                          )
+                        }
+                        // value={field.value}
+                        sx={{
+                          width: "300px",
+                          ".MuiOutlinedInput-notchedOutline": {
+                            borderColor: "rgba(255,255,255,0.3)",
+                            borderRadius: "8px",
+                          },
+                        }}
+                        InputLabelProps={{
+                          style: { color: "rgba(255,255,255,0.3)" },
+                        }}
+                        inputProps={{
+                          style: {
+                            color: "#FFFFFF",
+                          },
+                        }}
+                        InputProps={{
+                          style: {
+                            background: "#222141",
+                          },
+                        }}
+                      />
+                    </Stack>
+                  )}
+                  <TextField
+                    label="Date"
+                    type="text"
+                    variant="outlined"
+                    onChange={(e) =>
+                      handleEducationChange(field.id, e.target.value, "date")
+                    }
+                    sx={{
+                      width: "300px",
+                      ".MuiOutlinedInput-notchedOutline": {
+                        borderColor: "rgba(255,255,255,0.3)",
+                        borderRadius: "8px",
+                      },
+                    }}
+                    InputLabelProps={{
+                      style: { color: "rgba(255,255,255,0.3)" },
+                    }}
+                    inputProps={{
+                      style: {
+                        color: "#FFFFFF",
+                      },
+                    }}
+                    InputProps={{
+                      style: {
+                        background: "#222141",
+                      },
+                    }}
+                  />
+                </Stack>
+              </Stack>
+
+              <Stack direction="row" alignItems="center" sx={{ mt: "10px" }}>
+                <Button onClick={() => toggle(field.id, "showCGPA")}>
+                  Show CGPA
+                </Button>
                 <Delete
                   onClick={() => handleRemoveEducationField(field.id)}
                   sx={{
@@ -771,26 +648,27 @@ const ResumeCreate = () => {
                     cursor: "pointer",
                   }}
                 />
+                <Button onClick={handleAddEducationField}>
+                  Add Another Field
+                </Button>
               </Stack>
             </React.Fragment>
           ))}
-
-          <Button onClick={handleAddEducationField}>Add Another Field</Button>
         </Box>
 
         {/* Experience Fields */}
         <Box>
-          <Typography variant="h3" component="h3" sx={{ color: "white" }}>
+          <Typography
+            variant="h3"
+            component="h3"
+            sx={{ mb: "10px", color: "white" }}
+          >
             Experience
           </Typography>
 
           {experienceFields.map((experience) => (
             <React.Fragment key={experience.id}>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="center"
-              >
+              <Stack direction="row" spacing={5}>
                 <TextField
                   label="Company"
                   variant="outlined"
@@ -805,8 +683,7 @@ const ResumeCreate = () => {
                   // value={field.value}
                   sx={{
                     mt: "20px",
-                    width: "500px",
-                    flex: 1,
+                    width: "300px",
                     ".MuiOutlinedInput-notchedOutline": {
                       borderColor: "rgba(255,255,255,0.3)",
                       borderRadius: "8px",
@@ -826,21 +703,6 @@ const ResumeCreate = () => {
                     },
                   }}
                 />
-                <Delete
-                  onClick={() => handleRemoveExperienceField(experience.id)}
-                  sx={{
-                    width: "40px",
-                    color: "white",
-                    height: "40px",
-                    cursor: "pointer",
-                  }}
-                />
-              </Stack>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="center"
-              >
                 <TextField
                   label="Title"
                   variant="outlined"
@@ -855,8 +717,7 @@ const ResumeCreate = () => {
                   // value={field.value}
                   sx={{
                     mt: "20px",
-                    width: "500px",
-                    flex: 1,
+                    width: "300px",
                     ".MuiOutlinedInput-notchedOutline": {
                       borderColor: "rgba(255,255,255,0.3)",
                       borderRadius: "8px",
@@ -876,71 +737,6 @@ const ResumeCreate = () => {
                     },
                   }}
                 />
-                <Delete
-                  onClick={() => handleRemoveExperienceField(experience.id)}
-                  sx={{
-                    width: "40px",
-                    color: "white",
-                    height: "40px",
-                    cursor: "pointer",
-                  }}
-                />
-              </Stack>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <TextField
-                  label="Location"
-                  variant="outlined"
-                  type="text"
-                  onChange={(e) =>
-                    handleExperienceChange(
-                      experience.id,
-                      e.target.value,
-                      "location"
-                    )
-                  }
-                  // value={field.value}
-                  sx={{
-                    mt: "20px",
-                    width: "500px",
-                    flex: 1,
-                    ".MuiOutlinedInput-notchedOutline": {
-                      borderColor: "rgba(255,255,255,0.3)",
-                      borderRadius: "8px",
-                    },
-                  }}
-                  InputLabelProps={{
-                    style: { color: "rgba(255,255,255,0.3)" },
-                  }}
-                  inputProps={{
-                    style: {
-                      color: "#FFFFFF",
-                    },
-                  }}
-                  InputProps={{
-                    style: {
-                      background: "#222141",
-                    },
-                  }}
-                />
-                <Delete
-                  onClick={() => handleRemoveExperienceField(experience.id)}
-                  sx={{
-                    width: "40px",
-                    color: "white",
-                    height: "40px",
-                    cursor: "pointer",
-                  }}
-                />
-              </Stack>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="center"
-              >
                 <TextField
                   label="Date"
                   variant="outlined"
@@ -955,8 +751,7 @@ const ResumeCreate = () => {
                   // value={field.value}
                   sx={{
                     mt: "20px",
-                    width: "500px",
-                    flex: 1,
+                    width: "300px",
                     ".MuiOutlinedInput-notchedOutline": {
                       borderColor: "rgba(255,255,255,0.3)",
                       borderRadius: "8px",
@@ -976,26 +771,14 @@ const ResumeCreate = () => {
                     },
                   }}
                 />
-                <Delete
-                  onClick={() => handleRemoveProjectField(experience.id)}
-                  sx={{
-                    width: "40px",
-                    color: "white",
-                    height: "40px",
-                    cursor: "pointer",
-                  }}
-                />
               </Stack>
               {experience.descriptions.map((_, index) => (
-                <Stack
-                  key={index}
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="center"
-                >
+                <Stack key={index} direction="row" alignItems="center">
                   <TextField
-                    label="Achievements"
+                    label="Tasks Performed"
                     variant="outlined"
+                    multiline
+                    maxRows={2}
                     onChange={(e) =>
                       handleExperienceDescriptionChange(
                         experience.id,
@@ -1005,8 +788,7 @@ const ResumeCreate = () => {
                     }
                     sx={{
                       mt: "20px",
-                      width: "500px",
-                      flex: 1,
+                      width: "550px",
                       ".MuiOutlinedInput-notchedOutline": {
                         borderColor: "rgba(255,255,255,0.3)",
                         borderRadius: "8px",
@@ -1034,41 +816,56 @@ const ResumeCreate = () => {
                       width: "40px",
                       color: "white",
                       height: "40px",
+                      mt: "20px",
                       cursor: "pointer",
                     }}
                   />
                 </Stack>
               ))}
-              <Button
-                onClick={() => handleAddExperienceDescription(experience.id)}
-              >
-                Add Description
-              </Button>
+
+              <Stack direction="row" alignItems="center" sx={{ mt: "20px" }}>
+                <Button
+                  onClick={() => handleAddExperienceDescription(experience.id)}
+                >
+                  Add Description
+                </Button>
+                <Delete
+                  sx={{
+                    width: "40px",
+                    color: "white",
+                    height: "40px",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => handleRemoveExperienceField(experience.id)}
+                />
+                <Button onClick={handleAddExperienceField}>
+                  Add Another Experience
+                </Button>
+              </Stack>
             </React.Fragment>
           ))}
-
-          <Button onClick={handleAddExperienceField}>
-            Add Another Experience
-          </Button>
         </Box>
 
         {/* Project Fields */}
         <Box>
+          <Typography variant="h3" component="h3" sx={{ color: "white" }}>
+            Projects
+          </Typography>
           {projectFields.map((project) => (
             <React.Fragment key={project.id}>
-              <Box sx={{ display: "flex" }}>
-                {isEdit ? (
+              <Stack direction="row" spacing={5}>
+                <Stack direction="row" alignItems="center">
                   <TextField
+                    label="Title"
                     variant="outlined"
                     type="text"
-                    value={project.header}
                     onChange={(e) =>
-                      handleProjectChange(project.id, e.target.value, "header")
+                      handleProjectChange(project.id, e.target.value, "title")
                     }
+                    // value={field.value}
                     sx={{
                       mt: "20px",
-                      width: "500px",
-                      flex: 1,
+                      width: "550px",
                       ".MuiOutlinedInput-notchedOutline": {
                         borderColor: "rgba(255,255,255,0.3)",
                         borderRadius: "8px",
@@ -1088,117 +885,42 @@ const ResumeCreate = () => {
                       },
                     }}
                   />
-                ) : (
-                  <Typography
-                    variant="h3"
-                    component="h3"
-                    sx={{ color: "white" }}
-                  >
-                    {project.header}
-                  </Typography>
-                )}
-                <Button onClick={() => setIsEdit(!isEdit)}>Edit</Button>
-                <Button>Delete</Button>
-              </Box>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <TextField
-                  label="Title"
-                  variant="outlined"
-                  type="text"
-                  onChange={(e) =>
-                    handleProjectChange(project.id, e.target.value, "title")
-                  }
-                  // value={field.value}
-                  sx={{
-                    mt: "20px",
-                    width: "500px",
-                    flex: 1,
-                    ".MuiOutlinedInput-notchedOutline": {
-                      borderColor: "rgba(255,255,255,0.3)",
-                      borderRadius: "8px",
-                    },
-                  }}
-                  InputLabelProps={{
-                    style: { color: "rgba(255,255,255,0.3)" },
-                  }}
-                  inputProps={{
-                    style: {
-                      color: "#FFFFFF",
-                    },
-                  }}
-                  InputProps={{
-                    style: {
-                      background: "#222141",
-                    },
-                  }}
-                />
-                <Delete
-                  onClick={() => handleRemoveProjectField(project.id)}
-                  sx={{
-                    width: "40px",
-                    color: "white",
-                    height: "40px",
-                    cursor: "pointer",
-                  }}
-                />
-              </Stack>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <TextField
-                  label="Date"
-                  variant="outlined"
-                  type="text"
-                  onChange={(e) =>
-                    handleProjectChange(project.id, e.target.value, "date")
-                  }
-                  // value={field.value}
-                  sx={{
-                    mt: "20px",
-                    width: "500px",
-                    flex: 1,
-                    ".MuiOutlinedInput-notchedOutline": {
-                      borderColor: "rgba(255,255,255,0.3)",
-                      borderRadius: "8px",
-                    },
-                  }}
-                  InputLabelProps={{
-                    style: { color: "rgba(255,255,255,0.3)" },
-                  }}
-                  inputProps={{
-                    style: {
-                      color: "#FFFFFF",
-                    },
-                  }}
-                  InputProps={{
-                    style: {
-                      background: "#222141",
-                    },
-                  }}
-                />
-                <Delete
-                  onClick={() => handleRemoveProjectField(project.id)}
-                  sx={{
-                    width: "40px",
-                    color: "white",
-                    height: "40px",
-                    cursor: "pointer",
-                  }}
-                />
+                </Stack>
+                <Stack direction="row" alignItems="center">
+                  <TextField
+                    label="Date"
+                    variant="outlined"
+                    type="text"
+                    onChange={(e) =>
+                      handleProjectChange(project.id, e.target.value, "date")
+                    }
+                    // value={field.value}
+                    sx={{
+                      mt: "20px",
+                      width: "550px",
+                      ".MuiOutlinedInput-notchedOutline": {
+                        borderColor: "rgba(255,255,255,0.3)",
+                        borderRadius: "8px",
+                      },
+                    }}
+                    InputLabelProps={{
+                      style: { color: "rgba(255,255,255,0.3)" },
+                    }}
+                    inputProps={{
+                      style: {
+                        color: "#FFFFFF",
+                      },
+                    }}
+                    InputProps={{
+                      style: {
+                        background: "#222141",
+                      },
+                    }}
+                  />
+                </Stack>
               </Stack>
               {project.descriptions.map((_, index) => (
-                <Stack
-                  key={index}
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="center"
-                >
+                <Stack key={index} direction="row" alignItems="center">
                   <TextField
                     label="Description"
                     variant="outlined"
@@ -1207,8 +929,7 @@ const ResumeCreate = () => {
                     }
                     sx={{
                       mt: "20px",
-                      width: "500px",
-                      flex: 1,
+                      width: "550px",
                       ".MuiOutlinedInput-notchedOutline": {
                         borderColor: "rgba(255,255,255,0.3)",
                         borderRadius: "8px",
@@ -1229,7 +950,9 @@ const ResumeCreate = () => {
                     }}
                   />
                   <Delete
-                    onClick={() => handleRemoveDescription(project.id, index)}
+                    onClick={() =>
+                      handleRemoveProjectDescription(project.id, index)
+                    }
                     sx={{
                       width: "40px",
                       color: "white",
@@ -1239,7 +962,7 @@ const ResumeCreate = () => {
                   />
                 </Stack>
               ))}
-              <Button onClick={() => handleAddDescription(project.id)}>
+              <Button onClick={() => handleAddProjectDescription(project.id)}>
                 Add Description
               </Button>
             </React.Fragment>
@@ -1256,97 +979,89 @@ const ResumeCreate = () => {
 
           {skillsFields.map((field) => (
             <React.Fragment key={field.id}>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <TextField
-                  label="Title"
-                  variant="outlined"
-                  type="text"
-                  onChange={(e) =>
-                    handleSkillsChange(field.id, e.target.value, "title")
-                  }
-                  value={field.title}
-                  sx={{
-                    mt: "20px",
-                    width: "500px",
-                    flex: 1,
-                    ".MuiOutlinedInput-notchedOutline": {
-                      borderColor: "rgba(255,255,255,0.3)",
-                      borderRadius: "8px",
-                    },
-                  }}
-                  InputLabelProps={{
-                    style: { color: "rgba(255,255,255,0.3)" },
-                  }}
-                  inputProps={{
-                    style: {
-                      color: "#FFFFFF",
-                    },
-                  }}
-                  InputProps={{
-                    style: {
-                      background: "#222141",
-                    },
-                  }}
-                />
-                <Delete
-                  onClick={() => handleRemoveSkillsField(field.id)}
-                  sx={{
-                    width: "40px",
-                    color: "white",
-                    height: "40px",
-                    cursor: "pointer",
-                  }}
-                />
-              </Stack>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <TextField
-                  label="Skills"
-                  type="text"
-                  variant="outlined"
-                  value={field.skills}
-                  onChange={(e) =>
-                    handleSkillsChange(field.id, e.target.value, "skills")
-                  }
-                  sx={{
-                    mt: "20px",
-                    width: "500px",
-                    flex: 1,
-                    ".MuiOutlinedInput-notchedOutline": {
-                      borderColor: "rgba(255,255,255,0.3)",
-                      borderRadius: "8px",
-                    },
-                  }}
-                  InputLabelProps={{
-                    style: { color: "rgba(255,255,255,0.3)" },
-                  }}
-                  inputProps={{
-                    style: {
-                      color: "#FFFFFF",
-                    },
-                  }}
-                  InputProps={{
-                    style: {
-                      background: "#222141",
-                    },
-                  }}
-                />
-                <Delete
-                  onClick={() => handleRemoveSkillsField(field.id)}
-                  sx={{
-                    width: "40px",
-                    color: "white",
-                    height: "40px",
-                    cursor: "pointer",
-                  }}
-                />
+              <Stack direction="row" spacing={5}>
+                <Stack direction="row" alignItems="center">
+                  <TextField
+                    label="Title"
+                    variant="outlined"
+                    type="text"
+                    onChange={(e) =>
+                      handleSkillsChange(field.id, e.target.value, "title")
+                    }
+                    value={field.title}
+                    sx={{
+                      mt: "20px",
+                      width: "300px",
+                      ".MuiOutlinedInput-notchedOutline": {
+                        borderColor: "rgba(255,255,255,0.3)",
+                        borderRadius: "8px",
+                      },
+                    }}
+                    InputLabelProps={{
+                      style: { color: "rgba(255,255,255,0.3)" },
+                    }}
+                    inputProps={{
+                      style: {
+                        color: "#FFFFFF",
+                      },
+                    }}
+                    InputProps={{
+                      style: {
+                        background: "#222141",
+                      },
+                    }}
+                  />
+                  <Delete
+                    onClick={() => handleRemoveSkillsField(field.id)}
+                    sx={{
+                      width: "40px",
+                      color: "white",
+                      height: "40px",
+                      cursor: "pointer",
+                    }}
+                  />
+                </Stack>
+                <Stack direction="row" alignItems="center">
+                  <TextField
+                    label="Skills"
+                    type="text"
+                    variant="outlined"
+                    // value={field.skills}
+                    onChange={(e) =>
+                      handleSkillsChange(field.id, e.target.value, "skills")
+                    }
+                    sx={{
+                      mt: "20px",
+                      width: "500px",
+                      ".MuiOutlinedInput-notchedOutline": {
+                        borderColor: "rgba(255,255,255,0.3)",
+                        borderRadius: "8px",
+                      },
+                    }}
+                    InputLabelProps={{
+                      style: { color: "rgba(255,255,255,0.3)" },
+                    }}
+                    inputProps={{
+                      style: {
+                        color: "#FFFFFF",
+                      },
+                    }}
+                    InputProps={{
+                      style: {
+                        background: "#222141",
+                      },
+                    }}
+                  />
+                  <Delete
+                    onClick={() => handleRemoveSkillsField(field.id)}
+                    sx={{
+                      width: "40px",
+                      color: "white",
+                      height: "40px",
+                      cursor: "pointer",
+                    }}
+                  />
+                </Stack>
               </Stack>
             </React.Fragment>
           ))}
@@ -1362,101 +1077,97 @@ const ResumeCreate = () => {
 
           {certificationsFields.map((field) => (
             <React.Fragment key={field.id}>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <TextField
-                  label="Issue By"
-                  variant="outlined"
-                  type="text"
-                  onChange={(e) =>
-                    handleCertificationChange(
-                      field.id,
-                      e.target.value,
-                      "issueBy"
-                    )
-                  }
-                  // value={field.value}
-                  sx={{
-                    mt: "20px",
-                    width: "500px",
-                    flex: 1,
-                    ".MuiOutlinedInput-notchedOutline": {
-                      borderColor: "rgba(255,255,255,0.3)",
-                      borderRadius: "8px",
-                    },
-                  }}
-                  InputLabelProps={{
-                    style: { color: "rgba(255,255,255,0.3)" },
-                  }}
-                  inputProps={{
-                    style: {
-                      color: "#FFFFFF",
-                    },
-                  }}
-                  InputProps={{
-                    style: {
-                      background: "#222141",
-                    },
-                  }}
-                />
-                <Delete
-                  onClick={() => handleRemoveCertificationField(field.id)}
-                  sx={{
-                    width: "40px",
-                    color: "white",
-                    height: "40px",
-                    cursor: "pointer",
-                  }}
-                />
-              </Stack>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <TextField
-                  label="Certification Name"
-                  variant="outlined"
-                  type="text"
-                  onChange={(e) =>
-                    handleCertificationChange(field.id, e.target.value, "name")
-                  }
-                  // value={field.value}
-                  sx={{
-                    mt: "20px",
-                    width: "500px",
-                    flex: 1,
-                    ".MuiOutlinedInput-notchedOutline": {
-                      borderColor: "rgba(255,255,255,0.3)",
-                      borderRadius: "8px",
-                    },
-                  }}
-                  InputLabelProps={{
-                    style: { color: "rgba(255,255,255,0.3)" },
-                  }}
-                  inputProps={{
-                    style: {
-                      color: "#FFFFFF",
-                    },
-                  }}
-                  InputProps={{
-                    style: {
-                      background: "#222141",
-                    },
-                  }}
-                />
-                <Delete
-                  onClick={() => handleRemoveCertificationField(field.id)}
-                  sx={{
-                    width: "40px",
-                    color: "white",
-                    height: "40px",
-                    cursor: "pointer",
-                  }}
-                />
+              <Stack direction="row" spacing={5}>
+                <Stack direction="row" alignItems="center">
+                  <TextField
+                    label="Issue By"
+                    variant="outlined"
+                    type="text"
+                    onChange={(e) =>
+                      handleCertificationChange(
+                        field.id,
+                        e.target.value,
+                        "issueBy"
+                      )
+                    }
+                    // value={field.value}
+                    sx={{
+                      mt: "20px",
+                      width: "300px",
+                      ".MuiOutlinedInput-notchedOutline": {
+                        borderColor: "rgba(255,255,255,0.3)",
+                        borderRadius: "8px",
+                      },
+                    }}
+                    InputLabelProps={{
+                      style: { color: "rgba(255,255,255,0.3)" },
+                    }}
+                    inputProps={{
+                      style: {
+                        color: "#FFFFFF",
+                      },
+                    }}
+                    InputProps={{
+                      style: {
+                        background: "#222141",
+                      },
+                    }}
+                  />
+                  <Delete
+                    onClick={() => handleRemoveCertificationField(field.id)}
+                    sx={{
+                      width: "40px",
+                      color: "white",
+                      height: "40px",
+                      cursor: "pointer",
+                    }}
+                  />
+                </Stack>
+                <Stack direction="row" alignItems="center">
+                  <TextField
+                    label="Certification Name"
+                    variant="outlined"
+                    type="text"
+                    onChange={(e) =>
+                      handleCertificationChange(
+                        field.id,
+                        e.target.value,
+                        "name"
+                      )
+                    }
+                    // value={field.value}
+                    sx={{
+                      mt: "20px",
+                      width: "300px",
+                      ".MuiOutlinedInput-notchedOutline": {
+                        borderColor: "rgba(255,255,255,0.3)",
+                        borderRadius: "8px",
+                      },
+                    }}
+                    InputLabelProps={{
+                      style: { color: "rgba(255,255,255,0.3)" },
+                    }}
+                    inputProps={{
+                      style: {
+                        color: "#FFFFFF",
+                      },
+                    }}
+                    InputProps={{
+                      style: {
+                        background: "#222141",
+                      },
+                    }}
+                  />
+                  <Delete
+                    onClick={() => handleRemoveCertificationField(field.id)}
+                    sx={{
+                      width: "40px",
+                      color: "white",
+                      height: "40px",
+                      cursor: "pointer",
+                    }}
+                  />
+                </Stack>
               </Stack>
             </React.Fragment>
           ))}
@@ -1465,10 +1176,13 @@ const ResumeCreate = () => {
             Add Another Field
           </Button>
         </Box>
+
+        <Button onClick={handlePrint}>Print Resume</Button>
       </Stack>
 
       {/* RESUME DESIGN */}
       <Box
+        ref={componentRef}
         sx={{
           width: "8.27in",
           height: "11.69in",
@@ -1719,19 +1433,6 @@ const ResumeCreate = () => {
                       lineHeight: "19px",
                     }}
                   >
-                    {experience.location || "Location"}
-                  </Typography>
-                  <Typography
-                    component="p"
-                    sx={{
-                      mt: "5px",
-                      color: "rgb(111, 120, 120)",
-                      fontFamily: "PT Sans, Arial, Helvetica, sans-serif",
-                      textTransform: "capitalize",
-                      fontSize: "16px",
-                      lineHeight: "19px",
-                    }}
-                  >
                     {experience.date || "Date Period"}
                   </Typography>
                 </Box>
@@ -1763,22 +1464,22 @@ const ResumeCreate = () => {
         </Stack>
 
         {/* Projects */}
-        {projectFields.map((project) => (
-          <Stack key={project.id} sx={{ mt: "30px" }}>
-            <Typography
-              sx={{
-                textAlign: "center",
-                fontWeight: "900",
-                fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
-                textTransform: "uppercase",
-                fontSize: "20px",
-                lineHeight: "26px",
-              }}
-            >
-              {project.header}
-            </Typography>
-            <Divider sx={{ borderColor: "black" }} />
-            <Box>
+        <Stack sx={{ mt: "30px" }}>
+          <Typography
+            sx={{
+              textAlign: "center",
+              fontWeight: "900",
+              fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
+              textTransform: "uppercase",
+              fontSize: "20px",
+              lineHeight: "26px",
+            }}
+          >
+            Projects
+          </Typography>
+          <Divider sx={{ borderColor: "black" }} />
+          {projectFields.map((project) => (
+            <React.Fragment key={project.id}>
               <Stack direction="row" justifyContent="space-between">
                 <Typography
                   component="p"
@@ -1829,9 +1530,9 @@ const ResumeCreate = () => {
                   </ListItem>
                 ))}
               </List>
-            </Box>
-          </Stack>
-        ))}
+            </React.Fragment>
+          ))}
+        </Stack>
 
         {/* Skills */}
         <Stack sx={{ mt: "30px" }}>
