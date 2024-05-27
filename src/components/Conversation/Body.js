@@ -3,14 +3,15 @@ import { Box, Typography, Stack, Skeleton } from "@mui/material";
 import "./Body.css";
 import Markdown from "react-markdown";
 
-export const Body = ({ messages, loading }) => {
+export const Body = ({ loading, userMessages }) => {
   const messageRef = useRef(null);
 
   useEffect(() => {
+    if (!userMessages) return;
     if (messageRef.current) {
       messageRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages]);
+  }, [userMessages]);
 
   const defaultMessage =
     "Hello there! I am Career Sage! I specialize in providing guidance related to careers in the IT and software industry. Here are some of the ways I can assist you:\n\n1. **Career Paths**: Information on various career paths within the IT industry, including roles like software developer, data scientist, system administrator, IT consultant, and more.\n\n2. **Skill Requirements**: Details on the skills and technologies required for different positions in the IT sector.\n\n3. **Learning Resources**: Recommendations for courses, certifications, and learning paths to help you acquire necessary skills.\n\n4. **Job Preparation**: Tips on preparing for job interviews, creating an effective resume, and building a professional portfolio.\n\n5. **Market Trends**: Insights into current trends and future projections in the IT industry.\n\n6. **Work Environment**: Information on the work culture, remote work opportunities, and company types within the IT sector.\n\n7. **Tools and Technologies**: Overviews of popular tools, programming languages, frameworks, and platforms used in the industry.\n\n8. **Career Transition**: Guidance for transitioning into IT from other industries or moving between different roles within the IT sector.\n\nIf you have any specific questions or need information on any topic related to IT careers, feel free to ask!";
@@ -73,8 +74,8 @@ export const Body = ({ messages, loading }) => {
             </Typography>
           </Stack>
         </Box>
-        {messages &&
-          messages.map((message, index) =>
+        {userMessages &&
+          userMessages.map((message, index) =>
             message.role === "system" ? null : (
               <Box
                 key={index}
@@ -92,7 +93,7 @@ export const Body = ({ messages, loading }) => {
                   alignSelf:
                     message.role === "user" ? "flex-end" : "flex-start",
                 }}
-                ref={index === messages.length - 1 ? messageRef : null}
+                ref={index === userMessages.length - 1 ? messageRef : null}
               >
                 <Stack direction="column" spacing={2}>
                   <Typography
@@ -115,7 +116,7 @@ export const Body = ({ messages, loading }) => {
                   </Typography>
                 </Stack>
               </Box>
-            ),
+            )
           )}
         {loading && (
           <Box

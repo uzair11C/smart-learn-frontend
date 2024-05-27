@@ -20,21 +20,13 @@ const Chat = () => {
     }
   }, []);
 
-  var messages = [
-    {
-      role: "system",
-      content:
-        "You are a career guiding bot, identified as Career Sage, focused on queries related to careers and educationin the software/IT industry. Politely decline any other queries.To any query other than career guidance in IT/software industry, you will say: I am sorry,I only talk about careers in IT industry. Is thereanything else I can help you with?",
-    },
-    ...((user && user.user_metadata.messages) || []),
-  ];
-
+  const [userMessages, setUserMessages] = useState([]);
   const [value, setValue] = useState("");
   const [status, setStatus] = useState("active");
   const [limit, setLimit] = useState(
-    messages
-      ? messages.filter((message) => message.role === "assistant").length
-      : 0,
+    userMessages
+      ? userMessages.filter((message) => message.role === "assistant").length
+      : 0
   );
   const [refresh, setRefresh] = useState(false);
   const [open, setOpen] = useState(false);
@@ -65,7 +57,7 @@ const Chat = () => {
         setOpen(true);
         setTitle("Limit Reached!");
         setContent(
-          "Your limit has Reached for this section, refresh if you want to contine.",
+          "Your limit has Reached for this section, refresh if you want to contine."
         );
       } else {
         setRefresh(false);
@@ -74,33 +66,29 @@ const Chat = () => {
           role: "user",
           content: value,
         };
-
-        messages = [...messages, message];
         // messages.push(message);
-        localStorage.setItem("messages", JSON.stringify(messages));
 
         setValue("");
+        const newArray = [...userMessages, message];
+        setUserMessages(newArray);
         setLoading(true);
-
         const data = await axios.post(
           "https://smart-learn-smart-learn-463c5cef.koyeb.app/api/chat",
           {
-            messages,
-          },
+            messages: userMessages,
+          }
         );
-        const response = await data.data;
-        messages = [...messages, response];
-        // messages.push(response);
-        localStorage.setItem("messages", JSON.stringify(messages));
-
         setLoading(false);
+        const response = await data.data;
+        setUserMessages([...newArray, response]);
+        storeMessages([...newArray, response]);
+        console.log("response: ", response);
         setStatus("Active");
-        setLimit(
-          messages
-            ? messages.filter((message) => message.role === "assistant").length
-            : limit + 1,
-        );
-        storeMessages(messages);
+        // setLimit(
+        //   messages
+        //     ? messages.filter((message) => message.role === "assistant").length
+        //     : limit + 1
+        // );
       }
     }
   };
@@ -108,6 +96,17 @@ const Chat = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  React.useEffect(() => {
+    const messages = [
+      {
+        role: "system",
+        content:
+          "You are a career guiding bot, identified as Career Sage, focused on queries related to careers and educationin the software/IT industry. Politely decline any other queries.To any query other than career guidance in IT/software industry, you will say: I am sorry,I only talk about careers in IT industry. Is thereanything else I can help you with?",
+      },
+      ...((user && user.user_metadata.messages) || []),
+    ];
+    setUserMessages(messages);
+  }, [user]);
 
   return (
     <Box
@@ -123,7 +122,7 @@ const Chat = () => {
       }}
     >
       <Header status={status} limit={limit} storeMessages={storeMessages} />
-      <Body messages={messages} status={status} loading={loading} />
+      <Body status={status} loading={loading} userMessages={userMessages} />
       {/* Form */}
       <Box
         sx={{
