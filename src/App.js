@@ -7,29 +7,29 @@ import Roadmaps from "./pages/Roadmaps";
 import RolePrediction from "./pages/RolePrediction";
 
 function App() {
-    return (
-        <div
-            style={{
-                backgroundColor: "#19192F",
-                color: "#FFFFFF",
-                width: "100vw",
-                maxWidth: "100%",
-            }}
-        >
-            <CssBaseline />
-            <NavBar />
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/consultation" element={<Consultation />} />
-                <Route path="/resume-analysis" element={<RolePrediction />} />
-                <Route path="/roadmaps" element={<Roadmaps />} />
-                {/* <Route
+  return (
+    <div
+      style={{
+        backgroundColor: "#19192F",
+        color: "#FFFFFF",
+        width: "100vw",
+        maxWidth: "100%",
+      }}
+    >
+      <CssBaseline />
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/consultation" element={<Consultation />} />
+        <Route path="/resume-analysis" element={<RolePrediction />} />
+        <Route path="/roadmaps" element={<Roadmaps />} />
+        {/* <Route
                     path="/resume-analysis/prediction"
                     element={<Result />}
                 /> */}
-            </Routes>
-        </div>
-    );
+      </Routes>
+    </div>
+  );
 }
 
 export default App;

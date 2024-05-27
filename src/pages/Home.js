@@ -3,16 +3,16 @@ import Banner from "../components/Banner";
 import Services from "../components/HomeComponents/Services";
 
 const Home = () => {
-    return (
-        <>
-            <Banner
-                title="SMART LEARN"
-                catchprase="Made by Students for Students"
-                imageUrl="/images/smartLearn.jpg"
-            />
-            <Services />
-        </>
-    );
+  return (
+    <>
+      <Banner
+        title="SMART LEARN"
+        catchprase="Made by Students for Students"
+        imageUrl="/images/smartLearn.jpg"
+      />
+      <Services />
+    </>
+  );
 };
 
 export default Home;

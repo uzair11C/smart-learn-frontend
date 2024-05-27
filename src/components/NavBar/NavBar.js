@@ -7,82 +7,82 @@ import { useUser } from "../../Contexts/useUser";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-    const { user, logout } = useUser();
+  const { user, logout } = useUser();
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
 
-    const handleOpenNavMenu = (event) => {
-        setAnchorElNav(event.currentTarget);
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const [scrolledPastSection, setScrolledPastSection] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sectionHeight = window.innerHeight - 500;
+      const scrollPosition = window.scrollY;
+
+      // Check if the user has scrolled past the section
+      if (scrollPosition > sectionHeight) {
+        setScrolledPastSection(true);
+      } else {
+        setScrolledPastSection(false);
+      }
     };
 
-    const handleCloseNavMenu = () => {
-        setAnchorElNav(null);
+    // Add scroll event listener
+    window.addEventListener("scroll", handleScroll);
+
+    // Remove event listener on component unmount
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
     };
+  }, []);
 
-    const [scrolledPastSection, setScrolledPastSection] = useState(false);
+  // const backgroundColor = ""
 
-    useEffect(() => {
-        const handleScroll = () => {
-            const sectionHeight = window.innerHeight - 500;
-            const scrollPosition = window.scrollY;
+  return (
+    <AppBar
+      position="fixed"
+      sx={{
+        background: scrolledPastSection ? "#19192F" : "transparent",
+        color: "#FFFFFF",
+        boxShadow: "none",
+      }}
+    >
+      <Container
+        maxWidth="xl"
+        sx={{
+          p: "15px",
+        }}
+      >
+        <Toolbar>
+          {/** Mobile View of Header **/}
+          <MobileNav
+            anchorElNav={anchorElNav}
+            handleOpenNavMenu={handleOpenNavMenu}
+            handleCloseNavMenu={handleCloseNavMenu}
+            navigate={navigate}
+            user={user}
+            logout={logout}
+          />
 
-            // Check if the user has scrolled past the section
-            if (scrollPosition > sectionHeight) {
-                setScrolledPastSection(true);
-            } else {
-                setScrolledPastSection(false);
-            }
-        };
-
-        // Add scroll event listener
-        window.addEventListener("scroll", handleScroll);
-
-        // Remove event listener on component unmount
-        return () => {
-            window.removeEventListener("scroll", handleScroll);
-        };
-    }, []);
-
-    // const backgroundColor = ""
-
-    return (
-        <AppBar
-            position="fixed"
-            sx={{
-                background: scrolledPastSection ? "#19192F" : "transparent",
-                color: "#FFFFFF",
-                boxShadow: "none",
-            }}
-        >
-            <Container
-                maxWidth="xl"
-                sx={{
-                    p: "15px",
-                }}
-            >
-                <Toolbar>
-                    {/** Mobile View of Header **/}
-                    <MobileNav
-                        anchorElNav={anchorElNav}
-                        handleOpenNavMenu={handleOpenNavMenu}
-                        handleCloseNavMenu={handleCloseNavMenu}
-                        navigate={navigate}
-                        user={user}
-                        logout={logout}
-                    />
-
-                    {/** Desktop View of Header **/}
-                    <DesktopNav
-                        handleCloseNavMenu={handleCloseNavMenu}
-                        navigate={navigate}
-                        user={user}
-                        logout={logout}
-                    />
-                </Toolbar>
-            </Container>
-        </AppBar>
-    );
+          {/** Desktop View of Header **/}
+          <DesktopNav
+            handleCloseNavMenu={handleCloseNavMenu}
+            navigate={navigate}
+            user={user}
+            logout={logout}
+          />
+        </Toolbar>
+      </Container>
+    </AppBar>
+  );
 };
 export default Header;

@@ -43,5 +43,5 @@ root.render(
     <RouterProvider router={router}>
       <App />
     </RouterProvider>
-  </UserProvider>
+  </UserProvider>,
 );

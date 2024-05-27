@@ -3,7 +3,6 @@ import { Box, InputBase, Button } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 
 export const Form = () => {
-
   return (
     <Box
       sx={{
