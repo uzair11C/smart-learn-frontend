@@ -37,7 +37,7 @@ const Consultation = () => {
         <>
             <Banner
                 title="Consultation"
-                imageUrl="/images/talking to robot.webp"
+                imageUrl="/images/talking to robot.jpg"
             />
 
             <Box
