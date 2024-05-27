@@ -15,6 +15,7 @@ const UploadCV = () => {
     const [open2, setOpen2] = useState(false);
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+    const isSmallScreen = window.innerWidth < 600;
 
     // const resultRef = useRef(null); // Reference to the result component
 
@@ -225,7 +226,7 @@ const UploadCV = () => {
                             <img
                                 src="/images/Upload.png"
                                 alt="drag-here"
-                                width="60%"
+                                width={isSmallScreen ? "65%" : "25%"}
                             />
                         </>
                     )}

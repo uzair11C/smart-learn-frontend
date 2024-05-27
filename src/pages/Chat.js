@@ -83,7 +83,7 @@ const Chat = () => {
                 setLoading(true);
 
                 const data = await axios.post(
-                    "http://localhost:5000/api/chat",
+                    "https://smart-learn-smart-learn-463c5cef.koyeb.app/api/chat",
                     {
                         messages,
                     }

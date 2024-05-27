@@ -56,9 +56,11 @@ const AnalysisResult = () => {
 
     const GetAnalysis = async () => {
         try {
-            const data = await axios.post("http://localhost:5000/api/ai", {
-                role: "user",
-                content: `Generate a job analysis report for 
+            const data = await axios.post(
+                "https://smart-learn-smart-learn-463c5cef.koyeb.app/api/ai",
+                {
+                    role: "user",
+                    content: `Generate a job analysis report for 
             ${prediction.majorRole} in the software industry. 
             Return the result in JSON format with the following structure, 
             no other extra text, no code or formatting, just json:
@@ -69,7 +71,8 @@ const AnalysisResult = () => {
               "jobOpportunities": list all possible job oppurtunities as an array,
               "salariesOffered": "salary range in pkr, like Rs. 40,000 - 50,000, no other text"
             }`,
-            });
+                }
+            );
 
             const response = data.data;
             console.log(JSON.parse(response.content));

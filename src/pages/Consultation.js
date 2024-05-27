@@ -11,6 +11,7 @@ const Consultation = () => {
     const [shouldLogin, setShouldLogin] = useState(false);
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+    const isSmallScreen = window.innerWidth < 600;
 
     const navigate = useNavigate();
 
@@ -62,19 +63,23 @@ const Consultation = () => {
                 <Box
                     sx={{
                         display: "flex",
-                        flexDirection: "row",
+                        flexDirection: { xs: "column", md: "row" },
                         justifyContent: "center",
                         alignItems: "center",
                         gap: "40px",
                         border: "2px solid #F219A1",
                         borderRadius: "10px",
                         width: "70%",
-                        p: "25px 60px",
+                        p: { xs: "25px 20px", md: "25px 60px" },
                         background: "rgba(255, 255, 255, 0.1)",
                         backdropFilter: "blur(5px)",
                     }}
                 >
-                    <img src="/images/Sage.png" alt="sage" width="250" />
+                    <img
+                        src="/images/Sage.png"
+                        alt="sage"
+                        width={isSmallScreen ? "50%" : "250"}
+                    />
                     <Box
                         sx={{
                             display: "flex",
@@ -96,13 +101,15 @@ const Consultation = () => {
                                 textTransform: "none",
                                 borderRadius: "5px",
                                 padding: "10px 30px",
-                                fontSize: "3vmin",
+                                fontSize: "3.5vmin",
                                 background:
                                     "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
                             }}
-                            endIcon={<EastIcon sx={{ fontSize: 50 }} />}
+                            endIcon={<EastIcon sx={{ fontSize: 55 }} />}
                         >
-                            Chat with Him Now
+                            {isSmallScreen
+                                ? "Chat with Him"
+                                : "Chat with him now"}
                         </Button>
                     </Box>
                 </Box>
