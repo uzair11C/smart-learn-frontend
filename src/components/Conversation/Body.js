@@ -82,12 +82,14 @@ export const Body = ({ loading, userMessages }) => {
                                 sx={{
                                     borderRadius: "8px",
                                     lineHeight: "10px",
-                                    minWidth: "7%",
-                                    maxWidth: { md: "55%", xs: "80%" },
+                                    minWidth: "20%",
+                                    maxWidth: { md: "72%", xs: "80%" },
                                     padding: { md: "20px", xs: "10px" },
                                     color: "white",
                                     background:
-                                        "url(frosted-glass-texture-as-background-frosted-glass-texture-as-background-interior-design-decoration-111091129.jpg), linear-gradient(253.09deg, rgba(217, 217, 217, 0.15) -7.53%, rgba(217, 217, 217, 0) 97.04%)",
+                                        message.role === "user"
+                                            ? "url(frosted-glass-texture-as-background-frosted-glass-texture-as-background-interior-design-decoration-111091129.jpg), linear-gradient(253.09deg, rgba(217, 217, 217, 0.15) -7.53%, rgba(217, 217, 217, 0) 97.04%)"
+                                            : "url(frosted-glass-texture-as-background-frosted-glass-texture-as-background-interior-design-decoration-111091129.jpg), linear-gradient(253.09deg, rgba(217, 217, 217, 0.3) -7.53%, rgba(217, 217, 217, 0.1) 97.04%)",
                                     backdropFilter: "blur(25px)",
                                     border: "1px solid rgba(255, 255, 255, 0.5)",
                                     alignSelf:
@@ -101,7 +103,7 @@ export const Body = ({ loading, userMessages }) => {
                                         : null
                                 }
                             >
-                                <Stack direction="column" spacing={2}>
+                                <Stack direction="column" spacing={1}>
                                     <Typography
                                         variant="p"
                                         sx={{

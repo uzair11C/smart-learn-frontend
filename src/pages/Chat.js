@@ -11,15 +11,14 @@ import { useNavigate } from "react-router-dom";
 
 const Chat = () => {
     const { storeMessages, user } = useUser();
-    const navigate = useNavigate();
 
-    useEffect(() => {
-        console.log("current logged in user: ", user);
-        if (user && !user?.id) {
-            navigate("/login");
-        }
-    }, []);
-
+    const [value, setValue] = useState("");
+    const [status, setStatus] = useState("active");
+    const [refresh, setRefresh] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
+    const [loading, setLoading] = useState(false);
     const [userMessages, setUserMessages] = useState([
         {
             role: "system",
@@ -28,19 +27,33 @@ const Chat = () => {
         },
         ...((user && user.user_metadata.messages) || []),
     ]);
-    const [value, setValue] = useState("");
-    const [status, setStatus] = useState("active");
-    const [limit, setLimit] = useState(
-        userMessages
-            ? userMessages.filter((message) => message.role === "assistant")
-                  .length
-            : 0
-    );
-    const [refresh, setRefresh] = useState(false);
-    const [open, setOpen] = useState(false);
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
-    const [loading, setLoading] = useState(false);
+    const [limit, setLimit] = useState(0);
+
+    // const [limit, setLimit] = useState(
+    //     userMessages.length !== 0
+    //         ? userMessages.filter((message) => message.role === "assistant")
+    //               .length
+    //         : 0
+    // );
+    // const [message, setMessage] = useState(null);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        setLimit(
+            userMessages &&
+                userMessages.filter((message) => message.role === "assistant")
+                    .length
+        );
+    }, [userMessages]);
+
+    useEffect(() => {
+        console.log("current logged in user: ", user);
+        console.log(userMessages);
+        if (user && !user?.id) {
+            navigate("/login");
+        }
+    }, []);
 
     var message = {
         role: "user",
@@ -78,19 +91,19 @@ const Chat = () => {
 
                 setValue("");
                 const newArray = [...userMessages, message];
-                setUserMessages([...userMessages, message]);
+                setUserMessages(newArray);
                 setLoading(true);
                 const data = await axios.post(
                     "https://smart-learn-smart-learn-463c5cef.koyeb.app/api/chat",
                     {
-                        messages: userMessages,
+                        messages: newArray,
                     }
                 );
                 setLoading(false);
                 const response = await data.data;
-                setUserMessages([...userMessages, response]);
-                storeMessages(userMessages);
+                setUserMessages([...newArray, response]);
                 console.log("response: ", response);
+                console.log("userMessages", userMessages);
                 setStatus("Active");
                 setLimit(
                     userMessages
@@ -99,6 +112,7 @@ const Chat = () => {
                           ).length
                         : limit + 1
                 );
+                storeMessages(userMessages);
             }
         }
     };
