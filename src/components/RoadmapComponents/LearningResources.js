@@ -8,7 +8,7 @@ const LearningResources = ({ roadmapJson, roadmap }) => {
 
     const GetVideos = async () => {
         const data = await axios.get(
-            `https://youtube-v2.p.rapidapi.com/search/?query={roadmap}&order_by=this_year`,
+            `https://youtube-v2.p.rapidapi.com/search/?query=${roadmap}+tutorial&order_by=this_year`,
             {
                 headers: {
                     "X-RapidAPI-Key": process.env.REACT_APP_YOUTUBE_API_KEY,
