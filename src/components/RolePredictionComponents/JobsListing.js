@@ -135,8 +135,6 @@ const JobsListing = ({ majorRole, jobs }) => {
                                     </CardComponent>
                                 </Grid>
                             ))}
-
-                        {/* ))} */}
                     </Grid>
                 </Box>
             </Box>
