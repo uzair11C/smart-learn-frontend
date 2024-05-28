@@ -73,7 +73,7 @@ const LearningResources = ({ roadmapJson, roadmap }) => {
                     <Grid container spacing={3}>
                         {videos &&
                             videos.map((video) => (
-                                <Grid item xs={12} md={4}>
+                                <Grid item xs={12} md={4} key={video.video_id}>
                                     <CardComponent
                                         borderRadius="12px"
                                         padding="5%"
@@ -91,7 +91,7 @@ const LearningResources = ({ roadmapJson, roadmap }) => {
                                             },
                                             cursor: "pointer",
                                         }}
-                                        key={video.video_id}
+                                        // key={video.video_id}
                                         OnClick={() => {
                                             window.open(
                                                 `https://www.youtube.com/watch?v=${video.video_id}`,

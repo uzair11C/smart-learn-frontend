@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, Button, IconButton, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Tree from "react-d3-tree";
 import axios from "axios";
@@ -15,6 +15,8 @@ const RoadmapResult = () => {
     const [open2, setOpen2] = useState(false);
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+
+    const [orientation, setOrientation] = useState("vertical");
 
     const navigate = useNavigate();
 
@@ -127,14 +129,11 @@ const RoadmapResult = () => {
                 }}
             >
                 <IconButton
-                    // sx={{ cursor: "pointer", ":hover": { opacity: 0.5 } }}
-                    // color="#FFFFFF"
                     sx={{
                         color: "#FFFFFF",
                         ml: "50px",
                         borderRadius: "12px",
                     }}
-                    // disableRipple
                     onClick={() => {
                         navigate("/roadmaps", { replace: true });
                     }}
@@ -161,7 +160,7 @@ const RoadmapResult = () => {
                     <Box
                         sx={{
                             width: "90%",
-                            height: "90vh",
+                            height: "80vh",
                             background: "#FFFFFF",
                             mt: "20px",
                             borderRadius: "17px",
@@ -174,6 +173,24 @@ const RoadmapResult = () => {
                             mb: "20px",
                         }}
                     >
+                        <Button
+                            variant="contained"
+                            sx={{
+                                alignSelf: "flex-end",
+                                mt: 5,
+                                mr: 5,
+                                textTransform: "none",
+                                fontSize: "3vmin",
+                                fontWeight: "bold",
+                            }}
+                            onClick={() =>
+                                orientation === "vertical"
+                                    ? setOrientation("horizontal")
+                                    : setOrientation("vertical")
+                            }
+                        >
+                            Toggle Orientation
+                        </Button>
                         <Tree
                             data={roadmapJson}
                             rootNodeClassName="node__root"
@@ -181,7 +198,7 @@ const RoadmapResult = () => {
                             leafNodeClassName="node__leaf"
                             separation={{ siblings: 2, nonSiblings: 2 }}
                             nodeSize={{ x: 350, y: 100 }}
-                            orientation="vertical"
+                            orientation={orientation}
                             depthFactor={550}
                             collapsible={false}
                             translate={{ x: 600, y: 50 }}
