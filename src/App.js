@@ -24,7 +24,7 @@ function App() {
         <Route path="/consultation" element={<Consultation />} />
         <Route path="/resume-analysis" element={<RolePrediction />} />
         <Route path="/roadmaps" element={<Roadmaps />} />
-        <Route path="/resume" element={<ResumeBuilder />} />
+        <Route path="/resume-builder" element={<ResumeBuilder />} />
       </Routes>
     </div>
   );
