@@ -23,13 +23,22 @@ const Services = () => {
     const GetEvents = async () => {
         try {
             const data = await axios.get(
-                `https://serpapi.com/search?engine=google_events&q=Software+events+in+Pakistan&hl=en&gl=pk&api_key=${process.env.REACT_APP_SERP_API_KEY}`
+                `https://real-time-events-search.p.rapidapi.com/search-events?query=Software%20events%20in%20pakistan&is_virtual=false&start=0`,
+                {
+                    headers: {
+                        "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY,
+                        "X-RapidAPI-Host":
+                            "real-time-events-search.p.rapidapi.com",
+                    },
+                }
             );
             const response = await data.data;
 
-            setEvents(response.events_results);
+            console.log("events: ", response);
+
+            setEvents(response.data);
         } catch (error) {
-            console.log(error);
+            console.log(error.message);
             setTitle("Error!");
             setContent(
                 `Something went wrong, please try again later.
@@ -83,133 +92,6 @@ const Services = () => {
                         gap: "30px",
                     }}
                 >
-                    {/* consultation */}
-                    <Box
-                        sx={{
-                            width: "100%",
-                            display: "flex",
-                            flexDirection: { xs: "column", md: "row" },
-                            justifyContent: "center",
-                            alignItems: { xs: "center", md: "flex-start" },
-                            mt: "20px",
-                            gap: "30px",
-                        }}
-                    >
-                        <img
-                            src="/images/consultation.png"
-                            alt="consultation"
-                            width="70%"
-                        />
-                        <Box
-                            sx={{
-                                width: "100%",
-                                maxWidth: "100%",
-                                display: "flex",
-                                height: "100%",
-                                flexDirection: "column",
-                                justifyContent: "space-between",
-                                alignItems: "flex-start",
-                                gap: "10px",
-                            }}
-                        >
-                            <Typography
-                                variant="h4"
-                                component="h4"
-                                fontWeight="bold"
-                            >
-                                Consultation:
-                            </Typography>
-                            <Typography variant="h6" component="p">
-                                Embark on a transformative career journey with
-                                our Consultation Module! Immerse yourself in
-                                personalized sessions led by expert advisors,
-                                where tailored strategies and insights shape
-                                your unique path to professional excellence.
-                                Seize the opportunity to ignite your success
-                                story and redefine your professional narrative!
-                            </Typography>
-                            <Button
-                                variant="contained"
-                                sx={{
-                                    textTransform: "none",
-                                    background:
-                                        "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
-                                    fontSize: "17px",
-                                    borderRadius: "6px",
-                                }}
-                                onClick={() => {
-                                    navigate("/consultation");
-                                }}
-                                endIcon={<EastIcon sx={{ fontSize: 50 }} />}
-                            >
-                                Go to Consultation
-                            </Button>
-                        </Box>
-                    </Box>
-                    {/* Prediction */}
-                    <Box
-                        sx={{
-                            width: "100%",
-                            display: "flex",
-                            flexDirection: { xs: "column", md: "row-reverse" },
-                            justifyContent: "center",
-                            alignItems: { xs: "center", md: "flex-start" },
-                            mt: "20px",
-                            gap: "30px",
-                        }}
-                    >
-                        <img
-                            src="/images/prediction.png"
-                            alt="consultation"
-                            width="70%"
-                        />
-                        <Box
-                            sx={{
-                                width: "100%",
-                                maxWidth: "100%",
-                                display: "flex",
-                                flexDirection: "column",
-                                justifyContent: "space-between",
-                                alignItems: "flex-start",
-                                gap: "10px",
-                            }}
-                        >
-                            <Typography
-                                variant="h4"
-                                component="h4"
-                                fontWeight="bold"
-                            >
-                                Role Prediction:
-                            </Typography>
-                            <Typography variant="h6" component="p">
-                                Embark on a personalized career exploration
-                                journey with our Role Prediction Module! Simply
-                                upload your CV, and our advanced analysis will
-                                unveil a tailored spectrum of roles in the
-                                dynamic software industry. Whether it's crafting
-                                code as a Front-end Enthusiast or orchestrating
-                                systems as a DevOps Virtuoso, discover the
-                                perfect match for your unique skills and
-                                aspirations.
-                            </Typography>
-                            <Button
-                                variant="contained"
-                                sx={{
-                                    textTransform: "none",
-                                    background:
-                                        "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
-                                    fontSize: "17px",
-                                    borderRadius: "6px",
-                                }}
-                                onClick={() => {
-                                    navigate("/resume-analysis");
-                                }}
-                                endIcon={<EastIcon sx={{ fontSize: 50 }} />}
-                            >
-                                Go to Prediction
-                            </Button>
-                        </Box>
-                    </Box>
                     {/* Roadmaps */}
                     <Box
                         sx={{
@@ -271,6 +153,137 @@ const Services = () => {
                                 endIcon={<EastIcon sx={{ fontSize: 50 }} />}
                             >
                                 Go to Roadmaps
+                            </Button>
+                        </Box>
+                    </Box>
+
+                    {/* Prediction */}
+                    <Box
+                        sx={{
+                            width: "100%",
+                            display: "flex",
+                            flexDirection: { xs: "column", md: "row-reverse" },
+                            justifyContent: "center",
+                            alignItems: { xs: "center", md: "flex-start" },
+                            mt: "20px",
+                            gap: "30px",
+                        }}
+                    >
+                        <img
+                            src="/images/rolePrediction.jpg"
+                            alt="prediction"
+                            width="40%"
+                            style={{ borderRadius: "12px" }}
+                        />
+                        <Box
+                            sx={{
+                                width: "100%",
+                                maxWidth: "100%",
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "space-between",
+                                alignItems: "flex-start",
+                                gap: "10px",
+                            }}
+                        >
+                            <Typography
+                                variant="h4"
+                                component="h4"
+                                fontWeight="bold"
+                            >
+                                Resume Analysis:
+                            </Typography>
+                            <Typography variant="h6" component="p">
+                                Embark on a personalized career exploration
+                                journey with our Role Prediction Module! Simply
+                                upload your CV, and our advanced analysis will
+                                unveil a tailored spectrum of roles in the
+                                dynamic software industry. Whether it's crafting
+                                code as a Front-end Enthusiast or orchestrating
+                                systems as a DevOps Virtuoso, discover the
+                                perfect match for your unique skills and
+                                aspirations.
+                            </Typography>
+                            <Button
+                                variant="contained"
+                                sx={{
+                                    textTransform: "none",
+                                    background:
+                                        "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                    fontSize: "17px",
+                                    borderRadius: "6px",
+                                }}
+                                onClick={() => {
+                                    navigate("/resume-analysis");
+                                }}
+                                endIcon={<EastIcon sx={{ fontSize: 50 }} />}
+                            >
+                                Go to Prediction
+                            </Button>
+                        </Box>
+                    </Box>
+
+                    {/* consultation */}
+                    <Box
+                        sx={{
+                            width: "100%",
+                            display: "flex",
+                            flexDirection: { xs: "column", md: "row" },
+                            justifyContent: "center",
+                            alignItems: { xs: "center", md: "flex-start" },
+                            mt: "20px",
+                            gap: "30px",
+                        }}
+                    >
+                        <img
+                            src="/images/talking to robot.jpg"
+                            alt="consultation"
+                            width="40%"
+                            style={{ borderRadius: "12px" }}
+                        />
+                        <Box
+                            sx={{
+                                width: "100%",
+                                maxWidth: "100%",
+                                display: "flex",
+                                height: "100%",
+                                flexDirection: "column",
+                                justifyContent: "space-between",
+                                alignItems: "flex-start",
+                                gap: "10px",
+                            }}
+                        >
+                            <Typography
+                                variant="h4"
+                                component="h4"
+                                fontWeight="bold"
+                            >
+                                Consultation:
+                            </Typography>
+                            <Typography variant="h6" component="p">
+                                Embark on a transformative career journey with
+                                our Consultation Module! Immerse yourself in
+                                personalized sessions led by expert advisors,
+                                where tailored strategies and insights shape
+                                your unique path to professional excellence.
+                                Seize the opportunity to ignite your success
+                                story and redefine your professional narrative!
+                            </Typography>
+                            <Button
+                                variant="contained"
+                                sx={{
+                                    textTransform: "none",
+                                    background:
+                                        "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                    fontSize: "17px",
+                                    borderRadius: "6px",
+                                }}
+                                onClick={() => {
+                                    navigate("/consultation");
+                                }}
+                                endIcon={<EastIcon sx={{ fontSize: 50 }} />}
+                            >
+                                Go to Consultation
                             </Button>
                         </Box>
                     </Box>

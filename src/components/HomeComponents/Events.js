@@ -10,6 +10,28 @@ import CardComponent from "../CardComponent";
 import { Link } from "react-router-dom";
 
 const Events = ({ events, error }) => {
+    function formatDate(dateString) {
+        // Convert the string to a Date object
+        const date = new Date(dateString);
+
+        // Options for formatting the date
+        const options = {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            timeZoneName: "short",
+        };
+
+        // Format the date
+        const formattedDate = date.toLocaleString("en-US", options);
+
+        return formattedDate;
+    }
+
     return (
         <Box
             sx={{
@@ -68,7 +90,7 @@ const Events = ({ events, error }) => {
                                     alignItems: "flex-start",
                                     gap: "5px",
                                 }}
-                                key={softEvent.title}
+                                key={softEvent.event_id}
                             >
                                 <Typography
                                     variant="h6"
@@ -76,7 +98,7 @@ const Events = ({ events, error }) => {
                                     fontWeight="bold"
                                     fontSize="4vmin"
                                 >
-                                    {softEvent.title}
+                                    {softEvent.name}
                                 </Typography>
                                 <Typography
                                     variant="body1"
@@ -84,16 +106,14 @@ const Events = ({ events, error }) => {
                                     fontSize="2.5vmin"
                                     sx={{ wordBreak: "break-word" }}
                                 >
-                                    {softEvent.date.when && softEvent.date.when}{" "}
-                                    2024
+                                    {formatDate(softEvent.start_time)}
                                 </Typography>
                                 <Typography
                                     variant="subtitle2"
                                     component="p"
                                     fontSize="2.5vmin"
                                 >
-                                    {softEvent.address &&
-                                        softEvent.address.join(", ")}
+                                    {softEvent.venue && softEvent.venue.name}
                                 </Typography>
                                 <Link
                                     to={softEvent.link}

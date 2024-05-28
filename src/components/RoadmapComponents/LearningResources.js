@@ -11,7 +11,7 @@ const LearningResources = ({ roadmapJson, roadmap }) => {
             `https://youtube-v2.p.rapidapi.com/search/?query=${roadmap}+tutorial&order_by=this_year`,
             {
                 headers: {
-                    "X-RapidAPI-Key": process.env.REACT_APP_YOUTUBE_API_KEY,
+                    "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY,
                     "X-RapidAPI-Host": "youtube-v2.p.rapidapi.com",
                 },
             }
@@ -31,8 +31,6 @@ const LearningResources = ({ roadmapJson, roadmap }) => {
     useEffect(() => {
         GetVideos();
     }, [roadmapJson]);
-
-    // console.log(process.env.REACT_APP_YOUTUBE_API_KEY);
 
     return (
         <Box

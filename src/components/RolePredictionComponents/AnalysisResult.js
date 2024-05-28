@@ -35,7 +35,7 @@ const AnalysisResult = () => {
                 `https://jsearch.p.rapidapi.com/search?query=${prediction.majorRole}%20in%20Pakistan&page=1&num_pages=1`,
                 {
                     headers: {
-                        "X-RapidAPI-Key": process.env.REACT_APP_JOBS_API_KEY,
+                        "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY,
                         "X-RapidAPI-Host": "jsearch.p.rapidapi.com",
                     },
                 }

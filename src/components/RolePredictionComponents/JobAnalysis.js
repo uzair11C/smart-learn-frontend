@@ -28,12 +28,12 @@ const JobAnalysis = ({ majorRole, JobAnalysis }) => {
                     variant="h4"
                     component="h3"
                     fontWeight="bold"
-                    fontSize="6vmin"
+                    fontSize="5.5vmin"
                     sx={{ textDecoration: "underline" }}
                 >
                     Demand:
                 </Typography>
-                <Typography variant="h6" fontSize="5vmin">
+                <Typography variant="h6" fontSize="4.5vmin">
                     {JobAnalysis && JobAnalysis.demand}
                 </Typography>
             </Box>
@@ -43,12 +43,12 @@ const JobAnalysis = ({ majorRole, JobAnalysis }) => {
                     variant="h4"
                     component="h3"
                     fontWeight="bold"
-                    fontSize="6vmin"
+                    fontSize="5.5vmin"
                     sx={{ textDecoration: "underline" }}
                 >
                     Key Skills and Technologies:
                 </Typography>
-                <Typography variant="h6" fontSize="5vmin">
+                <Typography variant="h6" fontSize="4.5vmin">
                     {JobAnalysis &&
                         JobAnalysis.keySkillsAndTechnologies.join(", ")}
                 </Typography>
@@ -59,7 +59,7 @@ const JobAnalysis = ({ majorRole, JobAnalysis }) => {
                     variant="h4"
                     component="h3"
                     fontWeight="bold"
-                    fontSize="6vmin"
+                    fontSize="5.5vmin"
                     sx={{ textDecoration: "underline" }}
                 >
                     Job opportunities:
@@ -74,12 +74,12 @@ const JobAnalysis = ({ majorRole, JobAnalysis }) => {
                     variant="h4"
                     component="h3"
                     fontWeight="bold"
-                    fontSize="6vmin"
+                    fontSize="5.5vmin"
                     sx={{ textDecoration: "underline" }}
                 >
                     Salaries Offered:
                 </Typography>
-                <Typography variant="h6" fontSize="5vmin">
+                <Typography variant="h6" fontSize="4.5vmin">
                     {JobAnalysis && JobAnalysis.salariesOffered} /-
                 </Typography>
             </Box>
