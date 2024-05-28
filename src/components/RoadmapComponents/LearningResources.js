@@ -54,6 +54,7 @@ const LearningResources = ({ roadmapJson, roadmap }) => {
                     flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "center",
+                    mb: "20px",
                 }}
             >
                 <Typography

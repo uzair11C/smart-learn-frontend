@@ -79,7 +79,7 @@ const Services = () => {
                         flexDirection: "column",
                         justifyContent: "center",
                         alignItems: "center",
-                        width: "70%",
+                        width: { xs: "100%", md: "70%" },
                         gap: "30px",
                     }}
                 >
@@ -90,7 +90,7 @@ const Services = () => {
                             display: "flex",
                             flexDirection: { xs: "column", md: "row" },
                             justifyContent: "center",
-                            alignItems: "flex-start",
+                            alignItems: { xs: "center", md: "flex-start" },
                             mt: "20px",
                             gap: "30px",
                         }}
@@ -153,7 +153,7 @@ const Services = () => {
                             display: "flex",
                             flexDirection: { xs: "column", md: "row-reverse" },
                             justifyContent: "center",
-                            alignItems: "flex-start",
+                            alignItems: { xs: "center", md: "flex-start" },
                             mt: "20px",
                             gap: "30px",
                         }}
@@ -217,7 +217,7 @@ const Services = () => {
                             display: "flex",
                             flexDirection: { xs: "column", md: "row" },
                             justifyContent: "center",
-                            alignItems: "flex-start",
+                            alignItems: { xs: "center", md: "flex-start" },
                             mt: "20px",
                             gap: "30px",
                         }}
