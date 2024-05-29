@@ -58,7 +58,7 @@ const CustomModal = ({
                     m: 0,
                     p: "10px 25px",
                     color: title === "Error" ? "red" : "#FFFFFF",
-                    fontSize: "6vmin",
+                    fontSize: { xs: "6vmin", md: "5vmin" },
                 }}
                 id="customized-dialog-title"
             >
@@ -83,7 +83,9 @@ const CustomModal = ({
                 <CloseIcon />
             </IconButton>
             <DialogContent sx={{ p: "20px 25px" }}>
-                <Typography fontSize="4.5vmin">{content}</Typography>
+                <Typography sx={{ fontSize: { xs: "4.5vmin", md: "3.5vmin" } }}>
+                    {content}
+                </Typography>
             </DialogContent>
             <DialogActions
                 sx={{
@@ -102,7 +104,7 @@ const CustomModal = ({
                             textTransform: "none",
                             borderRadius: "5px",
                             padding: "1% 6%",
-                            fontSize: "4vmin",
+                            fontSize: { xs: "4vmin", md: "3.5vmin" },
                             background:
                                 "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
                         }}
@@ -118,7 +120,7 @@ const CustomModal = ({
                             textTransform: "none",
                             borderRadius: "5px",
                             padding: "1% 6%",
-                            fontSize: "4vmin",
+                            fontSize: { xs: "4vmin", md: "3.5vmin" },
                             background:
                                 "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
                         }}
@@ -133,7 +135,7 @@ const CustomModal = ({
                         textTransform: "none",
                         borderRadius: "5px",
                         padding: "1% 6%",
-                        fontSize: "4vmin",
+                        fontSize: { xs: "4vmin", md: "3.5vmin" },
                         background:
                             "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
                     }}
