@@ -216,7 +216,26 @@ const Login = () => {
                     >
                         Log In
                     </Button>
-                    <Stack direction="row" spacing={2} sx={{ mt: "30px" }}>
+                    <Button
+                        onClick={() => loginOAuth("google")}
+                        fullWidth
+                        variant="contained"
+                        sx={{
+                            background: "#4285F4",
+                            transition: "background-color 0.3s ease",
+                            // ":hover": {
+                            //     background:
+                            //         "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                            // },
+                            mt: "20px",
+                            textTransform: "none",
+                            fontSize: "3vmin",
+                            gap: 1,
+                        }}
+                    >
+                        <GoogleIcon /> Login with Google
+                    </Button>
+                    {/* <Stack direction="row" spacing={2} sx={{ mt: "30px" }}>
                         <Button
                             onClick={() => loginOAuth("google")}
                             fullWidth
@@ -247,7 +266,7 @@ const Login = () => {
                         >
                             <GitHubIcon />
                         </Button>
-                    </Stack>
+                    </Stack> */}
 
                     <Typography
                         variant={isSmallScreen ? "subtitle2" : "subtitle1"}

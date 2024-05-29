@@ -92,7 +92,7 @@ const Services = () => {
                         gap: "30px",
                     }}
                 >
-                    {/* Roadmaps */}
+                    {/* Buider */}
                     <Box
                         sx={{
                             width: "100%",
@@ -105,10 +105,72 @@ const Services = () => {
                         }}
                     >
                         <img
-                            src="/images/roadmaps.png"
-                            alt="consultation"
-                            width="70%"
+                            src="/images/resumeBuilder.jpeg"
+                            alt="builder"
+                            width="40%"
+                            style={{ borderRadius: "12px" }}
                         />
+                        <Box
+                            sx={{
+                                width: "100%",
+                                maxWidth: "100%",
+                                display: "flex",
+                                height: "100%",
+                                flexDirection: "column",
+                                justifyContent: "space-between",
+                                alignItems: "flex-start",
+                                gap: "10px",
+                            }}
+                        >
+                            <Typography
+                                variant="h4"
+                                component="h4"
+                                fontWeight="bold"
+                            >
+                                Resume Builder:
+                            </Typography>
+                            <Typography variant="h6" component="p">
+                                Streamline your path to employment success with
+                                our dynamic Resume Builder feature! Easily input
+                                your details and watch as they seamlessly
+                                transform into a polished, professional resume
+                                that captures your unique strengths and
+                                experiences. Whether you're a seasoned pro or
+                                just starting out, our user-friendly tool
+                                ensures your resume shines brightly. Get ready
+                                to make a lasting impression and kickstart your
+                                career journey!
+                            </Typography>
+                            <Button
+                                variant="contained"
+                                sx={{
+                                    textTransform: "none",
+                                    background:
+                                        "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                    fontSize: "17px",
+                                    borderRadius: "6px",
+                                }}
+                                onClick={() => {
+                                    navigate("/resume-builder");
+                                }}
+                                endIcon={<EastIcon sx={{ fontSize: 50 }} />}
+                            >
+                                Go to Resume Builder
+                            </Button>
+                        </Box>
+                    </Box>
+                    {/* Roadmaps */}
+                    <Box
+                        sx={{
+                            width: "100%",
+                            display: "flex",
+                            flexDirection: { xs: "column", md: "row" },
+                            justifyContent: "center",
+                            alignItems: { xs: "center", md: "flex-start" },
+                            mt: "20px",
+                            gap: "30px",
+                        }}
+                    >
                         <Box
                             sx={{
                                 width: "100%",
@@ -128,7 +190,7 @@ const Services = () => {
                                 Roadmaps:
                             </Typography>
                             <Typography variant="h6" component="p">
-                                Embark on a guided journey to success with our
+                                Go on a guided journey to success with our
                                 curated Roadmaps module! Uncover the path to
                                 mastery in the ever-evolving IT industry. From
                                 foundational skills to advanced frameworks, our
@@ -155,6 +217,12 @@ const Services = () => {
                                 Go to Roadmaps
                             </Button>
                         </Box>
+
+                        <img
+                            src="/images/roadmaps.png"
+                            alt="consultation"
+                            width="70%"
+                        />
                     </Box>
 
                     {/* Prediction */}
@@ -169,12 +237,6 @@ const Services = () => {
                             gap: "30px",
                         }}
                     >
-                        <img
-                            src="/images/rolePrediction.jpg"
-                            alt="prediction"
-                            width="40%"
-                            style={{ borderRadius: "12px" }}
-                        />
                         <Box
                             sx={{
                                 width: "100%",
@@ -221,6 +283,12 @@ const Services = () => {
                                 Go to Prediction
                             </Button>
                         </Box>
+                        <img
+                            src="/images/rolePrediction.jpg"
+                            alt="prediction"
+                            width="40%"
+                            style={{ borderRadius: "12px" }}
+                        />
                     </Box>
 
                     {/* consultation */}
@@ -235,12 +303,6 @@ const Services = () => {
                             gap: "30px",
                         }}
                     >
-                        <img
-                            src="/images/talking to robot.jpg"
-                            alt="consultation"
-                            width="40%"
-                            style={{ borderRadius: "12px" }}
-                        />
                         <Box
                             sx={{
                                 width: "100%",
@@ -286,6 +348,12 @@ const Services = () => {
                                 Go to Consultation
                             </Button>
                         </Box>
+                        <img
+                            src="/images/talking to robot.jpg"
+                            alt="consultation"
+                            width="40%"
+                            style={{ borderRadius: "12px" }}
+                        />
                     </Box>
                 </Box>
             </Box>

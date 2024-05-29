@@ -59,7 +59,7 @@ const ResumeBuilder = () => {
                         }}
                     >
                         <Link
-                            to="/resume-create"
+                            to="/resume-builder/create"
                             style={{ textDecoration: "none", color: "white" }}
                         >
                             Create

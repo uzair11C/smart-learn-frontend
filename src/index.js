@@ -21,7 +21,7 @@ const router = createBrowserRouter([
         element: <Chat />,
     },
     {
-        path: "/resume-create",
+        path: "/resume-builder/create",
         element: <ResumeCreate />,
     },
     {
