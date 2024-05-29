@@ -26,7 +26,7 @@ const Services = () => {
                 `https://real-time-events-search.p.rapidapi.com/search-events?query=Software%20events%20in%20pakistan&is_virtual=false&start=0`,
                 {
                     headers: {
-                        "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY,
+                        "X-RapidAPI-Key": process.env.REACT_APP_EVENTS_API_KEY,
                         "X-RapidAPI-Host":
                             "real-time-events-search.p.rapidapi.com",
                     },
