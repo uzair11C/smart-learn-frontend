@@ -28,10 +28,10 @@ const ResumeCreate = () => {
         },
         {
             id: 2,
-            label: "Address",
-            value: "Your home address",
+            label: "Role",
+            value: "The role you are applying for?",
             type: "text",
-            defaultValue: "Your home address",
+            defaultValue: "The role you are applying for?",
         },
     ]);
     const [profileFields, setProfileFields] = useState([
@@ -75,7 +75,7 @@ const ResumeCreate = () => {
     const [summaryFields, setSummaryFields] = useState([
         {
             id: uuidv4(),
-            value: "A brief description about you",
+            value: "What's the one thing that makes you best candidate for this job",
         },
     ]);
     const [educationFields, setEducationFields] = useState([
@@ -284,7 +284,7 @@ const ResumeCreate = () => {
     };
 
     const defaultSummaryField = {
-        value: "A brief description about you",
+        value: "What's the one thing that makes you the best candidate for this job",
     };
     const handleAddSummaryField = () =>
         handleAddField(setSummaryFields, defaultSummaryField);
@@ -390,7 +390,7 @@ const ResumeCreate = () => {
             }}
         >
             {/* FORM FIELDS */}
-            <Stack spacing={3}>
+            <Stack spacing={3} p={3} pl={8} pr={8}>
                 {/* Personal Info Fields */}
                 <Box>
                     <Typography
@@ -401,7 +401,7 @@ const ResumeCreate = () => {
                         Personal Information
                     </Typography>
 
-                    <Box>
+                    <Box sx={{ display: "flex", flexDirection: "column" }}>
                         {userDetails.map((field) => (
                             <TextField
                                 key={field.id}
@@ -530,7 +530,7 @@ const ResumeCreate = () => {
                             alignItems="center"
                         >
                             <TextField
-                                label="A brief description about you"
+                                label="What's the one thing that makes you best candidate"
                                 variant="outlined"
                                 multiline
                                 maxRows={5}
@@ -580,7 +580,19 @@ const ResumeCreate = () => {
                         </Stack>
                     ))}
 
-                    <Button onClick={handleAddSummaryField}>
+                    <Button
+                        onClick={handleAddSummaryField}
+                        variant="contained"
+                        sx={{
+                            color: "white",
+                            textTransform: "none",
+                            background:
+                                "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                            borderRadius: "5px",
+                            mt: "15px",
+                            fontSize: "3vmin",
+                        }}
+                    >
                         Add Paragraph
                     </Button>
                 </Box>
@@ -769,6 +781,16 @@ const ResumeCreate = () => {
                             >
                                 <Button
                                     onClick={() => toggle(field.id, "showCGPA")}
+                                    variant="contained"
+                                    sx={{
+                                        color: "white",
+                                        textTransform: "none",
+                                        background:
+                                            "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                        borderRadius: "5px",
+                                        mt: "15px",
+                                        fontSize: "3vmin",
+                                    }}
                                 >
                                     Show CGPA
                                 </Button>
@@ -783,7 +805,19 @@ const ResumeCreate = () => {
                                         cursor: "pointer",
                                     }}
                                 />
-                                <Button onClick={handleAddEducationField}>
+                                <Button
+                                    variant="contained"
+                                    sx={{
+                                        color: "white",
+                                        textTransform: "none",
+                                        background:
+                                            "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                        borderRadius: "5px",
+                                        mt: "15px",
+                                        fontSize: "3vmin",
+                                    }}
+                                    onClick={handleAddEducationField}
+                                >
                                     Add Another Field
                                 </Button>
                             </Stack>
@@ -974,25 +1008,61 @@ const ResumeCreate = () => {
                                 </Stack>
                             ))}
 
-                            <Button
-                                onClick={() =>
-                                    handleAddExperienceDescription(
-                                        experience.id
-                                    )
-                                }
-                            >
-                                Add Description
-                            </Button>
-                            <Button
-                                onClick={() =>
-                                    handleRemoveExperienceField(experience.id)
-                                }
-                            >
-                                Remove Experience
-                            </Button>
+                            <Stack direction="row" spacing={2} mt={2}>
+                                <Button
+                                    onClick={() =>
+                                        handleAddExperienceDescription(
+                                            experience.id
+                                        )
+                                    }
+                                    variant="contained"
+                                    sx={{
+                                        color: "white",
+                                        textTransform: "none",
+                                        background:
+                                            "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                        borderRadius: "5px",
+                                        mt: "15px",
+                                        fontSize: "3vmin",
+                                    }}
+                                >
+                                    Add Description
+                                </Button>
+                                <Button
+                                    onClick={() =>
+                                        handleRemoveExperienceField(
+                                            experience.id
+                                        )
+                                    }
+                                    variant="contained"
+                                    sx={{
+                                        color: "white",
+                                        textTransform: "none",
+                                        background:
+                                            "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                        borderRadius: "5px",
+                                        mt: "15px",
+                                        fontSize: "3vmin",
+                                    }}
+                                >
+                                    Remove Experience
+                                </Button>
+                            </Stack>
                         </React.Fragment>
                     ))}
-                    <Button onClick={handleAddExperienceField}>
+                    <Button
+                        onClick={handleAddExperienceField}
+                        variant="contained"
+                        sx={{
+                            color: "white",
+                            textTransform: "none",
+                            background:
+                                "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                            borderRadius: "5px",
+                            mt: "15px",
+                            fontSize: "3vmin",
+                        }}
+                    >
                         Add Another Experience
                     </Button>
                 </Box>
@@ -1145,24 +1215,58 @@ const ResumeCreate = () => {
                                     />
                                 </Stack>
                             ))}
-                            <Button
-                                onClick={() =>
-                                    handleAddProjectDescription(project.id)
-                                }
-                            >
-                                Add Description
-                            </Button>
-                            <Button
-                                onClick={() =>
-                                    handleRemoveProjectField(project.id)
-                                }
-                            >
-                                Remove Project
-                            </Button>
+                            <Stack direction="row" spacing={2} mt={2}>
+                                <Button
+                                    onClick={() =>
+                                        handleAddProjectDescription(project.id)
+                                    }
+                                    variant="contained"
+                                    sx={{
+                                        color: "white",
+                                        textTransform: "none",
+                                        background:
+                                            "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                        borderRadius: "5px",
+                                        mt: "15px",
+                                        fontSize: "3vmin",
+                                    }}
+                                >
+                                    Add Description
+                                </Button>
+                                <Button
+                                    onClick={() =>
+                                        handleRemoveProjectField(project.id)
+                                    }
+                                    variant="contained"
+                                    sx={{
+                                        color: "white",
+                                        textTransform: "none",
+                                        background:
+                                            "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                        borderRadius: "5px",
+                                        mt: "15px",
+                                        fontSize: "3vmin",
+                                    }}
+                                >
+                                    Remove Project
+                                </Button>
+                            </Stack>
                         </React.Fragment>
                     ))}
 
-                    <Button onClick={handleAddProjectField}>
+                    <Button
+                        onClick={handleAddProjectField}
+                        variant="contained"
+                        sx={{
+                            color: "white",
+                            textTransform: "none",
+                            background:
+                                "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                            borderRadius: "5px",
+                            mt: "15px",
+                            fontSize: "3vmin",
+                        }}
+                    >
                         Add Another Project
                     </Button>
                 </Box>
@@ -1284,7 +1388,19 @@ const ResumeCreate = () => {
                         </React.Fragment>
                     ))}
 
-                    <Button onClick={handleAddSkillsField}>
+                    <Button
+                        onClick={handleAddSkillsField}
+                        variant="contained"
+                        sx={{
+                            color: "white",
+                            textTransform: "none",
+                            background:
+                                "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                            borderRadius: "5px",
+                            mt: "15px",
+                            fontSize: "3vmin",
+                        }}
+                    >
                         Add Another Field
                     </Button>
                 </Box>
@@ -1404,12 +1520,38 @@ const ResumeCreate = () => {
                         </React.Fragment>
                     ))}
 
-                    <Button onClick={handleAddCertificationField}>
+                    <Button
+                        onClick={handleAddCertificationField}
+                        variant="contained"
+                        sx={{
+                            color: "white",
+                            textTransform: "none",
+                            background:
+                                "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                            borderRadius: "5px",
+                            mt: "15px",
+                            fontSize: "3vmin",
+                        }}
+                    >
                         Add Another Field
                     </Button>
                 </Box>
 
-                <Button onClick={handlePrint}>Print Resume</Button>
+                <Button
+                    onClick={handlePrint}
+                    variant="contained"
+                    sx={{
+                        color: "white",
+                        textTransform: "none",
+                        background:
+                            "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                        borderRadius: "5px",
+                        mt: "15px",
+                        fontSize: "3vmin",
+                    }}
+                >
+                    Print Resume
+                </Button>
             </Stack>
 
             {/* RESUME DESIGN */}
@@ -1419,8 +1561,8 @@ const ResumeCreate = () => {
                     width: "8.27in",
                     height: "11.69in",
                     backgroundColor: "white",
-                    p: "0px 50px",
-                    pt: "30px",
+                    p: "0px 20px",
+                    pt: "10px",
                     pb: "30px",
                     position: "sticky",
                     top: "20px",
@@ -1428,14 +1570,14 @@ const ResumeCreate = () => {
                 }}
             >
                 {/* Personal Info */}
-                <Stack spacing={2} mt={3}>
+                <Stack>
                     <Typography
                         sx={{
-                            textAlign: "left",
+                            textAlign: "center",
                             fontWeight: "900",
-                            fontFamily: "Roboto, Arial, Helvetica, sans-serif",
+                            fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
                             textTransform: "uppercase",
-                            fontSize: "5vmin",
+                            fontSize: "20px",
                             lineHeight: "26px",
                         }}
                     >
@@ -1446,7 +1588,7 @@ const ResumeCreate = () => {
                     </Typography>
                     <Typography
                         sx={{
-                            textAlign: "left",
+                            textAlign: "center",
                             color: "rgb(111, 120, 120)",
                             fontFamily: "PT Sans, Arial, Helvetica, sans-serif",
                             textTransform: "capitalize",
@@ -1454,11 +1596,10 @@ const ResumeCreate = () => {
                             lineHeight: "19px",
                         }}
                     >
-                        {userDetails.find((field) => field.label === "Address")
+                        {userDetails.find((field) => field.label === "Role")
                             ?.value ||
-                            userDetails.find(
-                                (field) => field.label === "Address"
-                            )?.defaultValue}
+                            userDetails.find((field) => field.label === "Role")
+                                ?.defaultValue}
                     </Typography>
                     {/* Links */}
                     <Stack
@@ -1484,12 +1625,12 @@ const ResumeCreate = () => {
                 </Stack>
 
                 {/* Summary */}
-                <Stack sx={{ mt: "25px" }}>
+                <Stack sx={{ mt: "15px" }}>
                     <Typography
                         sx={{
-                            textAlign: "left",
+                            textAlign: "center",
                             fontWeight: "900",
-                            fontFamily: "Roboto, Arial, Helvetica, sans-serif",
+                            fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
                             textTransform: "uppercase",
                             fontSize: "20px",
                             lineHeight: "26px",
@@ -1497,7 +1638,7 @@ const ResumeCreate = () => {
                     >
                         Summary
                     </Typography>
-                    {/* <Divider sx={{ borderColor: "black" }} /> */}
+                    <Divider sx={{ borderColor: "black" }} />
                     <Stack>
                         {summaryFields.map((field) => (
                             <Typography
@@ -1508,11 +1649,12 @@ const ResumeCreate = () => {
                                     mt: "5px",
                                     fontFamily:
                                         "PT Sans, Arial, Helvetica, sans-serif",
-                                    fontSize: "2.5vmin",
+                                    fontSize: "12px",
                                     lineHeight: "17px",
                                 }}
                             >
-                                {field.value || "A brief description about you"}
+                                {field.value ||
+                                    "What's the one thing that makes you best candidate for this job"}
                             </Typography>
                         ))}
                     </Stack>
@@ -1522,9 +1664,9 @@ const ResumeCreate = () => {
                 <Stack sx={{ mt: "15px" }}>
                     <Typography
                         sx={{
-                            textAlign: "left",
+                            textAlign: "center",
                             fontWeight: "900",
-                            fontFamily: "Roboto, Arial, Helvetica, sans-serif",
+                            fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
                             textTransform: "uppercase",
                             fontSize: "20px",
                             lineHeight: "26px",
@@ -1532,7 +1674,7 @@ const ResumeCreate = () => {
                     >
                         Education
                     </Typography>
-                    {/* <Divider sx={{ borderColor: "black" }} /> */}
+                    <Divider sx={{ borderColor: "black" }} />
                     <Stack spacing={2}>
                         {educationFields.map((field) => (
                             <Stack
@@ -1568,34 +1710,6 @@ const ResumeCreate = () => {
                                         {field.degree ||
                                             "Degree and Field of Study"}
                                     </Typography>
-                                    <Typography
-                                        component="p"
-                                        sx={{
-                                            mt: "5px",
-                                            fontFamily:
-                                                "PT Sans, Arial, Helvetica, sans-serif",
-                                            textTransform: "capitalize",
-                                            fontSize: "12px",
-                                            lineHeight: "17px",
-                                        }}
-                                    >
-                                        {field.date || "Date Period"}
-                                    </Typography>
-                                    <Typography
-                                        component="p"
-                                        sx={{
-                                            mt: "5px",
-                                            fontFamily:
-                                                "PT Sans, Arial, Helvetica, sans-serif",
-                                            textTransform: "capitalize",
-                                            fontSize: "12px",
-                                            lineHeight: "17px",
-                                        }}
-                                    >
-                                        {field.showCGPA
-                                            ? field.cgpa || "CGPA"
-                                            : null}
-                                    </Typography>
                                 </Box>
                                 <Box
                                     sx={{
@@ -1604,7 +1718,7 @@ const ResumeCreate = () => {
                                         alignItems: "end",
                                     }}
                                 >
-                                    {/* <Typography
+                                    <Typography
                                         component="p"
                                         sx={{
                                             mt: "5px",
@@ -1618,8 +1732,8 @@ const ResumeCreate = () => {
                                         {field.showCGPA
                                             ? field.cgpa || "CGPA"
                                             : null}
-                                    </Typography> */}
-                                    {/* <Typography
+                                    </Typography>
+                                    <Typography
                                         component="p"
                                         sx={{
                                             mt: "5px",
@@ -1631,7 +1745,7 @@ const ResumeCreate = () => {
                                         }}
                                     >
                                         {field.date || "Date Period"}
-                                    </Typography> */}
+                                    </Typography>
                                 </Box>
                             </Stack>
                         ))}
@@ -1642,9 +1756,9 @@ const ResumeCreate = () => {
                 <Stack sx={{ mt: "20px" }}>
                     <Typography
                         sx={{
-                            textAlign: "left",
+                            textAlign: "center",
                             fontWeight: "900",
-                            fontFamily: "Roboto, Arial, Helvetica, sans-serif",
+                            fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
                             textTransform: "uppercase",
                             fontSize: "20px",
                             lineHeight: "26px",
@@ -1652,7 +1766,7 @@ const ResumeCreate = () => {
                     >
                         Experience
                     </Typography>
-                    {/* <Divider sx={{ borderColor: "black" }} /> */}
+                    <Divider sx={{ borderColor: "black" }} />
                     <Stack spacing={2}>
                         {experienceFields.map((experience) => (
                             <Box key={experience.id}>
@@ -1747,7 +1861,7 @@ const ResumeCreate = () => {
                         sx={{
                             textAlign: "center",
                             fontWeight: "900",
-                            fontFamily: "Roboto, Arial, Helvetica, sans-serif",
+                            fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
                             textTransform: "uppercase",
                             fontSize: "20px",
                             lineHeight: "26px",
@@ -1821,7 +1935,7 @@ const ResumeCreate = () => {
                         sx={{
                             textAlign: "center",
                             fontWeight: "900",
-                            fontFamily: "Roboto, Arial, Helvetica, sans-serif",
+                            fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
                             textTransform: "uppercase",
                             fontSize: "20px",
                             lineHeight: "26px",
@@ -1872,7 +1986,7 @@ const ResumeCreate = () => {
                         sx={{
                             textAlign: "center",
                             fontWeight: "900",
-                            fontFamily: "Roboto, Arial, Helvetica, sans-serif",
+                            fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
                             textTransform: "uppercase",
                             fontSize: "20px",
                             lineHeight: "26px",
