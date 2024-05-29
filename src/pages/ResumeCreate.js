@@ -28,10 +28,10 @@ const ResumeCreate = () => {
         },
         {
             id: 2,
-            label: "Role",
-            value: "The role you are applying for?",
+            label: "Address",
+            value: "Your home address",
             type: "text",
-            defaultValue: "The role you are applying for?",
+            defaultValue: "Your home address",
         },
     ]);
     const [profileFields, setProfileFields] = useState([
@@ -75,7 +75,7 @@ const ResumeCreate = () => {
     const [summaryFields, setSummaryFields] = useState([
         {
             id: uuidv4(),
-            value: "What's the one thing that makes you best candidate for this job",
+            value: "A brief description about you",
         },
     ]);
     const [educationFields, setEducationFields] = useState([
@@ -284,7 +284,7 @@ const ResumeCreate = () => {
     };
 
     const defaultSummaryField = {
-        value: "What's the one thing that makes you the best candidate for this job",
+        value: "A brief description about you",
     };
     const handleAddSummaryField = () =>
         handleAddField(setSummaryFields, defaultSummaryField);
@@ -530,7 +530,7 @@ const ResumeCreate = () => {
                             alignItems="center"
                         >
                             <TextField
-                                label="What's the one thing that makes you best candidate"
+                                label="A brief description about you"
                                 variant="outlined"
                                 multiline
                                 maxRows={5}
@@ -1419,8 +1419,8 @@ const ResumeCreate = () => {
                     width: "8.27in",
                     height: "11.69in",
                     backgroundColor: "white",
-                    p: "0px 20px",
-                    pt: "10px",
+                    p: "0px 50px",
+                    pt: "30px",
                     pb: "30px",
                     position: "sticky",
                     top: "20px",
@@ -1428,14 +1428,14 @@ const ResumeCreate = () => {
                 }}
             >
                 {/* Personal Info */}
-                <Stack>
+                <Stack spacing={2} mt={3}>
                     <Typography
                         sx={{
-                            textAlign: "center",
+                            textAlign: "left",
                             fontWeight: "900",
-                            fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
+                            fontFamily: "Roboto, Arial, Helvetica, sans-serif",
                             textTransform: "uppercase",
-                            fontSize: "20px",
+                            fontSize: "5vmin",
                             lineHeight: "26px",
                         }}
                     >
@@ -1446,7 +1446,7 @@ const ResumeCreate = () => {
                     </Typography>
                     <Typography
                         sx={{
-                            textAlign: "center",
+                            textAlign: "left",
                             color: "rgb(111, 120, 120)",
                             fontFamily: "PT Sans, Arial, Helvetica, sans-serif",
                             textTransform: "capitalize",
@@ -1454,10 +1454,11 @@ const ResumeCreate = () => {
                             lineHeight: "19px",
                         }}
                     >
-                        {userDetails.find((field) => field.label === "Role")
+                        {userDetails.find((field) => field.label === "Address")
                             ?.value ||
-                            userDetails.find((field) => field.label === "Role")
-                                ?.defaultValue}
+                            userDetails.find(
+                                (field) => field.label === "Address"
+                            )?.defaultValue}
                     </Typography>
                     {/* Links */}
                     <Stack
@@ -1483,12 +1484,12 @@ const ResumeCreate = () => {
                 </Stack>
 
                 {/* Summary */}
-                <Stack sx={{ mt: "15px" }}>
+                <Stack sx={{ mt: "25px" }}>
                     <Typography
                         sx={{
-                            textAlign: "center",
+                            textAlign: "left",
                             fontWeight: "900",
-                            fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
+                            fontFamily: "Roboto, Arial, Helvetica, sans-serif",
                             textTransform: "uppercase",
                             fontSize: "20px",
                             lineHeight: "26px",
@@ -1496,7 +1497,7 @@ const ResumeCreate = () => {
                     >
                         Summary
                     </Typography>
-                    <Divider sx={{ borderColor: "black" }} />
+                    {/* <Divider sx={{ borderColor: "black" }} /> */}
                     <Stack>
                         {summaryFields.map((field) => (
                             <Typography
@@ -1507,12 +1508,11 @@ const ResumeCreate = () => {
                                     mt: "5px",
                                     fontFamily:
                                         "PT Sans, Arial, Helvetica, sans-serif",
-                                    fontSize: "12px",
+                                    fontSize: "2.5vmin",
                                     lineHeight: "17px",
                                 }}
                             >
-                                {field.value ||
-                                    "What's the one thing that makes you best candidate for this job"}
+                                {field.value || "A brief description about you"}
                             </Typography>
                         ))}
                     </Stack>
@@ -1522,9 +1522,9 @@ const ResumeCreate = () => {
                 <Stack sx={{ mt: "15px" }}>
                     <Typography
                         sx={{
-                            textAlign: "center",
+                            textAlign: "left",
                             fontWeight: "900",
-                            fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
+                            fontFamily: "Roboto, Arial, Helvetica, sans-serif",
                             textTransform: "uppercase",
                             fontSize: "20px",
                             lineHeight: "26px",
@@ -1532,7 +1532,7 @@ const ResumeCreate = () => {
                     >
                         Education
                     </Typography>
-                    <Divider sx={{ borderColor: "black" }} />
+                    {/* <Divider sx={{ borderColor: "black" }} /> */}
                     <Stack spacing={2}>
                         {educationFields.map((field) => (
                             <Stack
@@ -1568,14 +1568,19 @@ const ResumeCreate = () => {
                                         {field.degree ||
                                             "Degree and Field of Study"}
                                     </Typography>
-                                </Box>
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        alignItems: "end",
-                                    }}
-                                >
+                                    <Typography
+                                        component="p"
+                                        sx={{
+                                            mt: "5px",
+                                            fontFamily:
+                                                "PT Sans, Arial, Helvetica, sans-serif",
+                                            textTransform: "capitalize",
+                                            fontSize: "12px",
+                                            lineHeight: "17px",
+                                        }}
+                                    >
+                                        {field.date || "Date Period"}
+                                    </Typography>
                                     <Typography
                                         component="p"
                                         sx={{
@@ -1591,7 +1596,30 @@ const ResumeCreate = () => {
                                             ? field.cgpa || "CGPA"
                                             : null}
                                     </Typography>
-                                    <Typography
+                                </Box>
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems: "end",
+                                    }}
+                                >
+                                    {/* <Typography
+                                        component="p"
+                                        sx={{
+                                            mt: "5px",
+                                            fontFamily:
+                                                "PT Sans, Arial, Helvetica, sans-serif",
+                                            textTransform: "capitalize",
+                                            fontSize: "12px",
+                                            lineHeight: "17px",
+                                        }}
+                                    >
+                                        {field.showCGPA
+                                            ? field.cgpa || "CGPA"
+                                            : null}
+                                    </Typography> */}
+                                    {/* <Typography
                                         component="p"
                                         sx={{
                                             mt: "5px",
@@ -1603,7 +1631,7 @@ const ResumeCreate = () => {
                                         }}
                                     >
                                         {field.date || "Date Period"}
-                                    </Typography>
+                                    </Typography> */}
                                 </Box>
                             </Stack>
                         ))}
@@ -1614,9 +1642,9 @@ const ResumeCreate = () => {
                 <Stack sx={{ mt: "20px" }}>
                     <Typography
                         sx={{
-                            textAlign: "center",
+                            textAlign: "left",
                             fontWeight: "900",
-                            fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
+                            fontFamily: "Roboto, Arial, Helvetica, sans-serif",
                             textTransform: "uppercase",
                             fontSize: "20px",
                             lineHeight: "26px",
@@ -1624,7 +1652,7 @@ const ResumeCreate = () => {
                     >
                         Experience
                     </Typography>
-                    <Divider sx={{ borderColor: "black" }} />
+                    {/* <Divider sx={{ borderColor: "black" }} /> */}
                     <Stack spacing={2}>
                         {experienceFields.map((experience) => (
                             <Box key={experience.id}>
@@ -1719,7 +1747,7 @@ const ResumeCreate = () => {
                         sx={{
                             textAlign: "center",
                             fontWeight: "900",
-                            fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
+                            fontFamily: "Roboto, Arial, Helvetica, sans-serif",
                             textTransform: "uppercase",
                             fontSize: "20px",
                             lineHeight: "26px",
@@ -1793,7 +1821,7 @@ const ResumeCreate = () => {
                         sx={{
                             textAlign: "center",
                             fontWeight: "900",
-                            fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
+                            fontFamily: "Roboto, Arial, Helvetica, sans-serif",
                             textTransform: "uppercase",
                             fontSize: "20px",
                             lineHeight: "26px",
@@ -1844,7 +1872,7 @@ const ResumeCreate = () => {
                         sx={{
                             textAlign: "center",
                             fontWeight: "900",
-                            fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
+                            fontFamily: "Roboto, Arial, Helvetica, sans-serif",
                             textTransform: "uppercase",
                             fontSize: "20px",
                             lineHeight: "26px",

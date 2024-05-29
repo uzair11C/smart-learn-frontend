@@ -49,7 +49,7 @@ const SignUp = () => {
                 return;
             }
 
-            if (name !== "") {
+            if (name === "") {
                 setOpen(false);
                 setError("Please enter a name.");
             } else if (!isValidEmail(email)) {
@@ -231,7 +231,7 @@ const SignUp = () => {
                             variant="filled"
                             sx={{ mt: "25px" }}
                         >
-                            {error}hi
+                            {error}
                         </Alert>
                     )}
 
