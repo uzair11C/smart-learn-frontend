@@ -1,12 +1,12 @@
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Tree from "react-d3-tree";
-import axios from "axios";
 import CustomLoader from "../components/CustomLoader";
 import CustomModal from "../components/CustomModal";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowBackIosNew } from "@mui/icons-material";
 import LearningResources from "../components/RoadmapComponents/LearningResources";
+import { model } from "../components/GeminiModel";
 
 const RoadmapResult = () => {
     const [loading, setLoading] = useState(true);
@@ -29,60 +29,60 @@ const RoadmapResult = () => {
             setLoading(true); // Set loading to true before making the API call
 
             console.log(loading);
-            const data = await axios.post(
-                "https://smart-learn-smart-learn-463c5cef.koyeb.app/api/ai",
-                {
-                    role: "user",
-                    content: `Generate a detailed dynamic roadmap in JSON format. The roadmap
-                should be structured as a tree, with each node representing a role or
-                task within the process.
 
-            The JSON format should follow the example below:
-
-            const orgChart = {
-              name: 'CEO',
+            const prompt = `Generate a detailed dynamic roadmap in JSON format. The roadmap
+            should be structured as a tree, with each node representing a role or
+            task within the process.
+        
+        The JSON format should follow the example below:
+        
+        const orgChart = {
+          name: 'CEO',
+          children: [
+            {
+              name: 'Manager',
+              attributes: {
+                department: 'Production',
+              },
               children: [
                 {
-                  name: 'Manager',
+                  name: 'Foreman',
                   attributes: {
-                    department: 'Production',
+                    department: 'Fabrication',
                   },
                   children: [
                     {
-                      name: 'Foreman',
-                      attributes: {
-                        department: 'Fabrication',
-                      },
-                      children: [
-                        {
-                          name: 'Worker',
-                        },
-                      ],
+                      name: 'Worker',
                     },
+                  ],
+                },
+                {
+                  name: 'Foreman',
+                  attributes: {
+                    department: 'Assembly',
+                  },
+                  children: [
                     {
-                      name: 'Foreman',
-                      attributes: {
-                        department: 'Assembly',
-                      },
-                      children: [
-                        {
-                          name: 'Worker',
-                        },
-                      ],
+                      name: 'Worker',
                     },
                   ],
                 },
               ],
-            };
+            },
+          ],
+        };
+        
+         generate a JSON structure that represents the learning roadmap for ${searchTerm}.
+         organize the stages/phases hierarchically as a tree. Only generate the json,
+         no other extra text, do not write json and do not format the json to code`;
 
-             generate a JSON structure that represents the learning roadmap for ${searchTerm}.
-             organize the stages/phases hierarchically as a tree. Only generate the json,
-             no other extra text, do not write json and do not format the json to code`,
-                }
-            );
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
 
-            const roadmap = await data.data;
-            setRoadmapJson(JSON.parse(roadmap.content));
+            console.log(response);
+            const roadmap = response.text();
+            console.log(typeof roadmap, roadmap);
+            setRoadmapJson(JSON.parse(roadmap));
             setLoading(false);
             setOpen(false);
             console.log(roadmapJson);

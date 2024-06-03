@@ -6,6 +6,7 @@ import pdfToText from "react-pdftotext";
 import CustomModal from "../CustomModal";
 import CustomLoader from "../CustomLoader";
 import { useNavigate } from "react-router-dom";
+import { model } from "../GeminiModel";
 
 const UploadCV = () => {
     const [parsedFile, setParsedFile] = useState("");
@@ -16,8 +17,6 @@ const UploadCV = () => {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const isSmallScreen = window.innerWidth < 600;
-
-    // const resultRef = useRef(null); // Reference to the result component
 
     const navigate = useNavigate();
 
@@ -84,11 +83,8 @@ const UploadCV = () => {
     const GetPrediction = async () => {
         try {
             setOpen(true);
-            const data = await axios.post(
-                "https://smart-learn-smart-learn-463c5cef.koyeb.app/api/ai",
-                {
-                    role: "user",
-                    content: `Tell me my role in software industry based on my skills in the
+
+            const prompt = `Tell me my role in software industry based on my skills in the
           resume. Here's my resume: ${parsedFile}
             Your reply should be like so,
           with major role and secondary role separated by a slash,
@@ -97,12 +93,15 @@ const UploadCV = () => {
           (another role, close to my skills)/
           (another role,close to my skills)
           
-          use my skills for the task`,
-                }
-            );
+          use my skills for the task`;
 
-            const response = data.data;
-            setPrediction(extractRoles(response.content));
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+
+            console.log(response);
+            const roles = response.text();
+            const parsedRoles = extractRoles(roles);
+            setPrediction(parsedRoles);
             console.log(response);
         } catch (error) {
             console.log(error);
