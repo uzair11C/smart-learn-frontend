@@ -3,24 +3,37 @@ import { Box, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import EastIcon from "@mui/icons-material/East";
 import axios from "axios";
-import CustomModal from "../CustomModal";
+// import CustomModal from "../CustomModal";
 import Events from "./Events";
+
+const ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // One week in milliseconds
 
 const Services = () => {
     const [events, setEvents] = useState(null);
 
-    const [open2, setOpen2] = useState(false);
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
+    // const [open2, setOpen2] = useState(false);
+    // const [title, setTitle] = useState("");
+    // const [content, setContent] = useState("");
     const [error, setError] = useState(false);
 
     const navigate = useNavigate();
 
-    const handleClose = () => {
-        setOpen2(false);
-    };
+    // const handleClose = () => {
+    //     setOpen2(false);
+    // };
 
     const GetEvents = async () => {
+        const savedData = localStorage.getItem("apiData");
+        const savedTimestamp = localStorage.getItem("timestamp");
+        if (savedData && savedTimestamp) {
+            const currentTime = Date.now();
+            const timeDifference = currentTime - savedTimestamp;
+
+            if (timeDifference < ONE_WEEK) {
+                setEvents(JSON.parse(savedData));
+                return;
+            }
+        }
         try {
             const data = await axios.get(
                 `https://real-time-events-search.p.rapidapi.com/search-events?query=Software%20events%20in%20pakistan&is_virtual=false&start=0`,
@@ -34,18 +47,14 @@ const Services = () => {
             );
             const response = await data.data;
 
+            localStorage.setItem("apiData", JSON.stringify(response));
+            localStorage.setItem("timestamp", Date.now());
+
             console.log("events: ", response);
 
             setEvents(response.data);
         } catch (error) {
             console.log(error.message);
-            setTitle("Error!");
-            setContent(
-                `Something went wrong, please try again later.
-                \nError: ${error.message}
-                `
-            );
-            setOpen2(true);
             setError(true);
         }
     };
@@ -357,12 +366,12 @@ const Services = () => {
                     </Box>
                 </Box>
             </Box>
-            <CustomModal
+            {/* <CustomModal
                 open={open2}
                 title={title}
                 content={content}
                 handleClose={handleClose}
-            />
+            /> */}
         </Box>
     );
 };

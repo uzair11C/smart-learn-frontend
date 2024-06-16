@@ -130,7 +130,11 @@ const Events = ({ events, error }) => {
                         ))
                     ) : (
                         <>
-                            {error ? null : (
+                            {error ? (
+                                <Typography variant="h3" fontSize="3vmin">
+                                    No events found, try again later
+                                </Typography>
+                            ) : (
                                 <CircularProgress
                                     color="secondary"
                                     size={70}
