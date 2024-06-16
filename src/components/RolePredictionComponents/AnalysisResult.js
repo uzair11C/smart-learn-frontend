@@ -32,7 +32,7 @@ const AnalysisResult = () => {
     const ListJobs = async () => {
         try {
             const data = await axios.get(
-                `https://jsearch.p.rapidapi.com/search?query=${prediction.majorRole}%20in%20Pakistan&page=1&num_pages=1`,
+                `https://jsearch.p.rapidapi.com/search?query=${prediction.majorRole}%20in%20Pakistan&page=1&num_pages=1&date_posted=month`,
                 {
                     headers: {
                         "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY,

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
     Box,
     Button,
@@ -370,10 +370,48 @@ const ResumeCreate = () => {
         setCertificationsFields
     );
 
-    // console.log(JSON.parse(localStorage.getItem("summaryFields")));
-    // useEffect(() => {
-    //   localStorage.setItem("summaryFields", JSON.stringify(summaryFields));
-    // }, [summaryFields]);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768); // 768px is a common breakpoint for mobile devices
+        };
+
+        handleResize(); // Check on initial render
+        window.addEventListener("resize", handleResize); // Add event listener to handle resize
+
+        return () => {
+            window.removeEventListener("resize", handleResize); // Clean up event listener on unmount
+        };
+    }, []);
+
+    if (isMobile) {
+        return (
+            <Box
+                sx={{
+                    backgroundColor: "#19192F",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                    p: "30px",
+                    maxWidth: "100vw",
+                    height: "100vh",
+                    color: "white",
+                }}
+            >
+                <Typography
+                    variant="h3"
+                    component="h3"
+                    fontSize="6vmin"
+                    textAlign="center"
+                >
+                    Sorry, this feature works only on a PC. Please switch to a
+                    PC or laptop to use this feature.
+                </Typography>
+            </Box>
+        );
+    }
 
     return (
         <Box
@@ -381,123 +419,1044 @@ const ResumeCreate = () => {
                 backgroundColor: "#19192F",
                 padding: "50px 10px",
                 display: "flex",
-                justifyContent: "space-between",
-                // maxWidth: "1440px",
-                // gap: "20px",
-                // position: "relative",
-                // overflow: "auto",
-                // height: "100vh",
+                justifyContent: "center",
+                alignItems: "flex-start",
             }}
         >
-            {/* FORM FIELDS */}
-            <Stack spacing={3} p={3} pl={8} pr={8}>
-                {/* Personal Info Fields */}
-                <Box>
-                    <Typography
-                        variant="h3"
-                        component="h3"
-                        sx={{ color: "white" }}
-                    >
-                        Personal Information
-                    </Typography>
+            <>
+                {/* FORM FIELDS */}
+                <Stack spacing={3} p={3} pl={8} pr={8} sx={{ maxWidth: "40%" }}>
+                    {/* Personal Info Fields */}
+                    <Box>
+                        <Typography
+                            variant="h3"
+                            component="h3"
+                            sx={{ color: "white" }}
+                        >
+                            Personal Information
+                        </Typography>
 
-                    <Box sx={{ display: "flex", flexDirection: "column" }}>
-                        {userDetails.map((field) => (
-                            <TextField
+                        <Box
+                            sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                            }}
+                        >
+                            {userDetails.map((field) => (
+                                <TextField
+                                    key={field.id}
+                                    label={field.label}
+                                    variant="outlined"
+                                    type={field.type}
+                                    onChange={(e) =>
+                                        handlePersonalFieldChange(
+                                            field.id,
+                                            e.target.value,
+                                            "userDetails"
+                                        )
+                                    }
+                                    sx={{
+                                        mt: "10px",
+                                        width: "350px",
+                                        flex: 1,
+                                        ".MuiOutlinedInput-notchedOutline": {
+                                            borderColor:
+                                                "rgba(255,255,255,0.3)",
+                                            borderRadius: "8px",
+                                        },
+                                    }}
+                                    InputLabelProps={{
+                                        style: {
+                                            color: "rgba(255,255,255,0.3)",
+                                        },
+                                    }}
+                                    inputProps={{
+                                        style: {
+                                            color: "#FFFFFF",
+                                        },
+                                    }}
+                                    InputProps={{
+                                        style: {
+                                            background: "#222141",
+                                        },
+                                    }}
+                                />
+                            ))}
+                        </Box>
+
+                        {profileFields.map((field) => (
+                            <Stack
                                 key={field.id}
-                                label={field.label}
-                                variant="outlined"
-                                type={field.type}
-                                onChange={(e) =>
-                                    handlePersonalFieldChange(
-                                        field.id,
-                                        e.target.value,
-                                        "userDetails"
-                                    )
-                                }
+                                direction="row"
+                                alignItems="center"
+                            >
+                                <TextField
+                                    label={field.label}
+                                    variant="outlined"
+                                    type="text"
+                                    onChange={(e) =>
+                                        handlePersonalFieldChange(
+                                            field.id,
+                                            e.target.value,
+                                            "profile"
+                                        )
+                                    }
+                                    // value={field.value}
+                                    sx={{
+                                        mt: "20px",
+                                        width: "350px",
+                                        ".MuiOutlinedInput-notchedOutline": {
+                                            borderColor:
+                                                "rgba(255,255,255,0.3)",
+                                            borderRadius: "8px",
+                                        },
+                                    }}
+                                    InputLabelProps={{
+                                        style: {
+                                            color: "rgba(255,255,255,0.3)",
+                                        },
+                                    }}
+                                    inputProps={{
+                                        style: {
+                                            color: "#FFFFFF",
+                                        },
+                                    }}
+                                    InputProps={{
+                                        style: {
+                                            background: "#222141",
+                                        },
+                                    }}
+                                />
+                                <Delete
+                                    onClick={() =>
+                                        handleRemoveInfoField(field.id)
+                                    }
+                                    sx={{
+                                        width: "40px",
+                                        mt: "20px",
+                                        color: "white",
+                                        height: "40px",
+                                        cursor: "pointer",
+                                    }}
+                                />
+                            </Stack>
+                        ))}
+
+                        {profileFields.length !== 7 && (
+                            <Button
+                                variant="contained"
+                                onClick={handleAddInfoField}
                                 sx={{
-                                    mt: "10px",
-                                    width: "350px",
-                                    flex: 1,
-                                    ".MuiOutlinedInput-notchedOutline": {
-                                        borderColor: "rgba(255,255,255,0.3)",
-                                        borderRadius: "8px",
-                                    },
+                                    color: "white",
+                                    textTransform: "none",
+                                    background:
+                                        "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                    borderRadius: "5px",
+                                    mt: "15px",
+                                    fontSize: "3vmin",
                                 }}
-                                InputLabelProps={{
-                                    style: { color: "rgba(255,255,255,0.3)" },
-                                }}
-                                inputProps={{
-                                    style: {
-                                        color: "#FFFFFF",
-                                    },
-                                }}
-                                InputProps={{
-                                    style: {
-                                        background: "#222141",
-                                    },
-                                }}
-                            />
+                            >
+                                Add Another Field
+                            </Button>
+                        )}
+                    </Box>
+
+                    {/* Summary Fields */}
+                    <Box>
+                        <Typography
+                            variant="h3"
+                            component="h3"
+                            sx={{ color: "white" }}
+                        >
+                            Summary
+                        </Typography>
+
+                        {summaryFields.map((field) => (
+                            <Stack
+                                key={field.id}
+                                direction="row"
+                                alignItems="center"
+                            >
+                                <TextField
+                                    label="What's the one thing that makes you best candidate"
+                                    variant="outlined"
+                                    multiline
+                                    maxRows={5}
+                                    type="text"
+                                    onChange={(e) =>
+                                        handleChange(
+                                            field.id,
+                                            e.target.value,
+                                            "value"
+                                        )
+                                    }
+                                    // value={field.value}
+                                    sx={{
+                                        mt: "20px",
+                                        width: "500px",
+                                        ".MuiOutlinedInput-notchedOutline": {
+                                            borderColor:
+                                                "rgba(255,255,255,0.3)",
+                                            borderRadius: "8px",
+                                        },
+                                    }}
+                                    InputLabelProps={{
+                                        style: {
+                                            color: "rgba(255,255,255,0.3)",
+                                        },
+                                    }}
+                                    inputProps={{
+                                        style: {
+                                            color: "#FFFFFF",
+                                        },
+                                    }}
+                                    InputProps={{
+                                        style: {
+                                            background: "#222141",
+                                        },
+                                    }}
+                                />
+                                <Delete
+                                    onClick={() =>
+                                        handleRemoveSummaryField(field.id)
+                                    }
+                                    sx={{
+                                        width: "40px",
+                                        mt: "20px",
+                                        color: "white",
+                                        height: "40px",
+                                        cursor: "pointer",
+                                    }}
+                                />
+                            </Stack>
+                        ))}
+
+                        <Button
+                            onClick={handleAddSummaryField}
+                            variant="contained"
+                            sx={{
+                                color: "white",
+                                textTransform: "none",
+                                background:
+                                    "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                borderRadius: "5px",
+                                mt: "15px",
+                                fontSize: "3vmin",
+                            }}
+                        >
+                            Add Paragraph
+                        </Button>
+                    </Box>
+
+                    {/* Education Fields */}
+                    <Box>
+                        <Typography
+                            variant="h3"
+                            component="h3"
+                            sx={{ color: "white" }}
+                        >
+                            Education
+                        </Typography>
+
+                        {educationFields.map((field) => (
+                            <React.Fragment key={field.id}>
+                                <Stack spacing={2} sx={{ mt: "30px" }}>
+                                    <Stack direction="row" spacing={5}>
+                                        <TextField
+                                            label="University"
+                                            variant="outlined"
+                                            type="text"
+                                            onChange={(e) =>
+                                                handleEducationChange(
+                                                    field.id,
+                                                    e.target.value,
+                                                    "university"
+                                                )
+                                            }
+                                            // value={field.value}
+                                            sx={{
+                                                width: "300px",
+                                                ".MuiOutlinedInput-notchedOutline":
+                                                    {
+                                                        borderColor:
+                                                            "rgba(255,255,255,0.3)",
+                                                        borderRadius: "8px",
+                                                    },
+                                            }}
+                                            InputLabelProps={{
+                                                style: {
+                                                    color: "rgba(255,255,255,0.3)",
+                                                },
+                                            }}
+                                            inputProps={{
+                                                style: {
+                                                    color: "#FFFFFF",
+                                                },
+                                            }}
+                                            InputProps={{
+                                                style: {
+                                                    background: "#222141",
+                                                },
+                                            }}
+                                        />
+                                        <TextField
+                                            label="Degree"
+                                            variant="outlined"
+                                            multiline
+                                            maxRows={5}
+                                            type="text"
+                                            onChange={(e) =>
+                                                handleEducationChange(
+                                                    field.id,
+                                                    e.target.value,
+                                                    "degree"
+                                                )
+                                            }
+                                            // value={field.value}
+                                            sx={{
+                                                width: "300px",
+                                                ".MuiOutlinedInput-notchedOutline":
+                                                    {
+                                                        borderColor:
+                                                            "rgba(255,255,255,0.3)",
+                                                        borderRadius: "8px",
+                                                    },
+                                            }}
+                                            InputLabelProps={{
+                                                style: {
+                                                    color: "rgba(255,255,255,0.3)",
+                                                },
+                                            }}
+                                            inputProps={{
+                                                style: {
+                                                    color: "#FFFFFF",
+                                                },
+                                            }}
+                                            InputProps={{
+                                                style: {
+                                                    background: "#222141",
+                                                },
+                                            }}
+                                        />
+                                    </Stack>
+                                    <Stack direction="row" spacing={5}>
+                                        {field.showCGPA && (
+                                            <Stack
+                                                direction="row"
+                                                alignItems="center"
+                                            >
+                                                <TextField
+                                                    label="CGPA"
+                                                    variant="outlined"
+                                                    multiline
+                                                    maxRows={5}
+                                                    type="text"
+                                                    onChange={(e) =>
+                                                        handleEducationChange(
+                                                            field.id,
+                                                            e.target.value,
+                                                            "cgpa"
+                                                        )
+                                                    }
+                                                    // value={field.value}
+                                                    sx={{
+                                                        width: "300px",
+                                                        ".MuiOutlinedInput-notchedOutline":
+                                                            {
+                                                                borderColor:
+                                                                    "rgba(255,255,255,0.3)",
+                                                                borderRadius:
+                                                                    "8px",
+                                                            },
+                                                    }}
+                                                    InputLabelProps={{
+                                                        style: {
+                                                            color: "rgba(255,255,255,0.3)",
+                                                        },
+                                                    }}
+                                                    inputProps={{
+                                                        style: {
+                                                            color: "#FFFFFF",
+                                                        },
+                                                    }}
+                                                    InputProps={{
+                                                        style: {
+                                                            background:
+                                                                "#222141",
+                                                        },
+                                                    }}
+                                                />
+                                            </Stack>
+                                        )}
+                                        <TextField
+                                            label="Date"
+                                            type="text"
+                                            variant="outlined"
+                                            onChange={(e) =>
+                                                handleEducationChange(
+                                                    field.id,
+                                                    e.target.value,
+                                                    "date"
+                                                )
+                                            }
+                                            sx={{
+                                                width: "300px",
+                                                ".MuiOutlinedInput-notchedOutline":
+                                                    {
+                                                        borderColor:
+                                                            "rgba(255,255,255,0.3)",
+                                                        borderRadius: "8px",
+                                                    },
+                                            }}
+                                            InputLabelProps={{
+                                                style: {
+                                                    color: "rgba(255,255,255,0.3)",
+                                                },
+                                            }}
+                                            inputProps={{
+                                                style: {
+                                                    color: "#FFFFFF",
+                                                },
+                                            }}
+                                            InputProps={{
+                                                style: {
+                                                    background: "#222141",
+                                                },
+                                            }}
+                                        />
+                                    </Stack>
+                                </Stack>
+
+                                <Stack
+                                    direction="row"
+                                    alignItems="center"
+                                    sx={{ mt: "10px" }}
+                                >
+                                    <Button
+                                        onClick={() =>
+                                            toggle(field.id, "showCGPA")
+                                        }
+                                        variant="contained"
+                                        sx={{
+                                            color: "white",
+                                            textTransform: "none",
+                                            background:
+                                                "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                            borderRadius: "5px",
+                                            mt: "15px",
+                                            fontSize: "3vmin",
+                                        }}
+                                    >
+                                        Show CGPA
+                                    </Button>
+                                    <Delete
+                                        onClick={() =>
+                                            handleRemoveEducationField(field.id)
+                                        }
+                                        sx={{
+                                            width: "40px",
+                                            color: "white",
+                                            height: "40px",
+                                            cursor: "pointer",
+                                        }}
+                                    />
+                                    <Button
+                                        variant="contained"
+                                        sx={{
+                                            color: "white",
+                                            textTransform: "none",
+                                            background:
+                                                "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                            borderRadius: "5px",
+                                            mt: "15px",
+                                            fontSize: "3vmin",
+                                        }}
+                                        onClick={handleAddEducationField}
+                                    >
+                                        Add Another Field
+                                    </Button>
+                                </Stack>
+                            </React.Fragment>
                         ))}
                     </Box>
 
-                    {profileFields.map((field) => (
-                        <Stack
-                            key={field.id}
-                            direction="row"
-                            alignItems="center"
+                    {/* Experience Fields */}
+                    <Box>
+                        <Typography
+                            variant="h3"
+                            component="h3"
+                            sx={{ mb: "10px", color: "white" }}
                         >
-                            <TextField
-                                label={field.label}
-                                variant="outlined"
-                                type="text"
-                                onChange={(e) =>
-                                    handlePersonalFieldChange(
-                                        field.id,
-                                        e.target.value,
-                                        "profile"
-                                    )
-                                }
-                                // value={field.value}
-                                sx={{
-                                    mt: "20px",
-                                    width: "350px",
-                                    ".MuiOutlinedInput-notchedOutline": {
-                                        borderColor: "rgba(255,255,255,0.3)",
-                                        borderRadius: "8px",
-                                    },
-                                }}
-                                InputLabelProps={{
-                                    style: { color: "rgba(255,255,255,0.3)" },
-                                }}
-                                inputProps={{
-                                    style: {
-                                        color: "#FFFFFF",
-                                    },
-                                }}
-                                InputProps={{
-                                    style: {
-                                        background: "#222141",
-                                    },
-                                }}
-                            />
-                            <Delete
-                                onClick={() => handleRemoveInfoField(field.id)}
-                                sx={{
-                                    width: "40px",
-                                    mt: "20px",
-                                    color: "white",
-                                    height: "40px",
-                                    cursor: "pointer",
-                                }}
-                            />
-                        </Stack>
-                    ))}
+                            Experience
+                        </Typography>
+                        {experienceFields.map((experience) => (
+                            <React.Fragment key={experience.id}>
+                                <Stack direction="row" spacing={2}>
+                                    <TextField
+                                        label="Company"
+                                        variant="outlined"
+                                        type="text"
+                                        onChange={(e) =>
+                                            handleExperienceChange(
+                                                experience.id,
+                                                e.target.value,
+                                                "company"
+                                            )
+                                        }
+                                        // value={field.value}
+                                        sx={{
+                                            mt: "20px",
+                                            width: "300px",
+                                            ".MuiOutlinedInput-notchedOutline":
+                                                {
+                                                    borderColor:
+                                                        "rgba(255,255,255,0.3)",
+                                                    borderRadius: "8px",
+                                                },
+                                        }}
+                                        InputLabelProps={{
+                                            style: {
+                                                color: "rgba(255,255,255,0.3)",
+                                            },
+                                        }}
+                                        inputProps={{
+                                            style: {
+                                                color: "#FFFFFF",
+                                            },
+                                        }}
+                                        InputProps={{
+                                            style: {
+                                                background: "#222141",
+                                            },
+                                        }}
+                                    />
+                                    <TextField
+                                        label="Title"
+                                        variant="outlined"
+                                        type="text"
+                                        onChange={(e) =>
+                                            handleExperienceChange(
+                                                experience.id,
+                                                e.target.value,
+                                                "title"
+                                            )
+                                        }
+                                        // value={field.value}
+                                        sx={{
+                                            mt: "20px",
+                                            width: "300px",
+                                            ".MuiOutlinedInput-notchedOutline":
+                                                {
+                                                    borderColor:
+                                                        "rgba(255,255,255,0.3)",
+                                                    borderRadius: "8px",
+                                                },
+                                        }}
+                                        InputLabelProps={{
+                                            style: {
+                                                color: "rgba(255,255,255,0.3)",
+                                            },
+                                        }}
+                                        inputProps={{
+                                            style: {
+                                                color: "#FFFFFF",
+                                            },
+                                        }}
+                                        InputProps={{
+                                            style: {
+                                                background: "#222141",
+                                            },
+                                        }}
+                                    />
+                                </Stack>
+                                <TextField
+                                    label="Date"
+                                    variant="outlined"
+                                    type="text"
+                                    onChange={(e) =>
+                                        handleExperienceChange(
+                                            experience.id,
+                                            e.target.value,
+                                            "date"
+                                        )
+                                    }
+                                    // value={field.value}
+                                    sx={{
+                                        mt: "20px",
+                                        width: "300px",
+                                        ".MuiOutlinedInput-notchedOutline": {
+                                            borderColor:
+                                                "rgba(255,255,255,0.3)",
+                                            borderRadius: "8px",
+                                        },
+                                    }}
+                                    InputLabelProps={{
+                                        style: {
+                                            color: "rgba(255,255,255,0.3)",
+                                        },
+                                    }}
+                                    inputProps={{
+                                        style: {
+                                            color: "#FFFFFF",
+                                        },
+                                    }}
+                                    InputProps={{
+                                        style: {
+                                            background: "#222141",
+                                        },
+                                    }}
+                                />
+                                {experience.descriptions.map((_, index) => (
+                                    <Stack
+                                        key={index}
+                                        direction="row"
+                                        alignItems="center"
+                                    >
+                                        <TextField
+                                            label="Tasks Performed"
+                                            variant="outlined"
+                                            multiline
+                                            maxRows={2}
+                                            onChange={(e) =>
+                                                handleExperienceDescriptionChange(
+                                                    experience.id,
+                                                    index,
+                                                    e.target.value
+                                                )
+                                            }
+                                            sx={{
+                                                mt: "20px",
+                                                width: "550px",
+                                                ".MuiOutlinedInput-notchedOutline":
+                                                    {
+                                                        borderColor:
+                                                            "rgba(255,255,255,0.3)",
+                                                        borderRadius: "8px",
+                                                    },
+                                            }}
+                                            InputLabelProps={{
+                                                style: {
+                                                    color: "rgba(255,255,255,0.3)",
+                                                },
+                                            }}
+                                            inputProps={{
+                                                style: {
+                                                    color: "#FFFFFF",
+                                                },
+                                            }}
+                                            InputProps={{
+                                                style: {
+                                                    background: "#222141",
+                                                },
+                                            }}
+                                        />
+                                        <Delete
+                                            onClick={() =>
+                                                handleRemoveExperienceDescription(
+                                                    experience.id,
+                                                    index
+                                                )
+                                            }
+                                            sx={{
+                                                width: "40px",
+                                                color: "white",
+                                                height: "40px",
+                                                mt: "20px",
+                                                cursor: "pointer",
+                                            }}
+                                        />
+                                    </Stack>
+                                ))}
 
-                    {profileFields.length !== 7 && (
+                                <Stack direction="row" spacing={2} mt={2}>
+                                    <Button
+                                        onClick={() =>
+                                            handleAddExperienceDescription(
+                                                experience.id
+                                            )
+                                        }
+                                        variant="contained"
+                                        sx={{
+                                            color: "white",
+                                            textTransform: "none",
+                                            background:
+                                                "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                            borderRadius: "5px",
+                                            mt: "15px",
+                                            fontSize: "3vmin",
+                                        }}
+                                    >
+                                        Add Description
+                                    </Button>
+                                    <Button
+                                        onClick={() =>
+                                            handleRemoveExperienceField(
+                                                experience.id
+                                            )
+                                        }
+                                        variant="contained"
+                                        sx={{
+                                            color: "white",
+                                            textTransform: "none",
+                                            background:
+                                                "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                            borderRadius: "5px",
+                                            mt: "15px",
+                                            fontSize: "3vmin",
+                                        }}
+                                    >
+                                        Remove Experience
+                                    </Button>
+                                </Stack>
+                            </React.Fragment>
+                        ))}
                         <Button
+                            onClick={handleAddExperienceField}
                             variant="contained"
-                            onClick={handleAddInfoField}
+                            sx={{
+                                color: "white",
+                                textTransform: "none",
+                                background:
+                                    "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                borderRadius: "5px",
+                                mt: "15px",
+                                fontSize: "3vmin",
+                            }}
+                        >
+                            Add Another Experience
+                        </Button>
+                    </Box>
+
+                    {/* Project Fields */}
+                    <Box>
+                        <Typography
+                            variant="h3"
+                            component="h3"
+                            sx={{ color: "white" }}
+                        >
+                            Projects
+                        </Typography>
+                        {projectFields.map((project) => (
+                            <React.Fragment key={project.id}>
+                                <Stack direction="row" alignItems="center">
+                                    <TextField
+                                        label="Title"
+                                        variant="outlined"
+                                        type="text"
+                                        onChange={(e) =>
+                                            handleProjectChange(
+                                                project.id,
+                                                e.target.value,
+                                                "title"
+                                            )
+                                        }
+                                        // value={field.value}
+                                        sx={{
+                                            mt: "20px",
+                                            width: "550px",
+                                            ".MuiOutlinedInput-notchedOutline":
+                                                {
+                                                    borderColor:
+                                                        "rgba(255,255,255,0.3)",
+                                                    borderRadius: "8px",
+                                                },
+                                        }}
+                                        InputLabelProps={{
+                                            style: {
+                                                color: "rgba(255,255,255,0.3)",
+                                            },
+                                        }}
+                                        inputProps={{
+                                            style: {
+                                                color: "#FFFFFF",
+                                            },
+                                        }}
+                                        InputProps={{
+                                            style: {
+                                                background: "#222141",
+                                            },
+                                        }}
+                                    />
+                                </Stack>
+                                <Stack direction="row" alignItems="center">
+                                    <TextField
+                                        label="Date"
+                                        variant="outlined"
+                                        type="text"
+                                        onChange={(e) =>
+                                            handleProjectChange(
+                                                project.id,
+                                                e.target.value,
+                                                "date"
+                                            )
+                                        }
+                                        // value={field.value}
+                                        sx={{
+                                            mt: "20px",
+                                            width: "550px",
+                                            ".MuiOutlinedInput-notchedOutline":
+                                                {
+                                                    borderColor:
+                                                        "rgba(255,255,255,0.3)",
+                                                    borderRadius: "8px",
+                                                },
+                                        }}
+                                        InputLabelProps={{
+                                            style: {
+                                                color: "rgba(255,255,255,0.3)",
+                                            },
+                                        }}
+                                        inputProps={{
+                                            style: {
+                                                color: "#FFFFFF",
+                                            },
+                                        }}
+                                        InputProps={{
+                                            style: {
+                                                background: "#222141",
+                                            },
+                                        }}
+                                    />
+                                </Stack>
+                                {project.descriptions.map((_, index) => (
+                                    <Stack
+                                        key={index}
+                                        direction="row"
+                                        alignItems="center"
+                                    >
+                                        <TextField
+                                            label="Description"
+                                            variant="outlined"
+                                            onChange={(e) =>
+                                                handleDescriptionChange(
+                                                    project.id,
+                                                    index,
+                                                    e.target.value
+                                                )
+                                            }
+                                            sx={{
+                                                mt: "20px",
+                                                width: "550px",
+                                                ".MuiOutlinedInput-notchedOutline":
+                                                    {
+                                                        borderColor:
+                                                            "rgba(255,255,255,0.3)",
+                                                        borderRadius: "8px",
+                                                    },
+                                            }}
+                                            InputLabelProps={{
+                                                style: {
+                                                    color: "rgba(255,255,255,0.3)",
+                                                },
+                                            }}
+                                            inputProps={{
+                                                style: {
+                                                    color: "#FFFFFF",
+                                                },
+                                            }}
+                                            InputProps={{
+                                                style: {
+                                                    background: "#222141",
+                                                },
+                                            }}
+                                        />
+                                        <Delete
+                                            onClick={() =>
+                                                handleRemoveProjectDescription(
+                                                    project.id,
+                                                    index
+                                                )
+                                            }
+                                            sx={{
+                                                width: "40px",
+                                                color: "white",
+                                                mt: "20px",
+                                                height: "40px",
+                                                cursor: "pointer",
+                                            }}
+                                        />
+                                    </Stack>
+                                ))}
+                                <Stack direction="row" spacing={2} mt={2}>
+                                    <Button
+                                        onClick={() =>
+                                            handleAddProjectDescription(
+                                                project.id
+                                            )
+                                        }
+                                        variant="contained"
+                                        sx={{
+                                            color: "white",
+                                            textTransform: "none",
+                                            background:
+                                                "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                            borderRadius: "5px",
+                                            mt: "15px",
+                                            fontSize: "3vmin",
+                                        }}
+                                    >
+                                        Add Description
+                                    </Button>
+                                    <Button
+                                        onClick={() =>
+                                            handleRemoveProjectField(project.id)
+                                        }
+                                        variant="contained"
+                                        sx={{
+                                            color: "white",
+                                            textTransform: "none",
+                                            background:
+                                                "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                            borderRadius: "5px",
+                                            mt: "15px",
+                                            fontSize: "3vmin",
+                                        }}
+                                    >
+                                        Remove Project
+                                    </Button>
+                                </Stack>
+                            </React.Fragment>
+                        ))}
+
+                        <Button
+                            onClick={handleAddProjectField}
+                            variant="contained"
+                            sx={{
+                                color: "white",
+                                textTransform: "none",
+                                background:
+                                    "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                borderRadius: "5px",
+                                mt: "15px",
+                                fontSize: "3vmin",
+                            }}
+                        >
+                            Add Another Project
+                        </Button>
+                    </Box>
+
+                    {/* Skills Fields */}
+                    <Box>
+                        <Typography
+                            variant="h3"
+                            component="h3"
+                            sx={{ color: "white" }}
+                        >
+                            Skills
+                        </Typography>
+
+                        {skillsFields.map((field) => (
+                            <React.Fragment key={field.id}>
+                                <Stack direction="row" alignItems="center">
+                                    <TextField
+                                        label="Title"
+                                        variant="outlined"
+                                        type="text"
+                                        onChange={(e) =>
+                                            handleSkillsChange(
+                                                field.id,
+                                                e.target.value,
+                                                "title"
+                                            )
+                                        }
+                                        value={field.title}
+                                        sx={{
+                                            mt: "20px",
+                                            width: "300px",
+                                            ".MuiOutlinedInput-notchedOutline":
+                                                {
+                                                    borderColor:
+                                                        "rgba(255,255,255,0.3)",
+                                                    borderRadius: "8px",
+                                                },
+                                        }}
+                                        InputLabelProps={{
+                                            style: {
+                                                color: "rgba(255,255,255,0.3)",
+                                            },
+                                        }}
+                                        inputProps={{
+                                            style: {
+                                                color: "#FFFFFF",
+                                            },
+                                        }}
+                                        InputProps={{
+                                            style: {
+                                                background: "#222141",
+                                            },
+                                        }}
+                                    />
+                                    <Delete
+                                        onClick={() =>
+                                            handleRemoveSkillsField(field.id)
+                                        }
+                                        sx={{
+                                            width: "40px",
+                                            mt: "20px",
+                                            color: "white",
+                                            height: "40px",
+                                            cursor: "pointer",
+                                        }}
+                                    />
+                                </Stack>
+                                <Stack direction="row" alignItems="center">
+                                    <TextField
+                                        label="Skills"
+                                        type="text"
+                                        variant="outlined"
+                                        // value={field.skills}
+                                        onChange={(e) =>
+                                            handleSkillsChange(
+                                                field.id,
+                                                e.target.value,
+                                                "skills"
+                                            )
+                                        }
+                                        sx={{
+                                            mt: "20px",
+                                            width: "300px",
+                                            ".MuiOutlinedInput-notchedOutline":
+                                                {
+                                                    borderColor:
+                                                        "rgba(255,255,255,0.3)",
+                                                    borderRadius: "8px",
+                                                },
+                                        }}
+                                        InputLabelProps={{
+                                            style: {
+                                                color: "rgba(255,255,255,0.3)",
+                                            },
+                                        }}
+                                        inputProps={{
+                                            style: {
+                                                color: "#FFFFFF",
+                                            },
+                                        }}
+                                        InputProps={{
+                                            style: {
+                                                background: "#222141",
+                                            },
+                                        }}
+                                    />
+                                    <Delete
+                                        onClick={() =>
+                                            handleRemoveSkillsField(field.id)
+                                        }
+                                        sx={{
+                                            width: "40px",
+                                            color: "white",
+                                            mt: "20px",
+                                            height: "40px",
+                                            cursor: "pointer",
+                                        }}
+                                    />
+                                </Stack>
+                            </React.Fragment>
+                        ))}
+
+                        <Button
+                            onClick={handleAddSkillsField}
+                            variant="contained"
                             sx={{
                                 color: "white",
                                 textTransform: "none",
@@ -510,463 +1469,36 @@ const ResumeCreate = () => {
                         >
                             Add Another Field
                         </Button>
-                    )}
-                </Box>
+                    </Box>
 
-                {/* Summary Fields */}
-                <Box>
-                    <Typography
-                        variant="h3"
-                        component="h3"
-                        sx={{ color: "white" }}
-                    >
-                        Summary
-                    </Typography>
-
-                    {summaryFields.map((field) => (
-                        <Stack
-                            key={field.id}
-                            direction="row"
-                            alignItems="center"
+                    {/* Certifications Fields */}
+                    <Box>
+                        <Typography
+                            variant="h3"
+                            component="h3"
+                            sx={{ color: "white" }}
                         >
-                            <TextField
-                                label="What's the one thing that makes you best candidate"
-                                variant="outlined"
-                                multiline
-                                maxRows={5}
-                                type="text"
-                                onChange={(e) =>
-                                    handleChange(
-                                        field.id,
-                                        e.target.value,
-                                        "value"
-                                    )
-                                }
-                                // value={field.value}
-                                sx={{
-                                    mt: "20px",
-                                    width: "500px",
-                                    ".MuiOutlinedInput-notchedOutline": {
-                                        borderColor: "rgba(255,255,255,0.3)",
-                                        borderRadius: "8px",
-                                    },
-                                }}
-                                InputLabelProps={{
-                                    style: { color: "rgba(255,255,255,0.3)" },
-                                }}
-                                inputProps={{
-                                    style: {
-                                        color: "#FFFFFF",
-                                    },
-                                }}
-                                InputProps={{
-                                    style: {
-                                        background: "#222141",
-                                    },
-                                }}
-                            />
-                            <Delete
-                                onClick={() =>
-                                    handleRemoveSummaryField(field.id)
-                                }
-                                sx={{
-                                    width: "40px",
-                                    mt: "20px",
-                                    color: "white",
-                                    height: "40px",
-                                    cursor: "pointer",
-                                }}
-                            />
-                        </Stack>
-                    ))}
+                            Certifications
+                        </Typography>
 
-                    <Button
-                        onClick={handleAddSummaryField}
-                        variant="contained"
-                        sx={{
-                            color: "white",
-                            textTransform: "none",
-                            background:
-                                "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
-                            borderRadius: "5px",
-                            mt: "15px",
-                            fontSize: "3vmin",
-                        }}
-                    >
-                        Add Paragraph
-                    </Button>
-                </Box>
-
-                {/* Education Fields */}
-                <Box>
-                    <Typography
-                        variant="h3"
-                        component="h3"
-                        sx={{ color: "white" }}
-                    >
-                        Education
-                    </Typography>
-
-                    {educationFields.map((field) => (
-                        <React.Fragment key={field.id}>
-                            <Stack spacing={2} sx={{ mt: "30px" }}>
-                                <Stack direction="row" spacing={5}>
+                        {certificationsFields.map((field) => (
+                            <React.Fragment key={field.id}>
+                                <Stack direction="row" alignItems="center">
                                     <TextField
-                                        label="University"
+                                        label="Issue By"
                                         variant="outlined"
                                         type="text"
                                         onChange={(e) =>
-                                            handleEducationChange(
+                                            handleCertificationChange(
                                                 field.id,
                                                 e.target.value,
-                                                "university"
+                                                "issueBy"
                                             )
                                         }
                                         // value={field.value}
-                                        sx={{
-                                            width: "300px",
-                                            ".MuiOutlinedInput-notchedOutline":
-                                                {
-                                                    borderColor:
-                                                        "rgba(255,255,255,0.3)",
-                                                    borderRadius: "8px",
-                                                },
-                                        }}
-                                        InputLabelProps={{
-                                            style: {
-                                                color: "rgba(255,255,255,0.3)",
-                                            },
-                                        }}
-                                        inputProps={{
-                                            style: {
-                                                color: "#FFFFFF",
-                                            },
-                                        }}
-                                        InputProps={{
-                                            style: {
-                                                background: "#222141",
-                                            },
-                                        }}
-                                    />
-                                    <TextField
-                                        label="Degree"
-                                        variant="outlined"
-                                        multiline
-                                        maxRows={5}
-                                        type="text"
-                                        onChange={(e) =>
-                                            handleEducationChange(
-                                                field.id,
-                                                e.target.value,
-                                                "degree"
-                                            )
-                                        }
-                                        // value={field.value}
-                                        sx={{
-                                            width: "300px",
-                                            ".MuiOutlinedInput-notchedOutline":
-                                                {
-                                                    borderColor:
-                                                        "rgba(255,255,255,0.3)",
-                                                    borderRadius: "8px",
-                                                },
-                                        }}
-                                        InputLabelProps={{
-                                            style: {
-                                                color: "rgba(255,255,255,0.3)",
-                                            },
-                                        }}
-                                        inputProps={{
-                                            style: {
-                                                color: "#FFFFFF",
-                                            },
-                                        }}
-                                        InputProps={{
-                                            style: {
-                                                background: "#222141",
-                                            },
-                                        }}
-                                    />
-                                </Stack>
-                                <Stack direction="row" spacing={5}>
-                                    {field.showCGPA && (
-                                        <Stack
-                                            direction="row"
-                                            alignItems="center"
-                                        >
-                                            <TextField
-                                                label="CGPA"
-                                                variant="outlined"
-                                                multiline
-                                                maxRows={5}
-                                                type="text"
-                                                onChange={(e) =>
-                                                    handleEducationChange(
-                                                        field.id,
-                                                        e.target.value,
-                                                        "cgpa"
-                                                    )
-                                                }
-                                                // value={field.value}
-                                                sx={{
-                                                    width: "300px",
-                                                    ".MuiOutlinedInput-notchedOutline":
-                                                        {
-                                                            borderColor:
-                                                                "rgba(255,255,255,0.3)",
-                                                            borderRadius: "8px",
-                                                        },
-                                                }}
-                                                InputLabelProps={{
-                                                    style: {
-                                                        color: "rgba(255,255,255,0.3)",
-                                                    },
-                                                }}
-                                                inputProps={{
-                                                    style: {
-                                                        color: "#FFFFFF",
-                                                    },
-                                                }}
-                                                InputProps={{
-                                                    style: {
-                                                        background: "#222141",
-                                                    },
-                                                }}
-                                            />
-                                        </Stack>
-                                    )}
-                                    <TextField
-                                        label="Date"
-                                        type="text"
-                                        variant="outlined"
-                                        onChange={(e) =>
-                                            handleEducationChange(
-                                                field.id,
-                                                e.target.value,
-                                                "date"
-                                            )
-                                        }
-                                        sx={{
-                                            width: "300px",
-                                            ".MuiOutlinedInput-notchedOutline":
-                                                {
-                                                    borderColor:
-                                                        "rgba(255,255,255,0.3)",
-                                                    borderRadius: "8px",
-                                                },
-                                        }}
-                                        InputLabelProps={{
-                                            style: {
-                                                color: "rgba(255,255,255,0.3)",
-                                            },
-                                        }}
-                                        inputProps={{
-                                            style: {
-                                                color: "#FFFFFF",
-                                            },
-                                        }}
-                                        InputProps={{
-                                            style: {
-                                                background: "#222141",
-                                            },
-                                        }}
-                                    />
-                                </Stack>
-                            </Stack>
-
-                            <Stack
-                                direction="row"
-                                alignItems="center"
-                                sx={{ mt: "10px" }}
-                            >
-                                <Button
-                                    onClick={() => toggle(field.id, "showCGPA")}
-                                    variant="contained"
-                                    sx={{
-                                        color: "white",
-                                        textTransform: "none",
-                                        background:
-                                            "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
-                                        borderRadius: "5px",
-                                        mt: "15px",
-                                        fontSize: "3vmin",
-                                    }}
-                                >
-                                    Show CGPA
-                                </Button>
-                                <Delete
-                                    onClick={() =>
-                                        handleRemoveEducationField(field.id)
-                                    }
-                                    sx={{
-                                        width: "40px",
-                                        color: "white",
-                                        height: "40px",
-                                        cursor: "pointer",
-                                    }}
-                                />
-                                <Button
-                                    variant="contained"
-                                    sx={{
-                                        color: "white",
-                                        textTransform: "none",
-                                        background:
-                                            "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
-                                        borderRadius: "5px",
-                                        mt: "15px",
-                                        fontSize: "3vmin",
-                                    }}
-                                    onClick={handleAddEducationField}
-                                >
-                                    Add Another Field
-                                </Button>
-                            </Stack>
-                        </React.Fragment>
-                    ))}
-                </Box>
-
-                {/* Experience Fields */}
-                <Box>
-                    <Typography
-                        variant="h3"
-                        component="h3"
-                        sx={{ mb: "10px", color: "white" }}
-                    >
-                        Experience
-                    </Typography>
-                    {experienceFields.map((experience) => (
-                        <React.Fragment key={experience.id}>
-                            <Stack direction="row" spacing={2}>
-                                <TextField
-                                    label="Company"
-                                    variant="outlined"
-                                    type="text"
-                                    onChange={(e) =>
-                                        handleExperienceChange(
-                                            experience.id,
-                                            e.target.value,
-                                            "company"
-                                        )
-                                    }
-                                    // value={field.value}
-                                    sx={{
-                                        mt: "20px",
-                                        width: "300px",
-                                        ".MuiOutlinedInput-notchedOutline": {
-                                            borderColor:
-                                                "rgba(255,255,255,0.3)",
-                                            borderRadius: "8px",
-                                        },
-                                    }}
-                                    InputLabelProps={{
-                                        style: {
-                                            color: "rgba(255,255,255,0.3)",
-                                        },
-                                    }}
-                                    inputProps={{
-                                        style: {
-                                            color: "#FFFFFF",
-                                        },
-                                    }}
-                                    InputProps={{
-                                        style: {
-                                            background: "#222141",
-                                        },
-                                    }}
-                                />
-                                <TextField
-                                    label="Title"
-                                    variant="outlined"
-                                    type="text"
-                                    onChange={(e) =>
-                                        handleExperienceChange(
-                                            experience.id,
-                                            e.target.value,
-                                            "title"
-                                        )
-                                    }
-                                    // value={field.value}
-                                    sx={{
-                                        mt: "20px",
-                                        width: "300px",
-                                        ".MuiOutlinedInput-notchedOutline": {
-                                            borderColor:
-                                                "rgba(255,255,255,0.3)",
-                                            borderRadius: "8px",
-                                        },
-                                    }}
-                                    InputLabelProps={{
-                                        style: {
-                                            color: "rgba(255,255,255,0.3)",
-                                        },
-                                    }}
-                                    inputProps={{
-                                        style: {
-                                            color: "#FFFFFF",
-                                        },
-                                    }}
-                                    InputProps={{
-                                        style: {
-                                            background: "#222141",
-                                        },
-                                    }}
-                                />
-                            </Stack>
-                            <TextField
-                                label="Date"
-                                variant="outlined"
-                                type="text"
-                                onChange={(e) =>
-                                    handleExperienceChange(
-                                        experience.id,
-                                        e.target.value,
-                                        "date"
-                                    )
-                                }
-                                // value={field.value}
-                                sx={{
-                                    mt: "20px",
-                                    width: "300px",
-                                    ".MuiOutlinedInput-notchedOutline": {
-                                        borderColor: "rgba(255,255,255,0.3)",
-                                        borderRadius: "8px",
-                                    },
-                                }}
-                                InputLabelProps={{
-                                    style: { color: "rgba(255,255,255,0.3)" },
-                                }}
-                                inputProps={{
-                                    style: {
-                                        color: "#FFFFFF",
-                                    },
-                                }}
-                                InputProps={{
-                                    style: {
-                                        background: "#222141",
-                                    },
-                                }}
-                            />
-                            {experience.descriptions.map((_, index) => (
-                                <Stack
-                                    key={index}
-                                    direction="row"
-                                    alignItems="center"
-                                >
-                                    <TextField
-                                        label="Tasks Performed"
-                                        variant="outlined"
-                                        multiline
-                                        maxRows={2}
-                                        onChange={(e) =>
-                                            handleExperienceDescriptionChange(
-                                                experience.id,
-                                                index,
-                                                e.target.value
-                                            )
-                                        }
                                         sx={{
                                             mt: "20px",
-                                            width: "550px",
+                                            width: "300px",
                                             ".MuiOutlinedInput-notchedOutline":
                                                 {
                                                     borderColor:
@@ -992,189 +1524,34 @@ const ResumeCreate = () => {
                                     />
                                     <Delete
                                         onClick={() =>
-                                            handleRemoveExperienceDescription(
-                                                experience.id,
-                                                index
+                                            handleRemoveCertificationField(
+                                                field.id
                                             )
                                         }
                                         sx={{
                                             width: "40px",
                                             color: "white",
                                             height: "40px",
-                                            mt: "20px",
                                             cursor: "pointer",
                                         }}
                                     />
                                 </Stack>
-                            ))}
-
-                            <Stack direction="row" spacing={2} mt={2}>
-                                <Button
-                                    onClick={() =>
-                                        handleAddExperienceDescription(
-                                            experience.id
-                                        )
-                                    }
-                                    variant="contained"
-                                    sx={{
-                                        color: "white",
-                                        textTransform: "none",
-                                        background:
-                                            "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
-                                        borderRadius: "5px",
-                                        mt: "15px",
-                                        fontSize: "3vmin",
-                                    }}
-                                >
-                                    Add Description
-                                </Button>
-                                <Button
-                                    onClick={() =>
-                                        handleRemoveExperienceField(
-                                            experience.id
-                                        )
-                                    }
-                                    variant="contained"
-                                    sx={{
-                                        color: "white",
-                                        textTransform: "none",
-                                        background:
-                                            "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
-                                        borderRadius: "5px",
-                                        mt: "15px",
-                                        fontSize: "3vmin",
-                                    }}
-                                >
-                                    Remove Experience
-                                </Button>
-                            </Stack>
-                        </React.Fragment>
-                    ))}
-                    <Button
-                        onClick={handleAddExperienceField}
-                        variant="contained"
-                        sx={{
-                            color: "white",
-                            textTransform: "none",
-                            background:
-                                "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
-                            borderRadius: "5px",
-                            mt: "15px",
-                            fontSize: "3vmin",
-                        }}
-                    >
-                        Add Another Experience
-                    </Button>
-                </Box>
-
-                {/* Project Fields */}
-                <Box>
-                    <Typography
-                        variant="h3"
-                        component="h3"
-                        sx={{ color: "white" }}
-                    >
-                        Projects
-                    </Typography>
-                    {projectFields.map((project) => (
-                        <React.Fragment key={project.id}>
-                            <Stack direction="row" alignItems="center">
-                                <TextField
-                                    label="Title"
-                                    variant="outlined"
-                                    type="text"
-                                    onChange={(e) =>
-                                        handleProjectChange(
-                                            project.id,
-                                            e.target.value,
-                                            "title"
-                                        )
-                                    }
-                                    // value={field.value}
-                                    sx={{
-                                        mt: "20px",
-                                        width: "550px",
-                                        ".MuiOutlinedInput-notchedOutline": {
-                                            borderColor:
-                                                "rgba(255,255,255,0.3)",
-                                            borderRadius: "8px",
-                                        },
-                                    }}
-                                    InputLabelProps={{
-                                        style: {
-                                            color: "rgba(255,255,255,0.3)",
-                                        },
-                                    }}
-                                    inputProps={{
-                                        style: {
-                                            color: "#FFFFFF",
-                                        },
-                                    }}
-                                    InputProps={{
-                                        style: {
-                                            background: "#222141",
-                                        },
-                                    }}
-                                />
-                            </Stack>
-                            <Stack direction="row" alignItems="center">
-                                <TextField
-                                    label="Date"
-                                    variant="outlined"
-                                    type="text"
-                                    onChange={(e) =>
-                                        handleProjectChange(
-                                            project.id,
-                                            e.target.value,
-                                            "date"
-                                        )
-                                    }
-                                    // value={field.value}
-                                    sx={{
-                                        mt: "20px",
-                                        width: "550px",
-                                        ".MuiOutlinedInput-notchedOutline": {
-                                            borderColor:
-                                                "rgba(255,255,255,0.3)",
-                                            borderRadius: "8px",
-                                        },
-                                    }}
-                                    InputLabelProps={{
-                                        style: {
-                                            color: "rgba(255,255,255,0.3)",
-                                        },
-                                    }}
-                                    inputProps={{
-                                        style: {
-                                            color: "#FFFFFF",
-                                        },
-                                    }}
-                                    InputProps={{
-                                        style: {
-                                            background: "#222141",
-                                        },
-                                    }}
-                                />
-                            </Stack>
-                            {project.descriptions.map((_, index) => (
-                                <Stack
-                                    key={index}
-                                    direction="row"
-                                    alignItems="center"
-                                >
+                                <Stack direction="row" alignItems="center">
                                     <TextField
-                                        label="Description"
+                                        label="Certification Name"
                                         variant="outlined"
+                                        type="text"
                                         onChange={(e) =>
-                                            handleDescriptionChange(
-                                                project.id,
-                                                index,
-                                                e.target.value
+                                            handleCertificationChange(
+                                                field.id,
+                                                e.target.value,
+                                                "name"
                                             )
                                         }
+                                        // value={field.value}
                                         sx={{
                                             mt: "20px",
-                                            width: "550px",
+                                            width: "300px",
                                             ".MuiOutlinedInput-notchedOutline":
                                                 {
                                                     borderColor:
@@ -1200,62 +1577,40 @@ const ResumeCreate = () => {
                                     />
                                     <Delete
                                         onClick={() =>
-                                            handleRemoveProjectDescription(
-                                                project.id,
-                                                index
+                                            handleRemoveCertificationField(
+                                                field.id
                                             )
                                         }
                                         sx={{
                                             width: "40px",
                                             color: "white",
-                                            mt: "20px",
                                             height: "40px",
                                             cursor: "pointer",
                                         }}
                                     />
                                 </Stack>
-                            ))}
-                            <Stack direction="row" spacing={2} mt={2}>
-                                <Button
-                                    onClick={() =>
-                                        handleAddProjectDescription(project.id)
-                                    }
-                                    variant="contained"
-                                    sx={{
-                                        color: "white",
-                                        textTransform: "none",
-                                        background:
-                                            "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
-                                        borderRadius: "5px",
-                                        mt: "15px",
-                                        fontSize: "3vmin",
-                                    }}
-                                >
-                                    Add Description
-                                </Button>
-                                <Button
-                                    onClick={() =>
-                                        handleRemoveProjectField(project.id)
-                                    }
-                                    variant="contained"
-                                    sx={{
-                                        color: "white",
-                                        textTransform: "none",
-                                        background:
-                                            "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
-                                        borderRadius: "5px",
-                                        mt: "15px",
-                                        fontSize: "3vmin",
-                                    }}
-                                >
-                                    Remove Project
-                                </Button>
-                            </Stack>
-                        </React.Fragment>
-                    ))}
+                            </React.Fragment>
+                        ))}
+
+                        <Button
+                            onClick={handleAddCertificationField}
+                            variant="contained"
+                            sx={{
+                                color: "white",
+                                textTransform: "none",
+                                background:
+                                    "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
+                                borderRadius: "5px",
+                                mt: "15px",
+                                fontSize: "3vmin",
+                            }}
+                        >
+                            Add Another Field
+                        </Button>
+                    </Box>
 
                     <Button
-                        onClick={handleAddProjectField}
+                        onClick={handlePrint}
                         variant="contained"
                         sx={{
                             color: "white",
@@ -1267,510 +1622,146 @@ const ResumeCreate = () => {
                             fontSize: "3vmin",
                         }}
                     >
-                        Add Another Project
+                        Print Resume
                     </Button>
-                </Box>
+                </Stack>
 
-                {/* Skills Fields */}
-                <Box>
-                    <Typography
-                        variant="h3"
-                        component="h3"
-                        sx={{ color: "white" }}
-                    >
-                        Skills
-                    </Typography>
-
-                    {skillsFields.map((field) => (
-                        <React.Fragment key={field.id}>
-                            <Stack direction="row" alignItems="center">
-                                <TextField
-                                    label="Title"
-                                    variant="outlined"
-                                    type="text"
-                                    onChange={(e) =>
-                                        handleSkillsChange(
-                                            field.id,
-                                            e.target.value,
-                                            "title"
-                                        )
-                                    }
-                                    value={field.title}
-                                    sx={{
-                                        mt: "20px",
-                                        width: "300px",
-                                        ".MuiOutlinedInput-notchedOutline": {
-                                            borderColor:
-                                                "rgba(255,255,255,0.3)",
-                                            borderRadius: "8px",
-                                        },
-                                    }}
-                                    InputLabelProps={{
-                                        style: {
-                                            color: "rgba(255,255,255,0.3)",
-                                        },
-                                    }}
-                                    inputProps={{
-                                        style: {
-                                            color: "#FFFFFF",
-                                        },
-                                    }}
-                                    InputProps={{
-                                        style: {
-                                            background: "#222141",
-                                        },
-                                    }}
-                                />
-                                <Delete
-                                    onClick={() =>
-                                        handleRemoveSkillsField(field.id)
-                                    }
-                                    sx={{
-                                        width: "40px",
-                                        mt: "20px",
-                                        color: "white",
-                                        height: "40px",
-                                        cursor: "pointer",
-                                    }}
-                                />
-                            </Stack>
-                            <Stack direction="row" alignItems="center">
-                                <TextField
-                                    label="Skills"
-                                    type="text"
-                                    variant="outlined"
-                                    // value={field.skills}
-                                    onChange={(e) =>
-                                        handleSkillsChange(
-                                            field.id,
-                                            e.target.value,
-                                            "skills"
-                                        )
-                                    }
-                                    sx={{
-                                        mt: "20px",
-                                        width: "300px",
-                                        ".MuiOutlinedInput-notchedOutline": {
-                                            borderColor:
-                                                "rgba(255,255,255,0.3)",
-                                            borderRadius: "8px",
-                                        },
-                                    }}
-                                    InputLabelProps={{
-                                        style: {
-                                            color: "rgba(255,255,255,0.3)",
-                                        },
-                                    }}
-                                    inputProps={{
-                                        style: {
-                                            color: "#FFFFFF",
-                                        },
-                                    }}
-                                    InputProps={{
-                                        style: {
-                                            background: "#222141",
-                                        },
-                                    }}
-                                />
-                                <Delete
-                                    onClick={() =>
-                                        handleRemoveSkillsField(field.id)
-                                    }
-                                    sx={{
-                                        width: "40px",
-                                        color: "white",
-                                        mt: "20px",
-                                        height: "40px",
-                                        cursor: "pointer",
-                                    }}
-                                />
-                            </Stack>
-                        </React.Fragment>
-                    ))}
-
-                    <Button
-                        onClick={handleAddSkillsField}
-                        variant="contained"
-                        sx={{
-                            color: "white",
-                            textTransform: "none",
-                            background:
-                                "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
-                            borderRadius: "5px",
-                            mt: "15px",
-                            fontSize: "3vmin",
-                        }}
-                    >
-                        Add Another Field
-                    </Button>
-                </Box>
-
-                {/* Certifications Fields */}
-                <Box>
-                    <Typography
-                        variant="h3"
-                        component="h3"
-                        sx={{ color: "white" }}
-                    >
-                        Certifications
-                    </Typography>
-
-                    {certificationsFields.map((field) => (
-                        <React.Fragment key={field.id}>
-                            <Stack direction="row" alignItems="center">
-                                <TextField
-                                    label="Issue By"
-                                    variant="outlined"
-                                    type="text"
-                                    onChange={(e) =>
-                                        handleCertificationChange(
-                                            field.id,
-                                            e.target.value,
-                                            "issueBy"
-                                        )
-                                    }
-                                    // value={field.value}
-                                    sx={{
-                                        mt: "20px",
-                                        width: "300px",
-                                        ".MuiOutlinedInput-notchedOutline": {
-                                            borderColor:
-                                                "rgba(255,255,255,0.3)",
-                                            borderRadius: "8px",
-                                        },
-                                    }}
-                                    InputLabelProps={{
-                                        style: {
-                                            color: "rgba(255,255,255,0.3)",
-                                        },
-                                    }}
-                                    inputProps={{
-                                        style: {
-                                            color: "#FFFFFF",
-                                        },
-                                    }}
-                                    InputProps={{
-                                        style: {
-                                            background: "#222141",
-                                        },
-                                    }}
-                                />
-                                <Delete
-                                    onClick={() =>
-                                        handleRemoveCertificationField(field.id)
-                                    }
-                                    sx={{
-                                        width: "40px",
-                                        color: "white",
-                                        height: "40px",
-                                        cursor: "pointer",
-                                    }}
-                                />
-                            </Stack>
-                            <Stack direction="row" alignItems="center">
-                                <TextField
-                                    label="Certification Name"
-                                    variant="outlined"
-                                    type="text"
-                                    onChange={(e) =>
-                                        handleCertificationChange(
-                                            field.id,
-                                            e.target.value,
-                                            "name"
-                                        )
-                                    }
-                                    // value={field.value}
-                                    sx={{
-                                        mt: "20px",
-                                        width: "300px",
-                                        ".MuiOutlinedInput-notchedOutline": {
-                                            borderColor:
-                                                "rgba(255,255,255,0.3)",
-                                            borderRadius: "8px",
-                                        },
-                                    }}
-                                    InputLabelProps={{
-                                        style: {
-                                            color: "rgba(255,255,255,0.3)",
-                                        },
-                                    }}
-                                    inputProps={{
-                                        style: {
-                                            color: "#FFFFFF",
-                                        },
-                                    }}
-                                    InputProps={{
-                                        style: {
-                                            background: "#222141",
-                                        },
-                                    }}
-                                />
-                                <Delete
-                                    onClick={() =>
-                                        handleRemoveCertificationField(field.id)
-                                    }
-                                    sx={{
-                                        width: "40px",
-                                        color: "white",
-                                        height: "40px",
-                                        cursor: "pointer",
-                                    }}
-                                />
-                            </Stack>
-                        </React.Fragment>
-                    ))}
-
-                    <Button
-                        onClick={handleAddCertificationField}
-                        variant="contained"
-                        sx={{
-                            color: "white",
-                            textTransform: "none",
-                            background:
-                                "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
-                            borderRadius: "5px",
-                            mt: "15px",
-                            fontSize: "3vmin",
-                        }}
-                    >
-                        Add Another Field
-                    </Button>
-                </Box>
-
-                <Button
-                    onClick={handlePrint}
-                    variant="contained"
+                {/* RESUME DESIGN */}
+                <Box
+                    ref={componentRef}
                     sx={{
-                        color: "white",
-                        textTransform: "none",
-                        background:
-                            "linear-gradient(108.51deg, #F219A1 53.69%, #AD0CF8 100.22%, #FE007E 100.23%)",
-                        borderRadius: "5px",
-                        mt: "15px",
-                        fontSize: "3vmin",
+                        flex: 1,
+                        width: "8.27in",
+                        height: "11.69in",
+                        backgroundColor: "white",
+                        p: "0px 20px",
+                        pt: "10px",
+                        pb: "30px",
+                        position: "sticky",
+                        top: "20px",
+                        overflowY: "auto",
                     }}
                 >
-                    Print Resume
-                </Button>
-            </Stack>
-
-            {/* RESUME DESIGN */}
-            <Box
-                ref={componentRef}
-                sx={{
-                    width: "8.27in",
-                    height: "11.69in",
-                    backgroundColor: "white",
-                    p: "0px 20px",
-                    pt: "10px",
-                    pb: "30px",
-                    position: "sticky",
-                    top: "20px",
-                    overflowY: "auto",
-                }}
-            >
-                {/* Personal Info */}
-                <Stack>
-                    <Typography
-                        sx={{
-                            textAlign: "center",
-                            fontWeight: "900",
-                            fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
-                            textTransform: "uppercase",
-                            fontSize: "20px",
-                            lineHeight: "26px",
-                        }}
-                    >
-                        {userDetails.find((field) => field.label === "Name")
-                            ?.value ||
-                            userDetails.find((field) => field.label === "Name")
-                                ?.defaultValue}
-                    </Typography>
-                    <Typography
-                        sx={{
-                            textAlign: "center",
-                            color: "rgb(111, 120, 120)",
-                            fontFamily: "PT Sans, Arial, Helvetica, sans-serif",
-                            textTransform: "capitalize",
-                            fontSize: "16px",
-                            lineHeight: "19px",
-                        }}
-                    >
-                        {userDetails.find((field) => field.label === "Role")
-                            ?.value ||
-                            userDetails.find((field) => field.label === "Role")
-                                ?.defaultValue}
-                    </Typography>
-                    {/* Links */}
-                    <Stack
-                        direction="row"
-                        justifyContent="space-evenly"
-                        sx={{ mt: "5px", flexWrap: "wrap", flexBasis: "1" }}
-                    >
-                        {profileFields.map((field) => (
-                            <Typography
-                                key={field.id}
-                                sx={{
-                                    p: 0,
-                                    fontFamily:
-                                        "PT Sans, Arial, Helvetica, sans-serif",
-                                    fontSize: "13px",
-                                    lineHeight: "16px",
-                                }}
-                            >
-                                {field.value || field.defaultValue}
-                            </Typography>
-                        ))}
-                    </Stack>
-                </Stack>
-
-                {/* Summary */}
-                <Stack sx={{ mt: "15px" }}>
-                    <Typography
-                        sx={{
-                            textAlign: "center",
-                            fontWeight: "900",
-                            fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
-                            textTransform: "uppercase",
-                            fontSize: "20px",
-                            lineHeight: "26px",
-                        }}
-                    >
-                        Summary
-                    </Typography>
-                    <Divider sx={{ borderColor: "black" }} />
+                    {/* Personal Info */}
                     <Stack>
-                        {summaryFields.map((field) => (
-                            <Typography
-                                key={field.id}
-                                component="p"
-                                value={field.value}
-                                sx={{
-                                    mt: "5px",
-                                    fontFamily:
-                                        "PT Sans, Arial, Helvetica, sans-serif",
-                                    fontSize: "12px",
-                                    lineHeight: "17px",
-                                }}
-                            >
-                                {field.value ||
-                                    "What's the one thing that makes you best candidate for this job"}
-                            </Typography>
-                        ))}
-                    </Stack>
-                </Stack>
-
-                {/* Education */}
-                <Stack sx={{ mt: "15px" }}>
-                    <Typography
-                        sx={{
-                            textAlign: "center",
-                            fontWeight: "900",
-                            fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
-                            textTransform: "uppercase",
-                            fontSize: "20px",
-                            lineHeight: "26px",
-                        }}
-                    >
-                        Education
-                    </Typography>
-                    <Divider sx={{ borderColor: "black" }} />
-                    <Stack spacing={2}>
-                        {educationFields.map((field) => (
-                            <Stack
-                                key={field.id}
-                                direction="row"
-                                justifyContent="space-between"
-                            >
-                                <Box>
-                                    <Typography
-                                        component="p"
-                                        sx={{
-                                            mt: "5px",
-                                            fontFamily:
-                                                "PT Sans, Arial, Helvetica, sans-serif",
-                                            textTransform: "capitalize",
-                                            fontSize: "12px",
-                                            lineHeight: "17px",
-                                        }}
-                                    >
-                                        {field.university || "University"}
-                                    </Typography>
-                                    <Typography
-                                        component="p"
-                                        sx={{
-                                            mt: "5px",
-                                            fontFamily:
-                                                "PT Sans, Arial, Helvetica, sans-serif",
-                                            textTransform: "capitalize",
-                                            fontSize: "12px",
-                                            lineHeight: "17px",
-                                        }}
-                                    >
-                                        {field.degree ||
-                                            "Degree and Field of Study"}
-                                    </Typography>
-                                </Box>
-                                <Box
+                        <Typography
+                            sx={{
+                                textAlign: "center",
+                                fontWeight: "900",
+                                fontFamily:
+                                    "Volkhov, Arial, Helvetica, sans-serif",
+                                textTransform: "uppercase",
+                                fontSize: "20px",
+                                lineHeight: "26px",
+                            }}
+                        >
+                            {userDetails.find((field) => field.label === "Name")
+                                ?.value ||
+                                userDetails.find(
+                                    (field) => field.label === "Name"
+                                )?.defaultValue}
+                        </Typography>
+                        <Typography
+                            sx={{
+                                textAlign: "center",
+                                color: "rgb(111, 120, 120)",
+                                fontFamily:
+                                    "PT Sans, Arial, Helvetica, sans-serif",
+                                textTransform: "capitalize",
+                                fontSize: "16px",
+                                lineHeight: "19px",
+                            }}
+                        >
+                            {userDetails.find((field) => field.label === "Role")
+                                ?.value ||
+                                userDetails.find(
+                                    (field) => field.label === "Role"
+                                )?.defaultValue}
+                        </Typography>
+                        {/* Links */}
+                        <Stack
+                            direction="row"
+                            justifyContent="space-evenly"
+                            sx={{
+                                mt: "5px",
+                                flexWrap: "wrap",
+                                flexBasis: "1",
+                            }}
+                        >
+                            {profileFields.map((field) => (
+                                <Typography
+                                    key={field.id}
                                     sx={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        alignItems: "end",
+                                        p: 0,
+                                        fontFamily:
+                                            "PT Sans, Arial, Helvetica, sans-serif",
+                                        fontSize: "13px",
+                                        lineHeight: "16px",
                                     }}
                                 >
-                                    <Typography
-                                        component="p"
-                                        sx={{
-                                            mt: "5px",
-                                            fontFamily:
-                                                "PT Sans, Arial, Helvetica, sans-serif",
-                                            textTransform: "capitalize",
-                                            fontSize: "12px",
-                                            lineHeight: "17px",
-                                        }}
-                                    >
-                                        {field.showCGPA
-                                            ? field.cgpa || "CGPA"
-                                            : null}
-                                    </Typography>
-                                    <Typography
-                                        component="p"
-                                        sx={{
-                                            mt: "5px",
-                                            fontFamily:
-                                                "PT Sans, Arial, Helvetica, sans-serif",
-                                            textTransform: "capitalize",
-                                            fontSize: "12px",
-                                            lineHeight: "17px",
-                                        }}
-                                    >
-                                        {field.date || "Date Period"}
-                                    </Typography>
-                                </Box>
-                            </Stack>
-                        ))}
+                                    {field.value || field.defaultValue}
+                                </Typography>
+                            ))}
+                        </Stack>
                     </Stack>
-                </Stack>
 
-                {/* Experience */}
-                <Stack sx={{ mt: "20px" }}>
-                    <Typography
-                        sx={{
-                            textAlign: "center",
-                            fontWeight: "900",
-                            fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
-                            textTransform: "uppercase",
-                            fontSize: "20px",
-                            lineHeight: "26px",
-                        }}
-                    >
-                        Experience
-                    </Typography>
-                    <Divider sx={{ borderColor: "black" }} />
-                    <Stack spacing={2}>
-                        {experienceFields.map((experience) => (
-                            <Box key={experience.id}>
+                    {/* Summary */}
+                    <Stack sx={{ mt: "15px" }}>
+                        <Typography
+                            sx={{
+                                textAlign: "center",
+                                fontWeight: "900",
+                                fontFamily:
+                                    "Volkhov, Arial, Helvetica, sans-serif",
+                                textTransform: "uppercase",
+                                fontSize: "20px",
+                                lineHeight: "26px",
+                            }}
+                        >
+                            Summary
+                        </Typography>
+                        <Divider sx={{ borderColor: "black" }} />
+                        <Stack>
+                            {summaryFields.map((field) => (
+                                <Typography
+                                    key={field.id}
+                                    component="p"
+                                    value={field.value}
+                                    sx={{
+                                        mt: "5px",
+                                        fontFamily:
+                                            "PT Sans, Arial, Helvetica, sans-serif",
+                                        fontSize: "12px",
+                                        lineHeight: "17px",
+                                    }}
+                                >
+                                    {field.value ||
+                                        "What's the one thing that makes you best candidate for this job"}
+                                </Typography>
+                            ))}
+                        </Stack>
+                    </Stack>
+
+                    {/* Education */}
+                    <Stack sx={{ mt: "15px" }}>
+                        <Typography
+                            sx={{
+                                textAlign: "center",
+                                fontWeight: "900",
+                                fontFamily:
+                                    "Volkhov, Arial, Helvetica, sans-serif",
+                                textTransform: "uppercase",
+                                fontSize: "20px",
+                                lineHeight: "26px",
+                            }}
+                        >
+                            Education
+                        </Typography>
+                        <Divider sx={{ borderColor: "black" }} />
+                        <Stack spacing={2}>
+                            {educationFields.map((field) => (
                                 <Stack
+                                    key={field.id}
                                     direction="row"
                                     justifyContent="space-between"
                                 >
@@ -1782,12 +1773,11 @@ const ResumeCreate = () => {
                                                 fontFamily:
                                                     "PT Sans, Arial, Helvetica, sans-serif",
                                                 textTransform: "capitalize",
-                                                fontSize: "16px",
-                                                lineHeight: "19px",
+                                                fontSize: "12px",
+                                                lineHeight: "17px",
                                             }}
                                         >
-                                            {experience.company ||
-                                                "Company Name"}
+                                            {field.university || "University"}
                                         </Typography>
                                         <Typography
                                             component="p"
@@ -1796,11 +1786,12 @@ const ResumeCreate = () => {
                                                 fontFamily:
                                                     "PT Sans, Arial, Helvetica, sans-serif",
                                                 textTransform: "capitalize",
-                                                fontSize: "14px",
+                                                fontSize: "12px",
                                                 lineHeight: "17px",
                                             }}
                                         >
-                                            {experience.title || "Title"}
+                                            {field.degree ||
+                                                "Degree and Field of Study"}
                                         </Typography>
                                     </Box>
                                     <Box
@@ -1817,13 +1808,186 @@ const ResumeCreate = () => {
                                                 fontFamily:
                                                     "PT Sans, Arial, Helvetica, sans-serif",
                                                 textTransform: "capitalize",
-                                                fontSize: "16px",
-                                                lineHeight: "19px",
+                                                fontSize: "12px",
+                                                lineHeight: "17px",
                                             }}
                                         >
-                                            {experience.date || "Date Period"}
+                                            {field.showCGPA
+                                                ? field.cgpa || "CGPA"
+                                                : null}
+                                        </Typography>
+                                        <Typography
+                                            component="p"
+                                            sx={{
+                                                mt: "5px",
+                                                fontFamily:
+                                                    "PT Sans, Arial, Helvetica, sans-serif",
+                                                textTransform: "capitalize",
+                                                fontSize: "12px",
+                                                lineHeight: "17px",
+                                            }}
+                                        >
+                                            {field.date || "Date Period"}
                                         </Typography>
                                     </Box>
+                                </Stack>
+                            ))}
+                        </Stack>
+                    </Stack>
+
+                    {/* Experience */}
+                    <Stack sx={{ mt: "20px" }}>
+                        <Typography
+                            sx={{
+                                textAlign: "center",
+                                fontWeight: "900",
+                                fontFamily:
+                                    "Volkhov, Arial, Helvetica, sans-serif",
+                                textTransform: "uppercase",
+                                fontSize: "20px",
+                                lineHeight: "26px",
+                            }}
+                        >
+                            Experience
+                        </Typography>
+                        <Divider sx={{ borderColor: "black" }} />
+                        <Stack spacing={2}>
+                            {experienceFields.map((experience) => (
+                                <Box key={experience.id}>
+                                    <Stack
+                                        direction="row"
+                                        justifyContent="space-between"
+                                    >
+                                        <Box>
+                                            <Typography
+                                                component="p"
+                                                sx={{
+                                                    mt: "5px",
+                                                    fontFamily:
+                                                        "PT Sans, Arial, Helvetica, sans-serif",
+                                                    textTransform: "capitalize",
+                                                    fontSize: "16px",
+                                                    lineHeight: "19px",
+                                                }}
+                                            >
+                                                {experience.company ||
+                                                    "Company Name"}
+                                            </Typography>
+                                            <Typography
+                                                component="p"
+                                                sx={{
+                                                    mt: "5px",
+                                                    fontFamily:
+                                                        "PT Sans, Arial, Helvetica, sans-serif",
+                                                    textTransform: "capitalize",
+                                                    fontSize: "14px",
+                                                    lineHeight: "17px",
+                                                }}
+                                            >
+                                                {experience.title || "Title"}
+                                            </Typography>
+                                        </Box>
+                                        <Box
+                                            sx={{
+                                                display: "flex",
+                                                flexDirection: "column",
+                                                alignItems: "end",
+                                            }}
+                                        >
+                                            <Typography
+                                                component="p"
+                                                sx={{
+                                                    mt: "5px",
+                                                    fontFamily:
+                                                        "PT Sans, Arial, Helvetica, sans-serif",
+                                                    textTransform: "capitalize",
+                                                    fontSize: "16px",
+                                                    lineHeight: "19px",
+                                                }}
+                                            >
+                                                {experience.date ||
+                                                    "Date Period"}
+                                            </Typography>
+                                        </Box>
+                                    </Stack>
+                                    <List
+                                        sx={{
+                                            pl: "20px",
+                                            listStyleType: "disc",
+                                        }}
+                                    >
+                                        {experience.descriptions.map(
+                                            (desc, index) => (
+                                                <ListItem
+                                                    key={index}
+                                                    sx={{
+                                                        p: 0,
+                                                        display: "list-item",
+                                                        fontFamily:
+                                                            "PT Sans, Arial, Helvetica, sans-serif",
+                                                        fontSize: "12px",
+                                                        lineHeight: "17px",
+                                                    }}
+                                                >
+                                                    {desc ||
+                                                        "What are your achievements"}
+                                                </ListItem>
+                                            )
+                                        )}
+                                    </List>
+                                </Box>
+                            ))}
+                        </Stack>
+                    </Stack>
+
+                    {/* Projects */}
+                    <Stack sx={{ mt: "20px" }}>
+                        <Typography
+                            sx={{
+                                textAlign: "center",
+                                fontWeight: "900",
+                                fontFamily:
+                                    "Volkhov, Arial, Helvetica, sans-serif",
+                                textTransform: "uppercase",
+                                fontSize: "20px",
+                                lineHeight: "26px",
+                            }}
+                        >
+                            Projects
+                        </Typography>
+                        <Divider sx={{ borderColor: "black" }} />
+                        {projectFields.map((project) => (
+                            <Box key={project.id}>
+                                <Stack
+                                    direction="row"
+                                    justifyContent="space-between"
+                                >
+                                    <Typography
+                                        component="p"
+                                        sx={{
+                                            mt: "5px",
+                                            fontFamily:
+                                                "PT Sans, Arial, Helvetica, sans-serif",
+                                            textTransform: "capitalize",
+                                            fontSize: "16px",
+                                            lineHeight: "19px",
+                                        }}
+                                    >
+                                        {project.title || "Title"}
+                                    </Typography>
+                                    <Typography
+                                        component="p"
+                                        sx={{
+                                            mt: "5px",
+                                            fontFamily:
+                                                "PT Sans, Arial, Helvetica, sans-serif",
+                                            textTransform: "capitalize",
+                                            fontSize: "16px",
+                                            lineHeight: "19px",
+                                        }}
+                                    >
+                                        {project.date || "Date Period"}
+                                    </Typography>
                                 </Stack>
                                 <List
                                     sx={{
@@ -1831,206 +1995,131 @@ const ResumeCreate = () => {
                                         listStyleType: "disc",
                                     }}
                                 >
-                                    {experience.descriptions.map(
-                                        (desc, index) => (
-                                            <ListItem
-                                                key={index}
-                                                sx={{
-                                                    p: 0,
-                                                    display: "list-item",
-                                                    fontFamily:
-                                                        "PT Sans, Arial, Helvetica, sans-serif",
-                                                    fontSize: "12px",
-                                                    lineHeight: "17px",
-                                                }}
-                                            >
-                                                {desc ||
-                                                    "What are your achievements"}
-                                            </ListItem>
-                                        )
-                                    )}
+                                    {project.descriptions.map((desc, index) => (
+                                        <ListItem
+                                            key={index}
+                                            sx={{
+                                                p: 0,
+                                                display: "list-item",
+                                                fontFamily:
+                                                    "PT Sans, Arial, Helvetica, sans-serif",
+                                                fontSize: "12px",
+                                                lineHeight: "17px",
+                                            }}
+                                        >
+                                            {desc}
+                                        </ListItem>
+                                    ))}
                                 </List>
                             </Box>
                         ))}
                     </Stack>
-                </Stack>
 
-                {/* Projects */}
-                <Stack sx={{ mt: "20px" }}>
-                    <Typography
-                        sx={{
-                            textAlign: "center",
-                            fontWeight: "900",
-                            fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
-                            textTransform: "uppercase",
-                            fontSize: "20px",
-                            lineHeight: "26px",
-                        }}
-                    >
-                        Projects
-                    </Typography>
-                    <Divider sx={{ borderColor: "black" }} />
-                    {projectFields.map((project) => (
-                        <Box key={project.id}>
-                            <Stack
-                                direction="row"
-                                justifyContent="space-between"
-                            >
-                                <Typography
-                                    component="p"
-                                    sx={{
-                                        mt: "5px",
-                                        fontFamily:
-                                            "PT Sans, Arial, Helvetica, sans-serif",
-                                        textTransform: "capitalize",
-                                        fontSize: "16px",
-                                        lineHeight: "19px",
-                                    }}
-                                >
-                                    {project.title || "Title"}
-                                </Typography>
-                                <Typography
-                                    component="p"
-                                    sx={{
-                                        mt: "5px",
-                                        fontFamily:
-                                            "PT Sans, Arial, Helvetica, sans-serif",
-                                        textTransform: "capitalize",
-                                        fontSize: "16px",
-                                        lineHeight: "19px",
-                                    }}
-                                >
-                                    {project.date || "Date Period"}
-                                </Typography>
-                            </Stack>
-                            <List
-                                sx={{
-                                    pl: "20px",
-                                    listStyleType: "disc",
-                                }}
-                            >
-                                {project.descriptions.map((desc, index) => (
-                                    <ListItem
-                                        key={index}
+                    {/* Skills */}
+                    <Stack sx={{ mt: "15px" }}>
+                        <Typography
+                            sx={{
+                                textAlign: "center",
+                                fontWeight: "900",
+                                fontFamily:
+                                    "Volkhov, Arial, Helvetica, sans-serif",
+                                textTransform: "uppercase",
+                                fontSize: "20px",
+                                lineHeight: "26px",
+                            }}
+                        >
+                            Skills
+                        </Typography>
+                        <Divider sx={{ borderColor: "black" }} />
+                        {skillsFields.map((skills) => (
+                            <Stack key={skills.id} direction="row" spacing={2}>
+                                <Box sx={{ minWidth: "80px" }}>
+                                    <Typography
+                                        component="p"
                                         sx={{
-                                            p: 0,
-                                            display: "list-item",
+                                            mt: "5px",
                                             fontFamily:
                                                 "PT Sans, Arial, Helvetica, sans-serif",
+                                            textTransform: "capitalize",
                                             fontSize: "12px",
                                             lineHeight: "17px",
                                         }}
                                     >
-                                        {desc}
-                                    </ListItem>
-                                ))}
-                            </List>
-                        </Box>
-                    ))}
-                </Stack>
+                                        {skills.title}:
+                                    </Typography>
+                                </Box>
+                                <Box>
+                                    <Typography
+                                        component="p"
+                                        sx={{
+                                            mt: "5px",
+                                            fontFamily:
+                                                "PT Sans, Arial, Helvetica, sans-serif",
+                                            textTransform: "capitalize",
+                                            fontSize: "12px",
+                                            lineHeight: "17px",
+                                        }}
+                                    >
+                                        {skills.skills.join(", ")}
+                                    </Typography>
+                                </Box>
+                            </Stack>
+                        ))}
+                    </Stack>
 
-                {/* Skills */}
-                <Stack sx={{ mt: "15px" }}>
-                    <Typography
-                        sx={{
-                            textAlign: "center",
-                            fontWeight: "900",
-                            fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
-                            textTransform: "uppercase",
-                            fontSize: "20px",
-                            lineHeight: "26px",
-                        }}
-                    >
-                        Skills
-                    </Typography>
-                    <Divider sx={{ borderColor: "black" }} />
-                    {skillsFields.map((skills) => (
-                        <Stack key={skills.id} direction="row" spacing={2}>
-                            <Box sx={{ minWidth: "80px" }}>
-                                <Typography
-                                    component="p"
-                                    sx={{
-                                        mt: "5px",
-                                        fontFamily:
-                                            "PT Sans, Arial, Helvetica, sans-serif",
-                                        textTransform: "capitalize",
-                                        fontSize: "12px",
-                                        lineHeight: "17px",
-                                    }}
-                                >
-                                    {skills.title}:
-                                </Typography>
-                            </Box>
-                            <Box>
-                                <Typography
-                                    component="p"
-                                    sx={{
-                                        mt: "5px",
-                                        fontFamily:
-                                            "PT Sans, Arial, Helvetica, sans-serif",
-                                        textTransform: "capitalize",
-                                        fontSize: "12px",
-                                        lineHeight: "17px",
-                                    }}
-                                >
-                                    {skills.skills.join(", ")}
-                                </Typography>
-                            </Box>
-                        </Stack>
-                    ))}
-                </Stack>
-
-                {/* Certifications */}
-                <Stack sx={{ mt: "15px" }}>
-                    <Typography
-                        sx={{
-                            textAlign: "center",
-                            fontWeight: "900",
-                            fontFamily: "Volkhov, Arial, Helvetica, sans-serif",
-                            textTransform: "uppercase",
-                            fontSize: "20px",
-                            lineHeight: "26px",
-                        }}
-                    >
-                        Certifications
-                    </Typography>
-                    <Divider sx={{ borderColor: "black" }} />
-                    {certificationsFields.map((cert) => (
-                        <Stack key={cert.id} direction="row" spacing={5}>
-                            <Box sx={{ minWidth: "50px" }}>
-                                <Typography
-                                    component="p"
-                                    sx={{
-                                        mt: "5px",
-                                        fontFamily:
-                                            "PT Sans, Arial, Helvetica, sans-serif",
-                                        textTransform: "capitalize",
-                                        fontSize: "12px",
-                                        lineHeight: "17px",
-                                    }}
-                                >
-                                    {cert.issueBy}
-                                </Typography>
-                            </Box>
-                            <Box>
-                                <Typography
-                                    component="p"
-                                    sx={{
-                                        mt: "5px",
-                                        fontFamily:
-                                            "PT Sans, Arial, Helvetica, sans-serif",
-                                        textTransform: "capitalize",
-                                        fontSize: "12px",
-                                        lineHeight: "17px",
-                                    }}
-                                >
-                                    {cert.name}
-                                </Typography>
-                            </Box>
-                        </Stack>
-                    ))}
-                </Stack>
-            </Box>
+                    {/* Certifications */}
+                    <Stack sx={{ mt: "15px" }}>
+                        <Typography
+                            sx={{
+                                textAlign: "center",
+                                fontWeight: "900",
+                                fontFamily:
+                                    "Volkhov, Arial, Helvetica, sans-serif",
+                                textTransform: "uppercase",
+                                fontSize: "20px",
+                                lineHeight: "26px",
+                            }}
+                        >
+                            Certifications
+                        </Typography>
+                        <Divider sx={{ borderColor: "black" }} />
+                        {certificationsFields.map((cert) => (
+                            <Stack key={cert.id} direction="row" spacing={5}>
+                                <Box sx={{ minWidth: "50px" }}>
+                                    <Typography
+                                        component="p"
+                                        sx={{
+                                            mt: "5px",
+                                            fontFamily:
+                                                "PT Sans, Arial, Helvetica, sans-serif",
+                                            textTransform: "capitalize",
+                                            fontSize: "12px",
+                                            lineHeight: "17px",
+                                        }}
+                                    >
+                                        {cert.issueBy}
+                                    </Typography>
+                                </Box>
+                                <Box>
+                                    <Typography
+                                        component="p"
+                                        sx={{
+                                            mt: "5px",
+                                            fontFamily:
+                                                "PT Sans, Arial, Helvetica, sans-serif",
+                                            textTransform: "capitalize",
+                                            fontSize: "12px",
+                                            lineHeight: "17px",
+                                        }}
+                                    >
+                                        {cert.name}
+                                    </Typography>
+                                </Box>
+                            </Stack>
+                        ))}
+                    </Stack>
+                </Box>
+            </>
         </Box>
     );
 };
