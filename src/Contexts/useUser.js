@@ -37,8 +37,7 @@ export const UserProvider = ({ children }) => {
     };
 
     const storeMessages = async (messages) => {
-        console.log("in store message line 39: ", messages);
-        const { res } = await supabase.auth.updateUser({
+        await supabase.auth.updateUser({
             data: {
                 messages: messages,
             },
@@ -53,7 +52,7 @@ export const UserProvider = ({ children }) => {
             },
         });
 
-        const { data } = await supabase.auth.updateUser({
+        await supabase.auth.updateUser({
             data: {
                 messages: [],
             },
